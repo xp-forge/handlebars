@@ -11,8 +11,8 @@ class WebsiteExamplesTest extends \unittest\TestCase {
    * @param  [:var] $variables
    * @return string
    */
-  protected function render($template, $variables= array()) {
-    return create(new HandlebarsEngine())->render($template, $variables);
+  protected function render($template, $variables, $helpers= array()) {
+    return create(new HandlebarsEngine())->withHelpers($helpers)->render($template, $variables);
   }
 
   #[@test]
@@ -53,6 +53,37 @@ class WebsiteExamplesTest extends \unittest\TestCase {
         "  </div>\n".
         "</div>\n",
         array('title' => 'All About <p> Tags', 'body' => '<p>This is a post about &lt;p&gt; tags</p>')
+      )
+    );
+  }
+
+  #[@test]
+  public function block_expressions() {
+    $this->assertEquals(
+      "<ul>\n".
+      "  <li>Yehuda Katz</li>\n".
+      "  <li>Carl Lerche</li>\n".
+      "  <li>Alan Johnson</li>\n".
+      "</ul>",
+      $this->render(
+        "{{#list people}}{{firstName}} {{lastName}}{{/list}}",
+        array('people' => array(
+          array('firstName' => 'Yehuda', 'lastName' => 'Katz'),
+          array('firstName' => 'Carl', 'lastName' => 'Lerche'),
+          array('firstName' => 'Alan', 'lastName' => 'Johnson')
+        )),
+        array('list' => function($items, $context, $options) {
+          $list= $context->lookup($options[0]);
+          if ($context->isList($list)) {
+            $out= "<ul>\n";
+            foreach ($list as $element) {
+              $out.= '  <li>'.$items->evaluate($context->asContext($element))."</li>\n";
+            }
+            return $out.'</ul>';
+          } else {
+            return '';
+          }
+        })
       )
     );
   }
