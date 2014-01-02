@@ -196,4 +196,18 @@ class WebsiteExamplesTest extends \unittest\TestCase {
       )
     );
   }
+
+  #[@test]
+  public function link_helper() {
+    $this->assertEquals(
+      '<a href="http://example.com/">See more...</a>',
+      $this->render(
+        '{{{link "See more..." story.url}}}',
+        array('story' => array('url' => 'http://example.com/')),
+        array('link'  => function($items, $context, $options) {
+          return '<a href="'.$context->lookup($options[1]).'">'.$options[0].'</a>';
+        })
+      )
+    );
+  }
 }
