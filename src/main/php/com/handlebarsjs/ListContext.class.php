@@ -36,9 +36,9 @@ class ListContext extends \com\github\mustache\Context {
    */
   protected function pointer($ptr, $segment) {
     if ('@first' === $segment) {
-      return 0 === $this->index;
+      return 0 === $this->index ? 'true' : null;
     } else if ('@last' === $segment) {
-      return $this->last === $this->index;
+      return $this->last === $this->index ? 'true' : null;
     } else if ('@index' === $segment) {
       return $this->index;
     } else {

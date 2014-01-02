@@ -67,7 +67,7 @@ class EachHelperTest extends HelperTest {
 
   #[@test]
   public function with_elements_and_first() {
-    $this->assertEquals('1: A : B : C ', $this->evaluate(
+    $this->assertEquals('true: A : B : C ', $this->evaluate(
       '{{#each people}}{{@first}}: {{name}} {{/each}}',
       $this->people()
     ));
@@ -75,7 +75,7 @@ class EachHelperTest extends HelperTest {
 
   #[@test]
   public function with_elements_and_last() {
-    $this->assertEquals(': A : B 1: C ', $this->evaluate(
+    $this->assertEquals(': A : B true: C ', $this->evaluate(
       '{{#each people}}{{@last}}: {{name}} {{/each}}',
       $this->people()
     ));
@@ -99,7 +99,7 @@ class EachHelperTest extends HelperTest {
 
   #[@test]
   public function with_hash_properties_and_first() {
-    $this->assertEquals('1: green : $12.40 ', $this->evaluate(
+    $this->assertEquals('true: green : $12.40 ', $this->evaluate(
       '{{#each item}}{{@first}}: {{.}} {{/each}}',
       $this->item()
     ));

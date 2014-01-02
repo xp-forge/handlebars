@@ -36,7 +36,7 @@ class HashContext extends \com\github\mustache\Context {
    */
   protected function pointer($ptr, $segment) {
     if ('@first' === $segment) {
-      return $this->first;
+      return $this->first ? 'true' : null;
     } else if ('@key' === $segment) {
       return $this->key;
     } else {
