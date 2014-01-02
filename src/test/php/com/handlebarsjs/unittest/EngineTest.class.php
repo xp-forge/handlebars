@@ -8,4 +8,9 @@ class EngineTest extends \unittest\TestCase {
   public function can_create() {
     new HandlebarsEngine();
   }
+
+  #[@test]
+  public function each_helper_builtin() {
+    $this->assertInstanceOf('Closure', create(new HandlebarsEngine())->helpers['each']);
+  }
 }
