@@ -54,9 +54,17 @@ class HandlebarsEngine extends MustacheEngine {
       $target= $context->lookup($options[0]);
       if ($context->isTruthy($target)) {
         return $items->evaluate($context);
-      } else {
-        return '';
       }
+      return '';
+    };
+
+    // With: Evaluate content in context defined by argument
+    $this->builtin['with']= function($items, $context, $options) {
+      $target= $context->lookup($options[0]);
+      if ($context->isTruthy($target)) {
+        return $items->evaluate($context->asContext($target));
+      }
+      return '';
     };
 
     $this->helpers= $this->builtin;   // Initially

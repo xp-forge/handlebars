@@ -18,4 +18,9 @@ class EngineTest extends \unittest\TestCase {
   public function if_helper_builtin() {
     $this->assertInstanceOf('Closure', create(new HandlebarsEngine())->helpers['if']);
   }
+
+  #[@test]
+  public function with_helper_builtin() {
+    $this->assertInstanceOf('Closure', create(new HandlebarsEngine())->helpers['with']);
+  }
 }
