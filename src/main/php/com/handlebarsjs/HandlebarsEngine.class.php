@@ -76,6 +76,16 @@ class HandlebarsEngine extends MustacheEngine {
       return '';
     };
 
+    // This: Access the current value in the context
+    $this->builtin['this']= function($items, $context, $options) {
+      $variable= $context->lookup(null);
+      if ($context->isHash($variable) || $context->isList($variable)) {
+        return current($context->asTraversable($variable));
+      } else {
+        return $variable;
+      }
+    };
+
     $this->helpers= $this->builtin;   // Initially
   }
 

@@ -156,4 +156,44 @@ class WebsiteExamplesTest extends \unittest\TestCase {
       )
     );
   }
+
+  #[@test]
+  public function unless_with_license_as_first_option() {
+    $this->assertEquals(
+      "<div class=\"entry\">\n".
+      "<h3 class=\"warning\">WARNING: This entry does not have a license!</h3>\n".
+      "</div>\n",
+      $this->render(
+        "<div class=\"entry\">\n".
+        "{{#unless license}}\n".
+        "<h3 class=\"warning\">WARNING: This entry does not have a license!</h3>\n".
+        "{{/unless}}\n".
+        "</div>\n",
+        array('license' => null)
+      )
+    );
+  }
+
+  #[@test]
+  public function the_each_block_helper() {
+    $this->assertEquals(
+      "<ul class=\"people_list\">\n".
+      "  <li>Yehuda Katz</li>\n".
+      "  <li>Carl Lerche</li>\n".
+      "  <li>Alan Johnson</li>\n".
+      "</ul>",
+      $this->render(
+        "<ul class=\"people_list\">\n".
+        "  {{#each people}}\n".
+        "  <li>{{this}}</li>\n".
+        "  {{/each}}\n".
+        "</ul>",
+        array('people' => array(
+          array('Yehuda Katz'),
+          array('Carl Lerche'),
+          array('Alan Johnson')
+        ))
+      )
+    );
+  }
 }
