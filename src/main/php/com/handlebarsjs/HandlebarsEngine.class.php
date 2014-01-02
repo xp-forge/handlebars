@@ -53,11 +53,11 @@ class HandlebarsEngine extends MustacheEngine {
 
     // If: Evaluate content in same context if value is truthy
     $this->setBuiltin('if', function($items, $context, $options) {
-      $target= $context->lookup($options[0]);
-      if ($context->isTruthy($target)) {
-        return $items->evaluate($context);
+      if ($context->isTruthy($context->lookup($options[0]))) {
+        return $options['fn']->evaluate($context);
+      } else {
+        return $options['inverse']->evaluate($context);
       }
-      return '';
     });
 
     // Unless: Evaluate content in same context if value is falsy
@@ -87,6 +87,9 @@ class HandlebarsEngine extends MustacheEngine {
         return $variable;
       }
     });
+
+    // Overwrite parser
+    $this->parser= new HandlebarsParser();
   }
 
   /**

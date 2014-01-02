@@ -27,4 +27,11 @@ class IfHelperTest extends HelperTest {
       'var' => array(1, 2, 3)
     )));
   }
+
+  #[@test]
+  public function else_invoked_for_non_truthy() {
+    $this->assertEquals('Default', $this->evaluate('{{#if var}}-{{var}}-{{else}}Default{{/if}}', array(
+      'var' => false
+    )));
+  }
 }
