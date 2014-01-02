@@ -9,6 +9,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
    *
    * @param  string $template
    * @param  [:var] $variables
+   * @param  [:var] $helpers
    * @return string
    */
   protected function render($template, $variables, $helpers= array()) {
@@ -31,7 +32,10 @@ class WebsiteExamplesTest extends \unittest\TestCase {
         "    {{body}}\n".
         "  </div>\n".
         "</div>\n",
-        array('title' => 'My New Post', 'body' => 'This is my first post!')
+        array(
+          'title' => 'My New Post',
+          'body'  => 'This is my first post!'
+        )
       )
     );
   }
@@ -52,7 +56,10 @@ class WebsiteExamplesTest extends \unittest\TestCase {
         "    {{{body}}}\n".
         "  </div>\n".
         "</div>\n",
-        array('title' => 'All About <p> Tags', 'body' => '<p>This is a post about &lt;p&gt; tags</p>')
+        array(
+          'title' => 'All About <p> Tags',
+          'body'  => '<p>This is a post about &lt;p&gt; tags</p>'
+        )
       )
     );
   }
@@ -84,6 +91,38 @@ class WebsiteExamplesTest extends \unittest\TestCase {
             return '';
           }
         })
+      )
+    );
+  }
+
+  #[@test]
+  public function nested_paths() {
+    $this->assertEquals(
+      "<div class=\"entry\">\n".
+      "  <h1>My First Blog Post!</h1>\n".
+      "  <h2>By Yehuda Katz</h2>\n".
+      "\n".
+      "  <div class=\"body\">\n".
+      "    My first post. Wheeeee!\n".
+      "  </div>\n".
+      "</div>\n",
+      $this->render(
+        "<div class=\"entry\">\n".
+        "  <h1>{{title}}</h1>\n".
+        "  <h2>By {{author.name}}</h2>\n".
+        "\n".
+        "  <div class=\"body\">\n".
+        "    {{body}}\n".
+        "  </div>\n".
+        "</div>\n",
+        array(
+          'title'  => 'My First Blog Post!',
+          'author' => array(
+            'id'   => 47,
+            'name' => 'Yehuda Katz'
+          ),
+          'body'   => 'My first post. Wheeeee!'
+        )
       )
     );
   }
