@@ -210,4 +210,28 @@ class WebsiteExamplesTest extends \unittest\TestCase {
       )
     );
   }
+
+  #[@test]
+  public function link_helper_with_hash_arguments() {
+    $this->assertEquals(
+      '<a href="http://example.com/" class="story">See more...</a>',
+      $this->render(
+        '{{{link "See more..." href=story.url class="story"}}}',
+        array('story' => array('url' => 'http://example.com/')),
+        array('link'  => function($items, $context, $options) {
+          $hash= array();
+          foreach ($options as $option) {
+            if (2 === sscanf($option, "%[^=]=%[^\r]", $name, $value)) {
+              if ('"' === $value{0}) {
+                $hash[$name]= substr($value, 1, -1);
+              } else {
+                $hash[$name]= $context->lookup($value);
+              }
+            }
+          }
+          return '<a href="'.$hash['href'].'" class="'.$hash['class'].'">'.$options[0].'</a>';
+        })
+      )
+    );
+  }
 }
