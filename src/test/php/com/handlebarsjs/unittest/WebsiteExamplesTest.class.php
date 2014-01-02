@@ -126,4 +126,34 @@ class WebsiteExamplesTest extends \unittest\TestCase {
       )
     );
   }
+
+  #[@test]
+  public function dot_dot_segments() {
+    $this->assertEquals(
+      "<h1>Comments</h1>\n".
+      "\n".
+      "<div id=\"comments\">\n".
+      "  <h2><a href=\"/posts/42-the-answer#1\">But...</a></h2>\n".
+      "  <div>...what was the question?</div>\n".
+      "</div>\n",
+      $this->render(
+        "<h1>Comments</h1>\n".
+        "\n".
+        "<div id=\"comments\">\n".
+        "  {{#each comments}}\n".
+        "  <h2><a href=\"/posts/{{../permalink}}#{{id}}\">{{title}}</a></h2>\n".
+        "  <div>{{body}}</div>\n".
+        "  {{/each}}\n".
+        "</div>\n",
+        array(
+          'permalink' => '42-the-answer',
+          'comments'  => array(array(
+            'id'    => 1,
+            'title' => 'But...',
+            'body'  => '...what was the question?'
+          ))
+        )
+      )
+    );
+  }
 }
