@@ -15,4 +15,11 @@ class UnlessHelperTest extends HelperTest {
       'var' => $value
     )));
   }
+
+  #[@test]
+  public function else_invoked_for_truthy() {
+    $this->assertEquals('Default', $this->evaluate('{{#unless var}}-{{var}}-{{else}}Default{{/unless}}', array(
+      'var' => true
+    )));
+  }
 }

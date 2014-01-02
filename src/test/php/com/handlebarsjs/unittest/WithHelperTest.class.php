@@ -16,4 +16,11 @@ class WithHelperTest extends HelperTest {
       array('person' => array('first' => 'Alan', 'last' => 'Johnson'))
     ));
   }
+
+  #[@test]
+  public function else_invoked_for_non_truthy() {
+    $this->assertEquals('Default', $this->evaluate('{{#with var}}-{{.}}-{{else}}Default{{/with}}', array(
+      'var' => false
+    )));
+  }
 }
