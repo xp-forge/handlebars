@@ -111,4 +111,17 @@ class EachHelperTest extends HelperTest {
       'var' => false
     )));
   }
+
+  #[@test, @ignore('Not yet supported, not sure how to implement')]
+  public function segment_literal_notation_for_invalid_identifiers() {
+    $this->assertEquals('Comment', $this->evaluate('{{#each articles.[10].[#comments]}}{{text}}{{/each}}', array(
+      'articles' => array(
+        10 => array(
+          '#comments' => array(
+            array('text' => 'Comment')
+          )
+        )
+      )
+    )));
+  }
 }
