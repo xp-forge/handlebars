@@ -128,6 +128,9 @@ class HandlebarsEngine extends MustacheEngine {
         return '';
       });
     } else if ($logger instanceof LogCategory) {
+
+      // This can be optimized once we want to set the dependency on xp-framework/core
+      // to a 6.0.0 minimum, see https://github.com/xp-framework/core/pull/4
       $this->setBuiltin('log', function($items, $context, $options) use($logger) {
         $level= array_shift($options);
         LogLevel::named($level);
