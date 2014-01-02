@@ -14,6 +14,7 @@ use com\github\mustache\MustacheEngine;
  *
  * @test  xp://com.handlebarsjs.unittest.EngineTest
  * @test  xp://com.handlebarsjs.unittest.EachHelperTest
+ * @test  xp://com.handlebarsjs.unittest.IfHelperTest
  * @test  xp://com.handlebarsjs.unittest.WebsiteExamplesTest
  * @see   http://handlebarsjs.com/
  */
@@ -25,6 +26,8 @@ class HandlebarsEngine extends MustacheEngine {
    */
   public function __construct() {
     parent::__construct();
+
+    // Each: Traverse lists and hashes
     $this->builtin['each']= function($items, $context, $options) {
       $target= $context->lookup($options[0]);
       $out= '';
@@ -45,6 +48,17 @@ class HandlebarsEngine extends MustacheEngine {
       }
       return $out;
     };
+
+    // If: Evaluate content in same context if value is truthy
+    $this->builtin['if']= function($items, $context, $options) {
+      $target= $context->lookup($options[0]);
+      if ($context->isTruthy($target)) {
+        return $items->evaluate($context);
+      } else {
+        return '';
+      }
+    };
+
     $this->helpers= $this->builtin;   // Initially
   }
 
