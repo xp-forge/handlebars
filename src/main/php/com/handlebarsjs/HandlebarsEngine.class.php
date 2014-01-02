@@ -13,6 +13,7 @@ use com\github\mustache\MustacheEngine;
  * advantage of the extra Handlebars features.
  *
  * @test  xp://com.handlebarsjs.unittest.EngineTest
+ * @test  xp://com.handlebarsjs.unittest.EachHelperTest
  * @test  xp://com.handlebarsjs.unittest.WebsiteExamplesTest
  * @see   http://handlebarsjs.com/
  */
@@ -27,9 +28,11 @@ class HandlebarsEngine extends MustacheEngine {
     $this->builtin['each']= function($items, $context, $options) {
       $list= $context->lookup($options[0]);
       if ($context->isList($list)) {
+        $traversable= $context->asTraversable($list);
+        $size= sizeof($traversable);
         $out= '';
-        foreach ($list as $element) {
-          $out.= $items->evaluate($context->asContext($element));
+        foreach ($traversable as $index => $element) {
+          $out.= $items->evaluate(new ListContext($index, $size, $context->asContext($element)));
         }
         return $out;
       } else {
