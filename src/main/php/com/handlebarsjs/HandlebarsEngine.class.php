@@ -58,6 +58,15 @@ class HandlebarsEngine extends MustacheEngine {
       return '';
     };
 
+    // Unless: Evaluate content in same context if value is falsy
+    $this->builtin['unless']= function($items, $context, $options) {
+      $target= $context->lookup($options[0]);
+      if ($context->isTruthy($target)) {
+        return '';
+      }
+      return $items->evaluate($context);
+    };
+
     // With: Evaluate content in context defined by argument
     $this->builtin['with']= function($items, $context, $options) {
       $target= $context->lookup($options[0]);

@@ -20,6 +20,11 @@ class EngineTest extends \unittest\TestCase {
   }
 
   #[@test]
+  public function unless_helper_builtin() {
+    $this->assertInstanceOf('Closure', create(new HandlebarsEngine())->helpers['unless']);
+  }
+
+  #[@test]
   public function with_helper_builtin() {
     $this->assertInstanceOf('Closure', create(new HandlebarsEngine())->helpers['with']);
   }
