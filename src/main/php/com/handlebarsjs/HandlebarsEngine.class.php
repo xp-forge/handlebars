@@ -1,6 +1,8 @@
 <?php namespace com\handlebarsjs;
 
 use com\github\mustache\MustacheEngine;
+use util\log\LogCategory;
+use util\log\LogLevel;
 
 /**
  * Handlebars implementation for the XP Framework.
@@ -90,6 +92,20 @@ class HandlebarsEngine extends MustacheEngine {
   }
 
   /**
+   * Sets built-in
+   *
+   * @param  string name
+   * @param  var builtin
+   */
+  protected function setBuiltin($name, $builtin) {
+    if (null === $builtin) {
+      unset($this->builtin[$name], $this->helpers[$name]);
+    } else {
+      $this->builtin[$name]= $this->helpers[$name]= $builtin;
+    }
+  }
+
+  /**
    * Sets helpers
    *
    * @param  [:var] $helpers
@@ -97,5 +113,34 @@ class HandlebarsEngine extends MustacheEngine {
    */
   public function withHelpers(array $helpers) {
     return parent::withHelpers(array_merge($this->builtin, $helpers));
+  }
+
+  /**
+   * Sets a logger to use. Accepts either a closure, a util.log.LogCategory
+   * instance or NULL (to unset).
+   *
+   * @param  var $logger
+   * @return self this
+   * @throws lang.IllegalArgumentException on argument mismatch
+   */
+  public function withLogger($logger) {
+    if ($logger instanceof \Closure) {
+      $this->setBuiltin('log', function($items, $context, $options) use($logger) {
+        $logger($options);
+        return '';
+      });
+    } else if ($logger instanceof LogCategory) {
+      $this->setBuiltin('log', function($items, $context, $options) use($logger) {
+        $level= array_shift($options);
+        LogLevel::named($level);
+        call_user_func_array(array($logger, $level), $options);
+        return '';
+      });
+    } else if (null === $logger) {
+      $this->setBuiltin('log', null);
+    } else {
+      throw new \lang\IllegalArgumentException('Expect either a closure, a util.log.LogCategory or NULL, '.\xp::typeOf($logger).' given');
+    }
+    return $this;
   }
 }
