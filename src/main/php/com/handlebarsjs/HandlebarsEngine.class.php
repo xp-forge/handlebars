@@ -30,7 +30,7 @@ class HandlebarsEngine extends MustacheEngine {
     parent::__construct();
 
     // Each: Traverse lists and hashes
-    $this->builtin['each']= function($items, $context, $options) {
+    $this->setBuiltin('each', function($items, $context, $options) {
       $target= $context->lookup($options[0]);
       $out= '';
       if ($context->isList($target)) {
@@ -49,46 +49,44 @@ class HandlebarsEngine extends MustacheEngine {
         }
       }
       return $out;
-    };
+    });
 
     // If: Evaluate content in same context if value is truthy
-    $this->builtin['if']= function($items, $context, $options) {
+    $this->setBuiltin('if', function($items, $context, $options) {
       $target= $context->lookup($options[0]);
       if ($context->isTruthy($target)) {
         return $items->evaluate($context);
       }
       return '';
-    };
+    });
 
     // Unless: Evaluate content in same context if value is falsy
-    $this->builtin['unless']= function($items, $context, $options) {
+    $this->setBuiltin('unless', function($items, $context, $options) {
       $target= $context->lookup($options[0]);
       if ($context->isTruthy($target)) {
         return '';
       }
       return $items->evaluate($context);
-    };
+    });
 
     // With: Evaluate content in context defined by argument
-    $this->builtin['with']= function($items, $context, $options) {
+    $this->setBuiltin('with', function($items, $context, $options) {
       $target= $context->lookup($options[0]);
       if ($context->isTruthy($target)) {
         return $items->evaluate($context->asContext($target));
       }
       return '';
-    };
+    });
 
     // This: Access the current value in the context
-    $this->builtin['this']= function($items, $context, $options) {
+    $this->setBuiltin('this', function($items, $context, $options) {
       $variable= $context->lookup(null);
       if ($context->isHash($variable) || $context->isList($variable)) {
         return current($context->asTraversable($variable));
       } else {
         return $variable;
       }
-    };
-
-    $this->helpers= $this->builtin;   // Initially
+    });
   }
 
   /**
