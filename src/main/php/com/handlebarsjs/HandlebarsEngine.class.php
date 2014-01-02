@@ -26,18 +26,24 @@ class HandlebarsEngine extends MustacheEngine {
   public function __construct() {
     parent::__construct();
     $this->builtin['each']= function($items, $context, $options) {
-      $list= $context->lookup($options[0]);
-      if ($context->isList($list)) {
-        $traversable= $context->asTraversable($list);
-        $size= sizeof($traversable);
-        $out= '';
-        foreach ($traversable as $index => $element) {
+      $target= $context->lookup($options[0]);
+      $out= '';
+      if ($context->isList($target)) {
+        $list= $context->asTraversable($target);
+        $size= sizeof($list);
+        foreach ($list as $index => $element) {
           $out.= $items->evaluate(new ListContext($index, $size, $context->asContext($element)));
         }
-        return $out;
-      } else {
-        return '';
+      } else if ($context->isHash($target)) {
+        $hash= $context->asTraversable($target);
+        $out= '';
+        $first= true;
+        foreach ($hash as $key => $value) {
+          $out.= $items->evaluate(new HashContext($key, $first, $context->asContext($value)));
+          $first= false;
+        }
       }
+      return $out;
     };
     $this->helpers= $this->builtin;   // Initially
   }
