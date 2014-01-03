@@ -42,7 +42,8 @@ class HandlebarsParser extends AbstractMustacheParser {
         }
       } else if ('(' === $tag{$o}) {
         $p= strcspn($tag, ')', $o);
-        $value= new Expression(substr($tag, $o + 1, $p - 1));
+        $sub= $this->options(substr($tag, $o + 1, $p - 1));
+        $value= new Expression(array_shift($sub), $sub);
       } else {
         $p= strcspn($tag, ' =', $o);
         if ($o + $p < $l && '=' === $tag{$o + $p}) {

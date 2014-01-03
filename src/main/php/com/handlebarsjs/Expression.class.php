@@ -2,14 +2,35 @@
 
 class Expression extends \lang\Object {
   protected $name;
+  protected $options;
 
   /**
    * Creates a new lookup instance
    *
    * @param  string $name
+   * @param  var[] $options
    */
   public function __construct($name, $options= array()) {
     $this->name= $name;
+    $this->options= $options;
+  }
+
+  /**
+   * Returns options as string, indented with a space on the left if
+   * non-empty, an empty string otherwise.
+   *
+   * @return string
+   */
+  protected function optionString() {
+    $r= '';
+    foreach ($this->options as $option) {
+      if ($option instanceof \lang\Generic) {
+        $r.= ' '.$option;
+      } else {
+        $r.= ' "'.$option.'"';
+      }
+    }
+    return $r;
   }
 
   /**
@@ -18,7 +39,7 @@ class Expression extends \lang\Object {
    * @return string
    */
   public function __toString() {
-    return '('.$this->name.')';
+    return '('.$this->name.$this->optionString().')';
   }
 
   /**
@@ -38,6 +59,10 @@ class Expression extends \lang\Object {
    * @return bool
    */
   public function equals($cmp) {
-    return $cmp instanceof self && $this->name === $cmp->name;
+    return (
+      $cmp instanceof self &&
+      $this->name === $cmp->name &&
+      \util\Objects::equal($this->options, $cmp->options)
+    );
   }
 }
