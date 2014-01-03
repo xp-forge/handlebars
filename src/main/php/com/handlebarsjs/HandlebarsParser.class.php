@@ -28,8 +28,8 @@ class HandlebarsParser extends AbstractMustacheParser {
     $parsed= array(substr($tag, 0, $o));
     $key= null;
     for ($o++, $l= strlen($tag); $o < $l; $o+= $p + 1) {
-      if ('"' === $tag{$o}) {
-        $p= strcspn($tag, '"', $o + 1) + 2;
+      if ('"' === $tag{$o} || "'" === $tag{$o}) {
+        $p= strcspn($tag, $tag{$o}, $o + 1) + 2;
         $value= substr($tag, $o + 1, $p - 2);
       } else {
         $p= strcspn($tag, ' =', $o);
@@ -37,8 +37,7 @@ class HandlebarsParser extends AbstractMustacheParser {
           $key= substr($tag, $o, $p);
           continue;
         } else {
-          $name= substr($tag, $o, $p);
-          $value= function($context) use($name) { return $context->lookup($name); };
+          $value= new Lookup(substr($tag, $o, $p));
         }
       }
       if ($key) {
