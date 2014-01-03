@@ -15,13 +15,50 @@ use com\github\mustache\VariableNode;
 class HandlebarsParser extends AbstractMustacheParser {
 
   /**
+   * Tokenize name and options from a given tag, e.g.:
+   * - 'tag' = ['tag']
+   * - 'tag option "option 2"' = ['tag', 'option', 'option 2']
+   * - 'tag option key=value' = ['tag', 'option', 'key' => 'value']
+   *
+   * @param  string $tag
+   * @return string[]
+   */
+  public function options($tag) {
+    $o= strcspn($tag, ' ');
+    $parsed= array(substr($tag, 0, $o));
+    $key= null;
+    for ($o++, $l= strlen($tag); $o < $l; $o+= $p + 1) {
+      if ('"' === $tag{$o}) {
+        $p= strcspn($tag, '"', $o + 1) + 2;
+        $value= substr($tag, $o + 1, $p - 2);
+      } else {
+        $p= strcspn($tag, ' =', $o);
+        if ($o + $p < $l && '=' === $tag{$o + $p}) {
+          $key= substr($tag, $o, $p);
+          continue;
+        } else {
+          $name= substr($tag, $o, $p);
+          $value= function($context) use($name) { return $context->lookup($name); };
+        }
+      }
+      if ($key) {
+        $parsed[$key]= $value;
+        $key= null;
+      } else {
+        $parsed[]= $value;
+      }
+    }
+    return $parsed;
+  }
+
+  /**
    * Initialize this parser.
    */
   protected function initialize() {
 
     // Sections
-    $this->withHandler('#^', true, function($tag, $state, $options) {
-      $parsed= $options(trim(substr($tag, 1)));
+    $this->withHandler('#^', true, function($tag, $state, $parse) {
+      $parsed= $parse->options(trim(substr($tag, 1)));
       $state->parents[]= $state->target;
       $block= $state->target->add(new BlockNode(
         array_shift($parsed),
@@ -59,8 +96,8 @@ class HandlebarsParser extends AbstractMustacheParser {
     });
 
     // & for unescaped
-    $this->withHandler('&', false, function($tag, $state, $options) {
-      $parsed= $options(trim(substr($tag, 1)));
+    $this->withHandler('&', false, function($tag, $state, $parse) {
+      $parsed= $parse->options(trim(substr($tag, 1)));
       $state->target->add('.' === $parsed[0]
         ? new IteratorNode(false)
         : new VariableNode($parsed[0], false, array_slice($parsed, 1))
@@ -68,8 +105,8 @@ class HandlebarsParser extends AbstractMustacheParser {
     });
 
     // triple mustache for unescaped
-    $this->withHandler('{', false, function($tag, $state, $options) {
-      $parsed= $options(trim(substr($tag, 1)));
+    $this->withHandler('{', false, function($tag, $state, $parse) {
+      $parsed= $parse->options(trim(substr($tag, 1)));
       $state->target->add('.' === $parsed[0]
         ? new IteratorNode(false)
         : new VariableNode($parsed[0], false, array_slice($parsed, 1))
@@ -78,8 +115,8 @@ class HandlebarsParser extends AbstractMustacheParser {
     });
 
     // Default
-    $this->withHandler(null, false, function($tag, $state, $options) {
-      $parsed= $options(trim($tag));
+    $this->withHandler(null, false, function($tag, $state, $parse) {
+      $parsed= $parse->options(trim($tag));
       if ('.' === $parsed[0]) {
         $state->target->add(new IteratorNode(true));
         return;

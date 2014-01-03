@@ -33,7 +33,7 @@ class HandlebarsEngine extends MustacheEngine {
 
     // Each: Traverse lists and hashes
     $this->setBuiltin('each', function($items, $context, $options) {
-      $target= $context->lookup($options[0]);
+      $target= $options[0];
       $out= '';
       if ($context->isList($target)) {
         $list= $context->asTraversable($target);
@@ -57,7 +57,7 @@ class HandlebarsEngine extends MustacheEngine {
 
     // If: Evaluate content in same context if value is truthy
     $this->setBuiltin('if', function($items, $context, $options) {
-      if ($context->isTruthy($context->lookup($options[0]))) {
+      if ($context->isTruthy($options[0])) {
         return $options['fn']->evaluate($context);
       } else {
         return $options['inverse']->evaluate($context);
@@ -66,7 +66,7 @@ class HandlebarsEngine extends MustacheEngine {
 
     // Unless: Evaluate content in same context if value is falsy
     $this->setBuiltin('unless', function($items, $context, $options) {
-      if ($context->isTruthy($context->lookup($options[0]))) {
+      if ($context->isTruthy($options[0])) {
         return $options['inverse']->evaluate($context);
       } else {
         return $options['fn']->evaluate($context);
@@ -75,7 +75,7 @@ class HandlebarsEngine extends MustacheEngine {
 
     // With: Evaluate content in context defined by argument
     $this->setBuiltin('with', function($items, $context, $options) {
-      $target= $context->lookup($options[0]);
+      $target= $options[0];
       if ($context->isTruthy($target)) {
         return $options['fn']->evaluate($context->asContext($target));
       } else {

@@ -80,7 +80,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
           array('firstName' => 'Alan', 'lastName' => 'Johnson')
         )),
         array('list' => function($items, $context, $options) {
-          $list= $context->lookup($options[0]);
+          $list= $options[0];
           if ($context->isList($list)) {
             $out= "<ul>\n";
             foreach ($list as $element) {
@@ -205,7 +205,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
         '{{{link "See more..." story.url}}}',
         array('story' => array('url' => 'http://example.com/')),
         array('link'  => function($items, $context, $options) {
-          return '<a href="'.$context->lookup($options[1]).'">'.$options[0].'</a>';
+          return '<a href="'.$options[1].'">'.$options[0].'</a>';
         })
       )
     );
@@ -219,17 +219,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
         '{{{link "See more..." href=story.url class="story"}}}',
         array('story' => array('url' => 'http://example.com/')),
         array('link'  => function($items, $context, $options) {
-          $hash= array();
-          foreach ($options as $option) {
-            if (2 === sscanf($option, "%[^=]=%[^\r]", $name, $value)) {
-              if ('"' === $value{0}) {
-                $hash[$name]= substr($value, 1, -1);
-              } else {
-                $hash[$name]= $context->lookup($value);
-              }
-            }
-          }
-          return '<a href="'.$hash['href'].'" class="'.$hash['class'].'">'.$options[0].'</a>';
+          return '<a href="'.$options['href'].'" class="'.$options['class'].'">'.$options[0].'</a>';
         })
       )
     );
