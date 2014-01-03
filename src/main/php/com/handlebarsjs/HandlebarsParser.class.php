@@ -10,7 +10,7 @@ use com\github\mustache\VariableNode;
 /**
  * Parses handlebars templates
  *
- * @test  xp://com.github.mustache.unittest.ParsingTest
+ * @test  xp://com.handlebarsjs.unittest.ParsingTest
  */
 class HandlebarsParser extends AbstractMustacheParser {
 
