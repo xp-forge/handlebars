@@ -79,4 +79,15 @@ class SubexpressionsTest extends \unittest\TestCase {
       ))
     );
   }
+
+  #[@test]
+  public function parse_supports_much_nesting() {
+    $this->assertEquals(
+      new VariableNode('test', true, array(new Expression('equal', array(
+        new Expression('equal', array(new Lookup('true'), new Lookup('true'))),
+        new Lookup('true')
+      )))),
+      $this->parse('{{test (equal (equal true true) true)}}')
+    );
+  }
 }
