@@ -32,10 +32,15 @@ class ParsingTest extends \unittest\TestCase {
     );
   }
 
-  #[@test, @values(['{{log "message"}}', "{{log 'message'}}"])]
-  public function log_helper_with_string_option($notation) {
+  #[@test, @values([
+  #  ['message', '{{log "message"}}'],
+  #  ['message', "{{log 'message'}}"],
+  #  ['message "a"', '{{log "message \"a\""}}'],
+  #  ['message \'a\'', "{{log 'message \'a\''}}"]
+  #])]
+  public function log_helper_with_string_option($value, $notation) {
     $this->assertEquals(
-      new NodeList(array(new VariableNode('log', true, array('message')))),
+      new NodeList(array(new VariableNode('log', true, array($value)))),
       $this->parse($notation)
     );
   }

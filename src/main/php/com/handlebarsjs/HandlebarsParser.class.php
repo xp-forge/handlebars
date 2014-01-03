@@ -29,8 +29,17 @@ class HandlebarsParser extends AbstractMustacheParser {
     $key= null;
     for ($o++, $l= strlen($tag); $o < $l; $o+= $p + 1) {
       if ('"' === $tag{$o} || "'" === $tag{$o}) {
-        $p= strcspn($tag, $tag{$o}, $o + 1) + 2;
-        $value= substr($tag, $o + 1, $p - 2);
+        $value= '';
+        while ($o < $l) {
+          $p= strcspn($tag, $tag{$o}, $o + 1) + 2;
+          $value.= substr($tag, $o + 1, $p - 2);
+          if ('\\' === $value{strlen($value) - 1}) {
+            $value= substr($value, 0, -1).$tag{$o};
+            $o+= $p - 1;
+            continue;
+          }
+          break;
+        }
       } else {
         $p= strcspn($tag, ' =', $o);
         if ($o + $p < $l && '=' === $tag{$o + $p}) {
