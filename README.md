@@ -23,14 +23,14 @@ The following helpers are built in:
 {{#if licence}}
   A licence is available
 {{else}}
-  Warning: No licence is available!
+  <em>Warning: No licence is available!</em>
 {{/if}}
 ```
 
 ### The "unless" block
 ```HTML+Django
 {{#unless licence}}
-  Warning: No licence is available!
+  <em>Warning: No licence is available!</em>
 {{/unless}}
 ```
 
@@ -43,10 +43,14 @@ The following helpers are built in:
 
 ### The "each" block
 ```HTML+Django
-{{#each students}}
-  Student's name: {{firstName}} {{lastName}}
-{{/each}}
+<ul>
+  {{#each students}}
+  <li>Student's name: {{firstName}} {{lastName}}</li>
+  {{/each}}
+</ul>
 ```
+
+All of the above block helpers support the `else` statement.
 
 ### The "log" helper
 ```HTML+Django
