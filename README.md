@@ -15,7 +15,7 @@ Helpers supported
 The following helpers are built in:
 
 ### The "if" block
-```mustache
+```HTML+Django
 {{#if licence}}
   A licence is available
 {{/if}}
@@ -28,27 +28,27 @@ The following helpers are built in:
 ```
 
 ### The "unless" block
-```mustache
+```HTML+Django
 {{#unless licence}}
   Warning: No licence is available!
 {{/unless}}
 ```
 
 ### The "with" block
-```mustache
+```HTML+Django
 {{#with person}}
   Full name: {{firstName}} {{lastName}}
 {{/with}}
 ```
 
 ### The "each" block
-```mustache
+```HTML+Django
 {{#each students}}
   Student's name: {{firstName}} {{lastName}}
 {{/each}}
 ```
 
 ### The "log" helper
-```mustache
+```HTML+Django
 {{log 'message'}}
 ```
