@@ -38,6 +38,7 @@ class SubexpressionsTest extends \unittest\TestCase {
    */
   protected function evaluate($template, $variables) {
     return create(new HandlebarsEngine())
+      ->withHelper('equal', function($a, $b) { return $a === $b; })
       ->withHelper('test', function($items, $context, $options) { return 'tested: '.($options[0] ? 'true' : 'false'); })
       ->render($template, $variables)
     ;
@@ -74,7 +75,6 @@ class SubexpressionsTest extends \unittest\TestCase {
     $this->assertEquals(
       'tested: false',
       $this->evaluate('{{test (equal a b)}}', array(
-        'equal' => function($a, $b) { return $a === $b; },
         'a'     => 1,
         'b'     => 2
       ))
@@ -89,6 +89,14 @@ class SubexpressionsTest extends \unittest\TestCase {
         new Boolean(true)
       )))),
       $this->parse('{{test (equal (equal true true) true)}}')
+    );
+  }
+
+  #[@test]
+  public function execute_supports_much_nesting() {
+    $this->assertEquals(
+      'tested: true',
+      $this->evaluate('{{test (equal (equal true true) true)}}', array())
     );
   }
 }
