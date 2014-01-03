@@ -56,9 +56,7 @@ class SubexpressionsTest extends \unittest\TestCase {
   public function execute_arg_less_helper() {
     $this->assertEquals(
       'tested: true',
-      $this->evaluate('{{test (the-west)}}', array(
-        'the-west' => true
-      ))
+      $this->evaluate('{{test (the-west)}}', array('the-west' => true))
     );
   }
 
@@ -74,10 +72,7 @@ class SubexpressionsTest extends \unittest\TestCase {
   public function execute_helper_w_args() {
     $this->assertEquals(
       'tested: false',
-      $this->evaluate('{{test (equal a b)}}', array(
-        'a'     => 1,
-        'b'     => 2
-      ))
+      $this->evaluate('{{test (equal a b)}}', array('a' => 1, 'b' => 2))
     );
   }
 
