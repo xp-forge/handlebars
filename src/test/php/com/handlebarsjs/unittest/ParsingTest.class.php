@@ -3,6 +3,7 @@
 use com\handlebarsjs\HandlebarsParser;
 use com\handlebarsjs\BlockNode;
 use com\handlebarsjs\Lookup;
+use com\handlebarsjs\Expression;
 use com\github\mustache\NodeList;
 use com\github\mustache\VariableNode;
 
@@ -46,6 +47,14 @@ class ParsingTest extends \unittest\TestCase {
     $this->assertEquals(
       new NodeList(array(new VariableNode('log', true, array($value)))),
       $this->parse($notation)
+    );
+  }
+
+  #[@test]
+  public function arg_less_helper_subexpression() {
+    $this->assertEquals(
+      new NodeList(array(new VariableNode('test', true, array(new Expression('the-west'))))),
+      $this->parse('{{test (the-west)}}')
     );
   }
 }
