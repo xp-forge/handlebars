@@ -57,7 +57,7 @@ class HandlebarsParser extends AbstractMustacheParser {
   protected function initialize() {
 
     // Sections
-    $this->withHandler('#^', true, function($tag, $state, $parse) {
+    $this->withHandler('#', true, function($tag, $state, $parse) {
       $parsed= $parse->options(trim(substr($tag, 1)));
       $state->parents[]= $state->target;
       $block= $state->target->add(new BlockNode(
@@ -112,6 +112,16 @@ class HandlebarsParser extends AbstractMustacheParser {
         : new VariableNode($parsed[0], false, array_slice($parsed, 1))
       );
       return +1; // Skip "}"
+    });
+
+    // ^ is either an else by its own, or a negated block
+    $this->withHandler('^', true, function($tag, $state) {
+      if ('^' === trim($tag)) {
+        $block= cast($state->parents[sizeof($state->parents) - 1], 'com.handlebarsjs.BlockNode');
+        $state->target= $block->inverse();
+        return;
+      }
+      raise('lang.MethodNotImplementedException', '^blocks not yet implemented');
     });
 
     // Default

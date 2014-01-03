@@ -105,9 +105,9 @@ class EachHelperTest extends HelperTest {
     ));
   }
 
-  #[@test]
-  public function else_invoked_for_non_truthy() {
-    $this->assertEquals('Default', $this->evaluate('{{#each var}}-{{.}}-{{else}}Default{{/each}}', array(
+  #[@test, @values(['else', '^'])]
+  public function else_invoked_for_non_truthy($else) {
+    $this->assertEquals('Default', $this->evaluate('{{#each var}}-{{.}}-{{'.$else.'}}Default{{/each}}', array(
       'var' => false
     )));
   }
