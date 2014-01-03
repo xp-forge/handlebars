@@ -16,30 +16,12 @@ class Expression extends \lang\Object {
   }
 
   /**
-   * Returns options as string, indented with a space on the left if
-   * non-empty, an empty string otherwise.
-   *
-   * @return string
-   */
-  protected function optionString() {
-    $r= '';
-    foreach ($this->options as $option) {
-      if ($option instanceof \lang\Generic) {
-        $r.= ' '.$option;
-      } else {
-        $r.= ' "'.$option.'"';
-      }
-    }
-    return $r;
-  }
-
-  /**
    * (string) cast overloading
    *
    * @return string
    */
   public function __toString() {
-    return '('.$this->name.$this->optionString().')';
+    return '('.$this->name.($this->options ? ' '.implode(' ', $this->options) : '').')';
   }
 
   /**
@@ -56,11 +38,7 @@ class Expression extends \lang\Object {
       // which in turn may be subexpressions or values to be looked up.
       $pass= array();
       foreach ($this->options as $option) {
-        if ($context->isCallable($option)) {
-          $pass[]= $option($context);
-        } else {
-          $pass[]= $option;
-        }
+        $pass[]= $option($context);
       }
       return call_user_func_array($r, $pass);
     } else {

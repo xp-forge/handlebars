@@ -72,24 +72,6 @@ class BlockNode extends Node {
   }
 
   /**
-   * Returns options as string, indented with a space on the left if
-   * non-empty, an empty string otherwise.
-   *
-   * @return string
-   */
-  protected function optionString() {
-    $r= '';
-    foreach ($this->options as $option) {
-      if (false !== strpos($option, ' ')) {
-        $r.= ' "'.$option.'"';
-      } else {
-        $r.= ' '.$option;
-      }
-    }
-    return $r;
-  }
-
-  /**
    * Creates a string representation of this node
    *
    * @return string
@@ -99,7 +81,7 @@ class BlockNode extends Node {
       "%s([\n  #%s%s -> %s else -> %s\n])",
       $this->getClassName(),
       $this->name,
-      $this->optionString(),
+      ($this->options ? ' '.implode(' ', $this->options) : ''),
       \xp::stringOf($this->fn, '  '),
       \xp::stringOf($this->inverse, '  ')
     );
@@ -169,7 +151,7 @@ class BlockNode extends Node {
     return sprintf(
       "%5\$s%1\$s%2\$s%6\$s\n%4\$s%5\$selse%6\$s\n%5\$s/%1\$s%6\$s\n",
       $this->name,
-      $this->optionString(),
+      implode(' ', $this->options),
       (string)$this->fn,
       (string)$this->inverse,
       $this->start,

@@ -12,6 +12,7 @@ use com\github\mustache\VariableNode;
  *
  * @test  xp://com.handlebarsjs.unittest.ParsingTest
  * @test  xp://com.handlebarsjs.unittest.SubexpressionsTest
+ * @see   https://github.com/wycats/handlebars.js/blob/master/spec/parser.js
  */
 class HandlebarsParser extends AbstractMustacheParser {
 
@@ -29,19 +30,20 @@ class HandlebarsParser extends AbstractMustacheParser {
     $parsed= array(substr($tag, 0, $o));
     $key= null;
     for ($o++, $l= strlen($tag); $o < $l; $o+= $p + 1) {
-      if ('"' === $tag{$o} || "'" === $tag{$o}) {
-        $value= '';
+      if ('"' === $tag{$o} || "'" === $tag{$o}) {           // Single and double quoted strings
+        $chars= '';
         while ($o < $l) {
           $p= strcspn($tag, $tag{$o}, $o + 1) + 2;
-          $value.= substr($tag, $o + 1, $p - 2);
-          if ('\\' === $value{strlen($value) - 1}) {
-            $value= substr($value, 0, -1).$tag{$o};
+          $chars.= substr($tag, $o + 1, $p - 2);
+          if ('\\' === $chars{strlen($chars) - 1}) {
+            $chars= substr($chars, 0, -1).$tag{$o};
             $o+= $p - 1;
             continue;
           }
           break;
         }
-      } else if ('(' === $tag{$o}) {
+        $value= new String($chars);
+      } else if ('(' === $tag{$o}) {                        // Subexpressions (+nesting!)
         $s= $o;
         $b= 0;
         do {
@@ -59,7 +61,16 @@ class HandlebarsParser extends AbstractMustacheParser {
           $key= substr($tag, $o, $p);
           continue;
         } else {
-          $value= new Lookup(substr($tag, $o, $p));
+          $token= substr($tag, $o, $p);
+          if ('true' === $token) {
+            $value= new Boolean(true);
+          } else if ('false' === $token) {
+            $value= new Boolean(false);
+          } else if (strspn($token, '0123456789') === strlen($token)) {
+            $value= new Integer($token);
+          } else {
+            $value= new Lookup($token);
+          }
         }
       }
       if ($key) {
