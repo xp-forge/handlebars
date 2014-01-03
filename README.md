@@ -54,5 +54,5 @@ All of the above block helpers support the `else` statement.
 
 ### The "log" helper
 ```HTML+Django
-{{log 'message'}}
+{{log '"Hello", Frank\'s mother said.'}}
 ```
