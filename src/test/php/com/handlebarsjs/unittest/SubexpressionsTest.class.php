@@ -11,10 +11,10 @@ use com\github\mustache\VariableNode;
 class SubexpressionsTest extends \unittest\TestCase {
 
   /**
-   * Evaluate a string template against given variables and return the output.
+   * Parse a string template and return the first node in the parsed syntax
    *
    * @param  string $template
-   * @return com.github.mustache.Node The first node in the parsed syntax
+   * @return com.github.mustache.Node
    */
   protected function parse($template) {
     return create(new HandlebarsParser())->parse($template)->nodeAt(0);
