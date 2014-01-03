@@ -3,6 +3,7 @@
 use com\github\mustache\MustacheEngine;
 use util\log\LogCategory;
 use util\log\LogLevel;
+new \import('com.handlebarsjs.LogCategoryExtensions');
 
 /**
  * Handlebars implementation for the XP Framework.
@@ -136,13 +137,8 @@ class HandlebarsEngine extends MustacheEngine {
         return '';
       });
     } else if ($logger instanceof LogCategory) {
-
-      // This can be optimized once we want to set the dependency on xp-framework/core
-      // to a 6.0.0 minimum, see https://github.com/xp-framework/core/pull/4
       $this->setBuiltin('log', function($items, $context, $options) use($logger) {
-        $level= array_shift($options);
-        LogLevel::named($level);
-        call_user_func_array(array($logger, $level), $options);
+        $logger->log(LogLevel::named(array_shift($options)), $options);
         return '';
       });
     } else if (null === $logger) {
