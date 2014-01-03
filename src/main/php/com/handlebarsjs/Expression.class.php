@@ -49,7 +49,23 @@ class Expression extends \lang\Object {
    * @return var
    */
   public function __invoke($context) {
-    return $context->lookup($this->name);
+    $r= $context->lookup($this->name);
+    if ($context->isCallable($r)) {
+
+      // Subexpressions are called with their options as arguments,
+      // which in turn may be subexpressions or values to be looked up.
+      $pass= array();
+      foreach ($this->options as $option) {
+        if ($context->isCallable($option)) {
+          $pass[]= $option($context);
+        } else {
+          $pass[]= $option;
+        }
+      }
+      return call_user_func_array($r, $pass);
+    } else {
+      return $r;
+    }
   }
 
   /**
