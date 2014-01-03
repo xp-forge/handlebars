@@ -11,6 +11,7 @@ use com\github\mustache\VariableNode;
  * Parses handlebars templates
  *
  * @test  xp://com.handlebarsjs.unittest.ParsingTest
+ * @test  xp://com.handlebarsjs.unittest.SubexpressionsTest
  */
 class HandlebarsParser extends AbstractMustacheParser {
 

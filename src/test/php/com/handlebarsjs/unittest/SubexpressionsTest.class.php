@@ -7,6 +7,13 @@ use com\handlebarsjs\Expression;
 use com\github\mustache\VariableNode;
 
 /**
+ * Tests subexpressions, which may appear inside node options inside
+ * braces. Subexpressions may be nested.
+ *
+ * ```mustache
+ * {{test (equal (equal true true) true)}}
+ * ```
+ *
  * @see  https://github.com/wycats/handlebars.js/blob/master/spec/subexpressions.js
  */
 class SubexpressionsTest extends \unittest\TestCase {
