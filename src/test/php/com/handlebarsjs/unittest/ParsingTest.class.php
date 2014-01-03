@@ -35,8 +35,12 @@ class ParsingTest extends \unittest\TestCase {
   #[@test, @values([
   #  ['message', '{{log "message"}}'],
   #  ['message', "{{log 'message'}}"],
+  #  ['message ""', '{{log "message \"\""}}'],
+  #  ['message \'\'', "{{log 'message \'\''}}"],
   #  ['message "a"', '{{log "message \"a\""}}'],
-  #  ['message \'a\'', "{{log 'message \'a\''}}"]
+  #  ['message \'a\'', "{{log 'message \'a\''}}"],
+  #  ['message "a b"', '{{log "message \"a b\""}}'],
+  #  ['message \'a b\'', "{{log 'message \'a b\''}}"]
   #])]
   public function log_helper_with_string_option($value, $notation) {
     $this->assertEquals(
