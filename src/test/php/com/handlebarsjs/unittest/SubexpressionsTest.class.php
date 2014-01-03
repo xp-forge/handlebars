@@ -1,6 +1,5 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use com\handlebarsjs\HandlebarsParser;
 use com\handlebarsjs\HandlebarsEngine;
 use com\handlebarsjs\Lookup;
 use com\handlebarsjs\Expression;
@@ -26,7 +25,7 @@ class SubexpressionsTest extends \unittest\TestCase {
    * @return com.github.mustache.Node
    */
   protected function parse($template) {
-    return create(new HandlebarsParser())->parse($template)->nodeAt(0);
+    return create(new HandlebarsEngine())->compile($template)->root()->nodeAt(0);
   }
 
   /**

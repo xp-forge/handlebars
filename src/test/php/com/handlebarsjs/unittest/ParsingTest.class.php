@@ -18,7 +18,7 @@ class ParsingTest extends \unittest\TestCase {
    * @return string
    */
   protected function parse($template) {
-    return create(new HandlebarsParser())->parse($template);
+    return create(new HandlebarsParser())->parse(new \text\StringTokenizer($template));
   }
 
   #[@test]
