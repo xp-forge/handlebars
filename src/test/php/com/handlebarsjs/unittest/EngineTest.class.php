@@ -10,26 +10,6 @@ class EngineTest extends \unittest\TestCase {
   }
 
   #[@test]
-  public function each_helper_builtin() {
-    $this->assertInstanceOf('Closure', create(new HandlebarsEngine())->helpers['each']);
-  }
-
-  #[@test]
-  public function if_helper_builtin() {
-    $this->assertInstanceOf('Closure', create(new HandlebarsEngine())->helpers['if']);
-  }
-
-  #[@test]
-  public function unless_helper_builtin() {
-    $this->assertInstanceOf('Closure', create(new HandlebarsEngine())->helpers['unless']);
-  }
-
-  #[@test]
-  public function with_helper_builtin() {
-    $this->assertInstanceOf('Closure', create(new HandlebarsEngine())->helpers['with']);
-  }
-
-  #[@test]
   public function initially_no_logger_set() {
     $engine= new HandlebarsEngine();
     $this->assertFalse(isset($engine->helpers['log']));
