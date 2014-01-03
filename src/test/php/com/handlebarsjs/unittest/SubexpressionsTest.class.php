@@ -29,7 +29,10 @@ class SubexpressionsTest extends \unittest\TestCase {
    * @return com.github.mustache.Node
    */
   protected function evaluate($template, $variables) {
-    return create(new HandlebarsEngine())->render($template, $variables);
+    return create(new HandlebarsEngine())
+      ->withHelper('test', function($items, $context, $options) { return 'tested: '.($options[0] ? 'true' : 'false'); })
+      ->render($template, $variables)
+    ;
   }
 
   #[@test]
@@ -37,6 +40,16 @@ class SubexpressionsTest extends \unittest\TestCase {
     $this->assertEquals(
       new VariableNode('test', true, array(new Expression('the-west'))),
       $this->parse('{{test (the-west)}}')
+    );
+  }
+
+  #[@test]
+  public function execute_arg_less_helper() {
+    $this->assertEquals(
+      'tested: true',
+      $this->evaluate('{{test (the-west)}}', array(
+        'the-west' => true
+      ))
     );
   }
 
@@ -53,7 +66,6 @@ class SubexpressionsTest extends \unittest\TestCase {
     $this->assertEquals(
       'tested: false',
       $this->evaluate('{{test (equal a b)}}', array(
-        'test'  => function($items, $context, $options) { return 'tested: '.($options[0] ? 'true' : 'false'); },
         'equal' => function($a, $b) { return $a === $b; },
         'a'     => 1,
         'b'     => 2
