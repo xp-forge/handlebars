@@ -26,6 +26,11 @@ class ParsingTest extends \unittest\TestCase {
     $this->assertEquals(new NodeList(array()), $this->parse(''));
   }
 
+  #[@test, @values(['foo', 'foo?', 'foo_', 'foo-', 'foo:', 'foo-bar'])]
+  public function parses_simple_mustaches($value) {
+    $this->assertEquals(new NodeList(array(new VariableNode($value))), $this->parse('{{'.$value.'}}'));
+  }
+
   #[@test]
   public function with_block_helper() {
     $this->assertEquals(
