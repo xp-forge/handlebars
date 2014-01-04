@@ -92,7 +92,7 @@ class HandlebarsParser extends AbstractMustacheParser {
     $this->withHandler('#', true, function($tag, $state, $parse) {
       $parsed= $parse->options(trim(substr($tag, 1)));
       $state->parents[]= $state->target;
-      $block= $state->target->add(new BlockNode(
+      $block= $state->target->add(BlockHelpers::newInstance(
         array_shift($parsed),
         $parsed,
         null,

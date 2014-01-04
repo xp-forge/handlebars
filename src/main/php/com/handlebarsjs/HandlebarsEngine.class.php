@@ -32,58 +32,6 @@ class HandlebarsEngine extends MustacheEngine {
   public function __construct() {
     parent::__construct();
 
-    // Each: Traverse lists and hashes
-    $this->setBuiltin('each', function($items, $context, $options) {
-      $target= $options[0];
-      $out= '';
-      if ($context->isList($target)) {
-        $list= $context->asTraversable($target);
-        $size= sizeof($list);
-        foreach ($list as $index => $element) {
-          $out.= $options['fn']->evaluate(new ListContext($index, $size, $context->asContext($element)));
-        }
-      } else if ($context->isHash($target)) {
-        $hash= $context->asTraversable($target);
-        $out= '';
-        $first= true;
-        foreach ($hash as $key => $value) {
-          $out.= $options['fn']->evaluate(new HashContext($key, $first, $context->asContext($value)));
-          $first= false;
-        }
-      } else {
-        $out= $options['inverse']->evaluate($context);
-      }
-      return $out;
-    });
-
-    // If: Evaluate content in same context if value is truthy
-    $this->setBuiltin('if', function($items, $context, $options) {
-      if ($context->isTruthy($options[0])) {
-        return $options['fn']->evaluate($context);
-      } else {
-        return $options['inverse']->evaluate($context);
-      }
-    });
-
-    // Unless: Evaluate content in same context if value is falsy
-    $this->setBuiltin('unless', function($items, $context, $options) {
-      if ($context->isTruthy($options[0])) {
-        return $options['inverse']->evaluate($context);
-      } else {
-        return $options['fn']->evaluate($context);
-      }
-    });
-
-    // With: Evaluate content in context defined by argument
-    $this->setBuiltin('with', function($items, $context, $options) {
-      $target= $options[0];
-      if ($context->isTruthy($target)) {
-        return $options['fn']->evaluate($context->asContext($target));
-      } else {
-        return $options['inverse']->evaluate($context->asContext($target));
-      }
-    });
-
     // This: Access the current value in the context
     $this->setBuiltin('this', function($items, $context, $options) {
       $variable= $context->lookup(null);
