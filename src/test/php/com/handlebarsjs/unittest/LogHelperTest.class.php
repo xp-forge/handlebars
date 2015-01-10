@@ -10,7 +10,7 @@ class LogHelperTest extends \unittest\TestCase {
   #[@test]
   public function log_to_closure() {
     $messages= create('new util.collections.Vector<string[]>()');
-    $engine= create(new HandlebarsEngine())->withLogger(function($args) use($messages) {
+    $engine= (new HandlebarsEngine())->withLogger(function($args) use($messages) {
       $messages->add($args);
     });
     $engine->render('{{log "Look at me!"}}', array());
@@ -20,7 +20,7 @@ class LogHelperTest extends \unittest\TestCase {
   #[@test]
   public function log_to_closure_with_multiple_arguments() {
     $messages= create('new util.collections.Vector<string>()');
-    $engine= create(new HandlebarsEngine())->withLogger(function($args) use($messages) {
+    $engine= (new HandlebarsEngine())->withLogger(function($args) use($messages) {
       $level= array_shift($args);
       $messages->add('['.$level.'] '.implode(' ', $args));
     });
@@ -30,11 +30,21 @@ class LogHelperTest extends \unittest\TestCase {
 
   #[@test]
   public function log_to_LogAppender_from_util_log() {
-    $appender= create(new BufferedAppender())->withLayout(new PatternLayout('[%l] %m'));
-    $engine= create(new HandlebarsEngine())->withLogger(
-      create(new LogCategory('trace'))->withAppender($appender)
+    $appender= (new BufferedAppender())->withLayout(new PatternLayout('[%l] %m'));
+    $engine= (new HandlebarsEngine())->withLogger(
+      (new LogCategory('trace'))->withAppender($appender)
     );
     $engine->render('{{log "info" "Look at me!"}}', array());
     $this->assertEquals('[info] Look at me!', $appender->getBuffer());
+  }
+
+  #[@test]
+  public function log_to_LogAppender_from_util_log_with_only_one_argument() {
+    $appender= (new BufferedAppender())->withLayout(new PatternLayout('[%l] %m'));
+    $engine= (new HandlebarsEngine())->withLogger(
+      (new LogCategory('trace'))->withAppender($appender)
+    );
+    $engine->render('{{log "Look at me!"}}', array());
+    $this->assertEquals('[debug] Look at me!', $appender->getBuffer());
   }
 }

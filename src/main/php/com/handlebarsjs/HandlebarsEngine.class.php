@@ -87,7 +87,11 @@ class HandlebarsEngine extends MustacheEngine {
       });
     } else if ($logger instanceof LogCategory) {
       $this->setBuiltin('log', function($items, $context, $options) use($logger) {
-        $logger->log(LogLevel::named(array_shift($options)), $options);
+        if (sizeof($options) > 1) {
+          $logger->log(LogLevel::named(array_shift($options)), $options);
+        } else {
+          $logger->log(LogLevel::DEBUG, $options);
+        }
         return '';
       });
     } else if (null === $logger) {
