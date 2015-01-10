@@ -3,6 +3,7 @@
 use com\github\mustache\MustacheEngine;
 use util\log\LogCategory;
 use util\log\LogLevel;
+use lang\IllegalArgumentException;
 new \import('com.handlebarsjs.LogCategoryExtensions');
 
 /**
@@ -24,7 +25,7 @@ new \import('com.handlebarsjs.LogCategoryExtensions');
  * @see   http://handlebarsjs.com/
  */
 class HandlebarsEngine extends MustacheEngine {
-  protected $builtin= array();
+  protected $builtin= [];
 
   /**
    * Constructor. Initializes builtin helpers.
@@ -92,7 +93,7 @@ class HandlebarsEngine extends MustacheEngine {
     } else if (null === $logger) {
       $this->setBuiltin('log', null);
     } else {
-      throw new \lang\IllegalArgumentException('Expect either a closure, a util.log.LogCategory or NULL, '.\xp::typeOf($logger).' given');
+      throw new IllegalArgumentException('Expect either a closure, a util.log.LogCategory or NULL, '.\xp::typeOf($logger).' given');
     }
     return $this;
   }
