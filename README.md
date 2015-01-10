@@ -65,3 +65,20 @@ All of the above block helpers support the `else` statement.
 ```HTML+Django
 {{log '"Hello", Frank\'s mother said.'}}
 ```
+
+To enable logging, pass either a closure or a `util.log.LogCategory` instance to the engine:
+
+```php
+use util\log\LogCategory;
+use util\log\ConsoleAppender;
+use util\cmd\Console;
+
+// Use a logger category:
+$logger= (new LogCategory('trace'))->withAppender(new ConsoleAppender());
+
+// Or a closure:
+$logger= function($arg) { Console::writeLine('[LOG] ', $arg); };
+
+$engine= (new HandlebarsEngine())->withLogger($logger);
+$engine->render(...);
+```
