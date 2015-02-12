@@ -3,6 +3,9 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 0.2.0 / 2015-02-12
+
+* Changed dependency to use XP ~6.0 (instead of dev-master) - @thekid
 * Fixed logging to a `util.log.LogCategory` with only one argument, e.g.
   `{{log 'Hello World'}}`. Use *debug* by by default.
   (@thekid)
