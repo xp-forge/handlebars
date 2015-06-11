@@ -1,10 +1,12 @@
 <?php namespace com\handlebarsjs;
 
 use com\github\mustache\MustacheEngine;
+use com\github\mustache\Template;
+use com\github\mustache\TemplateLoader;
 use util\log\LogCategory;
 use util\log\LogLevel;
 use lang\IllegalArgumentException;
-new \import('com.handlebarsjs.LogCategoryExtensions');
+new import('com.handlebarsjs.LogCategoryExtensions');
 
 /**
  * Handlebars implementation for the XP Framework.
@@ -24,14 +26,15 @@ new \import('com.handlebarsjs.LogCategoryExtensions');
  * @test  xp://com.handlebarsjs.unittest.WebsiteExamplesTest
  * @see   http://handlebarsjs.com/
  */
-class HandlebarsEngine extends MustacheEngine {
+class HandlebarsEngine extends \lang\Object {
+  protected $mustache;
   protected $builtin= [];
 
   /**
    * Constructor. Initializes builtin helpers.
    */
   public function __construct() {
-    parent::__construct();
+    $this->mustache= (new MustacheEngine())->withParser(new HandlebarsParser());
 
     // This: Access the current value in the context
     $this->setBuiltin('this', function($items, $context, $options) {
@@ -42,9 +45,22 @@ class HandlebarsEngine extends MustacheEngine {
         return $variable;
       }
     });
+  }
 
-    // Overwrite parser
-    $this->parser= new HandlebarsParser();
+  /** @return com.github.mustache.TemplateLoader */
+  public function templates() { return $this->mustache->getTemplates(); }
+
+  /** @return [:var] */
+  public function helpers() { return $this->mustache->helpers; }
+
+  /**
+   * Gets a given helper
+   *
+   * @param  string $name
+   * @return var or NULL if no such helper exists.
+   */
+  public function helper($name) {
+    return isset($this->mustache->helpers[$name]) ? $this->mustache->helpers[$name] : null;
   }
 
   /**
@@ -53,22 +69,12 @@ class HandlebarsEngine extends MustacheEngine {
    * @param  string name
    * @param  var builtin
    */
-  protected function setBuiltin($name, $builtin) {
+  private function setBuiltin($name, $builtin) {
     if (null === $builtin) {
-      unset($this->builtin[$name], $this->helpers[$name]);
+      unset($this->builtin[$name], $this->mustache->helpers[$name]);
     } else {
-      $this->builtin[$name]= $this->helpers[$name]= $builtin;
+      $this->builtin[$name]= $this->mustache->helpers[$name]= $builtin;
     }
-  }
-
-  /**
-   * Sets helpers
-   *
-   * @param  [:var] $helpers
-   * @return self this
-   */
-  public function withHelpers(array $helpers) {
-    return parent::withHelpers(array_merge($this->builtin, $helpers));
   }
 
   /**
@@ -100,5 +106,105 @@ class HandlebarsEngine extends MustacheEngine {
       throw new IllegalArgumentException('Expect either a closure, a util.log.LogCategory or NULL, '.\xp::typeOf($logger).' given');
     }
     return $this;
+  }
+
+  /**
+   * Sets template loader to be used
+   *
+   * @param  com.github.mustache.TemplateLoader $l
+   * @return self this
+   */
+  public function withTemplates(TemplateLoader $l) {
+    $this->mustache->withTemplates($l);
+    return $this;
+  }
+
+  /**
+   * Adds a helper with a given name
+   *
+   * @param  string $name
+   * @param  var $helper
+   * @return self this
+   */
+  public function withHelper($name, $helper) {
+    $this->mustache->withHelper($name, $helper);
+    return $this;
+  }
+
+  /**
+   * Sets helpers
+   *
+   * @param  [:var] $helpers
+   * @return self this
+   */
+  public function withHelpers(array $helpers) {
+    $this->mustache->withHelpers(array_merge($this->builtin, $helpers));
+    return $this;
+  }
+
+  /**
+   * Compile a template.
+   *
+   * @param  string $template The template, as a string
+   * @param  string $start Initial start tag, defaults to "{{"
+   * @param  string $end Initial end tag, defaults to "}}"
+   * @param  string $indent Indenting level, defaults to no indenting
+   * @return com.github.mustache.Template
+   */
+  public function compile($template, $start= '{{', $end= '}}', $indent= '') {
+    return $this->mustache->compile($template, $start, $end, $indent);
+  }
+
+  /**
+   * Load a template.
+   *
+   * @param  string $name The template name.
+   * @param  string $start Initial start tag, defaults to "{{"
+   * @param  string $end Initial end tag, defaults to "}}"
+   * @param  string $indent Indenting level, defaults to no indenting
+   * @return com.github.mustache.Template
+   */
+  public function load($name, $start= '{{', $end= '}}', $indent= '') {
+    return $this->mustache->load($name, $start, $end, $indent);
+  }
+
+  /**
+   * Evaluate a compiled template.
+   *
+   * @param  com.github.mustache.Template $template The template
+   * @param  var $arg Either a view context, or a Context instance
+   * @return string The rendered output
+   */
+  public function evaluate(Template $template, $arg) {
+    return $this->mustache->evaluate($template, $arg);
+  }
+
+  /**
+   * Render a template - like evaluate(), but will compile if necessary.
+   *
+   * @param  var $template The template, either as string or as compiled Template instance
+   * @param  var $arg Either a view context, or a Context instance
+   * @param  string $start Initial start tag, defaults to "{{"
+   * @param  string $end Initial end tag, defaults to "}}"
+   * @param  string $indent Indenting level, defaults to no indenting
+   * @return string The rendered output
+   */
+  public function render($template, $arg, $start= '{{', $end= '}}', $indent= '') {
+    return $this->mustache->render($template, $arg, $start, $end, $indent);
+  }
+
+  /**
+   * Transform a template by its name, which is previously loaded from
+   * the template loader.
+   *
+   * @param  string $name The template name.
+   * @param  var $arg Either a view context, or a Context instance
+   * @param  string $start Initial start tag, defaults to "{{"
+   * @param  string $end Initial end tag, defaults to "}}"
+   * @param  string $indent Indenting level, defaults to no indenting
+   * @return string The rendered output
+   */
+  public function transform($name, $arg, $start= '{{', $end= '}}', $indent= '') {
+    return $this->mustache->transform($name, $arg, $start, $end, $indent);
   }
 }
