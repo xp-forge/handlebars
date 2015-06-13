@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Renamed the package-internal *String* class to `com.handlebarsjs.Quoted`.
+  See https://wiki.php.net/rfc/reserve_more_types_in_php_7
+  (@thekid)
+
 ## 0.2.0 / 2015-02-12
 
 * Changed dependency to use XP ~6.0 (instead of dev-master) - @thekid

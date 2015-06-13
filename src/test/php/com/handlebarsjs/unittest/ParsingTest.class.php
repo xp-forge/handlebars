@@ -3,7 +3,7 @@
 use com\handlebarsjs\HandlebarsParser;
 use com\handlebarsjs\BlockNode;
 use com\handlebarsjs\Lookup;
-use com\handlebarsjs\String;
+use com\handlebarsjs\Quoted;
 use com\handlebarsjs\Expression;
 use com\github\mustache\NodeList;
 use com\github\mustache\VariableNode;
@@ -51,7 +51,7 @@ class ParsingTest extends \unittest\TestCase {
   #])]
   public function log_helper_with_string_option($value, $notation) {
     $this->assertEquals(
-      new NodeList([new VariableNode('log', true, [new String($value)])]),
+      new NodeList([new VariableNode('log', true, [new Quoted($value)])]),
       $this->parse($notation)
     );
   }

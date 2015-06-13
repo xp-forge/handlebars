@@ -1,10 +1,10 @@
 <?php namespace com\handlebarsjs;
 
-class String extends \lang\Object {
+class Quoted extends \lang\Object {
   protected $name;
 
   /**
-   * Creates a new String instance
+   * Creates a new Quoted instance
    *
    * @param  string $chars
    */

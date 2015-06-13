@@ -42,7 +42,7 @@ class HandlebarsParser extends AbstractMustacheParser {
           }
           break;
         }
-        $value= new String($chars);
+        $value= new Quoted($chars);
       } else if ('(' === $tag{$o}) {                        // Subexpressions (+nesting!)
         $s= $o;
         $b= 0;
