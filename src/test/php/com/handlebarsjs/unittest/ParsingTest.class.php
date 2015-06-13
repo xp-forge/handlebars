@@ -23,18 +23,18 @@ class ParsingTest extends \unittest\TestCase {
 
   #[@test]
   public function empty_string_parsed_to_empty_nodes() {
-    $this->assertEquals(new NodeList(array()), $this->parse(''));
+    $this->assertEquals(new NodeList([]), $this->parse(''));
   }
 
   #[@test, @values(['foo', 'foo?', 'foo_', 'foo-', 'foo:', 'foo-bar'])]
   public function parses_simple_mustaches($value) {
-    $this->assertEquals(new NodeList(array(new VariableNode($value))), $this->parse('{{'.$value.'}}'));
+    $this->assertEquals(new NodeList([new VariableNode($value)]), $this->parse('{{'.$value.'}}'));
   }
 
   #[@test]
   public function with_block_helper() {
     $this->assertEquals(
-      new NodeList(array(new BlockNode('with', array(new Lookup('person'))))),
+      new NodeList([new BlockNode('with', [new Lookup('person')])]),
       $this->parse('{{#with person}}{{/with}}')
     );
   }
@@ -51,7 +51,7 @@ class ParsingTest extends \unittest\TestCase {
   #])]
   public function log_helper_with_string_option($value, $notation) {
     $this->assertEquals(
-      new NodeList(array(new VariableNode('log', true, array(new String($value))))),
+      new NodeList([new VariableNode('log', true, [new String($value)])]),
       $this->parse($notation)
     );
   }
