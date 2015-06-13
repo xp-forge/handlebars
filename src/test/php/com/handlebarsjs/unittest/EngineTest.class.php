@@ -1,6 +1,7 @@
 <?php namespace com\handlebarsjs\unittest;
 
 use com\handlebarsjs\HandlebarsEngine;
+use util\log\LogCategory;
 
 class EngineTest extends \unittest\TestCase {
 
@@ -12,26 +13,26 @@ class EngineTest extends \unittest\TestCase {
   #[@test]
   public function initially_no_logger_set() {
     $engine= new HandlebarsEngine();
-    $this->assertFalse(isset($engine->helpers['log']));
+    $this->assertNull($engine->helper('log'));
   }
 
   #[@test]
   public function withLogger_using_closure_sets_logger() {
     $engine= create(new HandlebarsEngine())->withLogger(function($args) { });
-    $this->assertInstanceOf('Closure', $engine->helpers['log']);
+    $this->assertInstanceOf('Closure', $engine->helper('log'));
   }
 
   #[@test]
   public function withLogger_using_LogCategory_sets_logger() {
-    $engine= create(new HandlebarsEngine())->withLogger(new \util\log\LogCategory('test'));
-    $this->assertInstanceOf('Closure', $engine->helpers['log']);
+    $engine= create(new HandlebarsEngine())->withLogger(new LogCategory('test'));
+    $this->assertInstanceOf('Closure', $engine->helper('log'));
   }
 
   #[@test]
   public function withLogger_null_unsets_previously_set_logger() {
     $engine= create(new HandlebarsEngine())->withLogger(function($args) { });
     $engine->withLogger(null);
-    $this->assertFalse(isset($engine->helpers['log']));
+    $this->assertNull($engine->helper('log'));
   }
 
   #[@test, @expect('lang.IllegalArgumentException')]
