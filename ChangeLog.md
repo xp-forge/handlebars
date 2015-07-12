@@ -3,6 +3,11 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 0.4.0 / 2015-07-12
+
+* Added forward compatibility with XP 6.4.0 (@thekid)
+* Added preliminary PHP 7 support (alpha2 and beta1) (@thekid)
+
 ## 0.3.0 / 2015-06-13
 
 * Verified support for PHP7 when using XP 6.3.1
