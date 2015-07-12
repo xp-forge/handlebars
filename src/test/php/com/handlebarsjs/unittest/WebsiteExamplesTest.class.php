@@ -12,7 +12,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
    * @param  [:var] $helpers
    * @return string
    */
-  protected function render($template, $variables, $helpers= array()) {
+  protected function render($template, $variables, $helpers= []) {
     return (new HandlebarsEngine())->withHelpers($helpers)->render($template, $variables);
   }
 
@@ -32,10 +32,10 @@ class WebsiteExamplesTest extends \unittest\TestCase {
         "    {{body}}\n".
         "  </div>\n".
         "</div>\n",
-        array(
+        [
           'title' => 'My New Post',
           'body'  => 'This is my first post!'
-        )
+        ]
       )
     );
   }
@@ -56,10 +56,10 @@ class WebsiteExamplesTest extends \unittest\TestCase {
         "    {{{body}}}\n".
         "  </div>\n".
         "</div>\n",
-        array(
+        [
           'title' => 'All About <p> Tags',
           'body'  => '<p>This is a post about &lt;p&gt; tags</p>'
-        )
+        ]
       )
     );
   }
@@ -74,12 +74,12 @@ class WebsiteExamplesTest extends \unittest\TestCase {
       "</ul>",
       $this->render(
         "{{#list people}}{{firstName}} {{lastName}}{{/list}}",
-        array('people' => array(
-          array('firstName' => 'Yehuda', 'lastName' => 'Katz'),
-          array('firstName' => 'Carl', 'lastName' => 'Lerche'),
-          array('firstName' => 'Alan', 'lastName' => 'Johnson')
-        )),
-        array('list' => function($items, $context, $options) {
+        ['people' => [
+          ['firstName' => 'Yehuda', 'lastName' => 'Katz'],
+          ['firstName' => 'Carl', 'lastName' => 'Lerche'],
+          ['firstName' => 'Alan', 'lastName' => 'Johnson']
+        ]],
+        ['list' => function($items, $context, $options) {
           $list= $options[0];
           if ($context->isList($list)) {
             $out= "<ul>\n";
@@ -90,7 +90,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
           } else {
             return '';
           }
-        })
+        }]
       )
     );
   }
@@ -115,14 +115,14 @@ class WebsiteExamplesTest extends \unittest\TestCase {
         "    {{body}}\n".
         "  </div>\n".
         "</div>\n",
-        array(
+        [
           'title'  => 'My First Blog Post!',
-          'author' => array(
+          'author' => [
             'id'   => 47,
             'name' => 'Yehuda Katz'
-          ),
+          ],
           'body'   => 'My first post. Wheeeee!'
-        )
+        ]
       )
     );
   }
@@ -145,14 +145,14 @@ class WebsiteExamplesTest extends \unittest\TestCase {
         "  <div>{{body}}</div>\n".
         "  {{/each}}\n".
         "</div>\n",
-        array(
+        [
           'permalink' => '42-the-answer',
-          'comments'  => array(array(
+          'comments'  => [[
             'id'    => 1,
             'title' => 'But...',
             'body'  => '...what was the question?'
-          ))
-        )
+          ]]
+        ]
       )
     );
   }
@@ -169,7 +169,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
         "<h3 class=\"warning\">WARNING: This entry does not have a license!</h3>\n".
         "{{/unless}}\n".
         "</div>\n",
-        array('license' => null)
+        ['license' => null]
       )
     );
   }
@@ -188,11 +188,11 @@ class WebsiteExamplesTest extends \unittest\TestCase {
         "  <li>{{this}}</li>\n".
         "  {{/each}}\n".
         "</ul>",
-        array('people' => array(
-          array('Yehuda Katz'),
-          array('Carl Lerche'),
-          array('Alan Johnson')
-        ))
+        ['people' => [
+          ['Yehuda Katz'],
+          ['Carl Lerche'],
+          ['Alan Johnson']
+        ]]
       )
     );
   }
@@ -203,10 +203,10 @@ class WebsiteExamplesTest extends \unittest\TestCase {
       '<a href="http://example.com/">See more...</a>',
       $this->render(
         '{{{link "See more..." story.url}}}',
-        array('story' => array('url' => 'http://example.com/')),
-        array('link'  => function($items, $context, $options) {
+        ['story' => ['url' => 'http://example.com/']],
+        ['link'  => function($items, $context, $options) {
           return '<a href="'.$options[1].'">'.$options[0].'</a>';
-        })
+        }]
       )
     );
   }
@@ -217,10 +217,10 @@ class WebsiteExamplesTest extends \unittest\TestCase {
       '<a href="http://example.com/" class="story">See more...</a>',
       $this->render(
         '{{{link "See more..." href=story.url class="story"}}}',
-        array('story' => array('url' => 'http://example.com/')),
-        array('link'  => function($items, $context, $options) {
+        ['story' => ['url' => 'http://example.com/']],
+        ['link'  => function($items, $context, $options) {
           return '<a href="'.$options['href'].'" class="'.$options['class'].'">'.$options[0].'</a>';
-        })
+        }]
       )
     );
   }

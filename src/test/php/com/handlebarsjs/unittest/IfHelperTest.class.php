@@ -4,9 +4,9 @@ class IfHelperTest extends HelperTest {
 
   #[@test, @values([null, false, '', 0, [[]]])]
   public function does_not_show_for_falsy_values($value) {
-    $this->assertEquals('', $this->evaluate('{{#if var}}-{{var}}-{{/if}}', array(
+    $this->assertEquals('', $this->evaluate('{{#if var}}-{{var}}-{{/if}}', [
       'var' => $value
-    )));
+    ]));
   }
 
   #[@test, @values([
@@ -16,22 +16,22 @@ class IfHelperTest extends HelperTest {
   #  ['-1-', 1.0]
   #])]
   public function shows_for_truthy_values($expected, $value) {
-    $this->assertEquals($expected, $this->evaluate('{{#if var}}-{{var}}-{{/if}}', array(
+    $this->assertEquals($expected, $this->evaluate('{{#if var}}-{{var}}-{{/if}}', [
       'var' => $value
-    )));
+    ]));
   }
 
   #[@test]
   public function shows_for_non_empty_array() {
-    $this->assertEquals('-123-', $this->evaluate('{{#if var}}-{{#var}}{{.}}{{/var}}-{{/if}}', array(
-      'var' => array(1, 2, 3)
-    )));
+    $this->assertEquals('-123-', $this->evaluate('{{#if var}}-{{#var}}{{.}}{{/var}}-{{/if}}', [
+      'var' => [1, 2, 3]
+    ]));
   }
 
   #[@test, @values(['else', '^'])]
   public function else_invoked_for_non_truthy($else) {
-    $this->assertEquals('Default', $this->evaluate('{{#if var}}-{{var}}-{{'.$else.'}}Default{{/if}}', array(
+    $this->assertEquals('Default', $this->evaluate('{{#if var}}-{{var}}-{{'.$else.'}}Default{{/if}}', [
       'var' => false
-    )));
+    ]));
   }
 }

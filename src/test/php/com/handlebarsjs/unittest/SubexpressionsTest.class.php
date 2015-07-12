@@ -46,7 +46,7 @@ class SubexpressionsTest extends \unittest\TestCase {
   #[@test]
   public function parse_arg_less_helper() {
     $this->assertEquals(
-      new VariableNode('test', true, array(new Expression('the-west'))),
+      new VariableNode('test', true, [new Expression('the-west')]),
       $this->parse('{{test (the-west)}}')
     );
   }
@@ -55,14 +55,14 @@ class SubexpressionsTest extends \unittest\TestCase {
   public function execute_arg_less_helper() {
     $this->assertEquals(
       'tested: true',
-      $this->evaluate('{{test (the-west)}}', array('the-west' => true))
+      $this->evaluate('{{test (the-west)}}', ['the-west' => true])
     );
   }
 
   #[@test]
   public function parse_helper_w_args() {
     $this->assertEquals(
-      new VariableNode('test', true, array(new Expression('equal', array(new Lookup('a'), new Lookup('b'))))),
+      new VariableNode('test', true, [new Expression('equal', [new Lookup('a'), new Lookup('b')])]),
       $this->parse('{{test (equal a b)}}')
     );
   }
@@ -71,17 +71,17 @@ class SubexpressionsTest extends \unittest\TestCase {
   public function execute_helper_w_args() {
     $this->assertEquals(
       'tested: false',
-      $this->evaluate('{{test (equal a b)}}', array('a' => 1, 'b' => 2))
+      $this->evaluate('{{test (equal a b)}}', ['a' => 1, 'b' => 2])
     );
   }
 
   #[@test]
   public function parse_supports_much_nesting() {
     $this->assertEquals(
-      new VariableNode('test', true, array(new Expression('equal', array(
-        new Expression('equal', array(new Boolean(true), new Boolean(true))),
+      new VariableNode('test', true, [new Expression('equal', [
+        new Expression('equal', [new Boolean(true), new Boolean(true)]),
         new Boolean(true)
-      )))),
+      ])]),
       $this->parse('{{test (equal (equal true true) true)}}')
     );
   }
@@ -90,7 +90,7 @@ class SubexpressionsTest extends \unittest\TestCase {
   public function execute_supports_much_nesting() {
     $this->assertEquals(
       'tested: true',
-      $this->evaluate('{{test (equal (equal true true) true)}}', array())
+      $this->evaluate('{{test (equal (equal true true) true)}}', [])
     );
   }
 }

@@ -19,7 +19,7 @@ class ExecutionTest extends \unittest\TestCase {
   public function this_reference_resolves_to_current_scope() {
     $this->assertEquals(
       'Test',
-      $this->evaluate('{{this.name}}', array('name' => 'Test'))
+      $this->evaluate('{{this.name}}', ['name' => 'Test'])
     );
   }
 
@@ -27,10 +27,10 @@ class ExecutionTest extends \unittest\TestCase {
   public function dot_references_resolving_in_scopes() {
     $this->assertEquals(
       'TestPerson',
-      $this->evaluate('{{#person}}{{../name}}{{./name}}{{/person}}', array(
-        'name' => 'Test',
-        'person' => array('name' => 'Person')
-      ))
+      $this->evaluate('{{#person}}{{../name}}{{./name}}{{/person}}', [
+        'name'   => 'Test',
+        'person' => ['name' => 'Person']
+      ])
     );
   }
 }

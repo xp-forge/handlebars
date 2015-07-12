@@ -10,7 +10,7 @@ class Expression extends \lang\Object {
    * @param  string $name
    * @param  var[] $options
    */
-  public function __construct($name, $options= array()) {
+  public function __construct($name, $options= []) {
     $this->name= $name;
     $this->options= $options;
   }
@@ -36,7 +36,7 @@ class Expression extends \lang\Object {
 
       // Subexpressions are called with their options as arguments,
       // which in turn may be subexpressions or values to be looked up.
-      $pass= array();
+      $pass= [];
       foreach ($this->options as $option) {
         $pass[]= $option($context);
       }

@@ -16,7 +16,7 @@ class WithBlockHelper extends BlockNode {
    * @param string $start
    * @param string $end
    */
-  public function __construct($options= array(), NodeList $fn= null, NodeList $inverse= null, $start= '{{', $end= '}}') {
+  public function __construct($options= [], NodeList $fn= null, NodeList $inverse= null, $start= '{{', $end= '}}') {
     parent::__construct('with', $options, $fn, $inverse, $start, $end);
   }
 

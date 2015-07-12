@@ -6,7 +6,7 @@ use lang\XPClass;
  * Block helpers factory
  */
 class BlockHelpers extends \lang\Object {
-  protected static $byName= array();
+  protected static $byName= [];
 
   static function __static() {
     self::$byName['if']= XPClass::forName('com.handlebarsjs.IfBlockHelper');

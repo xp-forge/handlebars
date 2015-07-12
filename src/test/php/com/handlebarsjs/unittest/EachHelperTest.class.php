@@ -8,13 +8,13 @@ class EachHelperTest extends HelperTest {
    * @return [:var]
    */
   protected function people() {
-    return array(
-      'people' => array(
-        array('name' => 'A'),
-        array('name' => 'B'),
-        array('name' => 'C')
-      )
-    );
+    return [
+      'people' => [
+        ['name' => 'A'],
+        ['name' => 'B'],
+        ['name' => 'C']
+      ]
+    ];
   }
 
   /**
@@ -23,30 +23,30 @@ class EachHelperTest extends HelperTest {
    * @return [:var]
    */
   protected function item() {
-    return array('item' => array('color' => 'green', 'price' => '$12.40'));
+    return ['item' => ['color' => 'green', 'price' => '$12.40']];
   }
 
   #[@test]
   public function with_null_list() {
-    $this->assertEquals('', $this->evaluate('{{#each people}}* {{name}}{{/each}}', array(
+    $this->assertEquals('', $this->evaluate('{{#each people}}* {{name}}{{/each}}', [
       'people' => null
-    )));
+    ]));
   }
 
   #[@test]
   public function with_empty_list() {
-    $this->assertEquals('', $this->evaluate('{{#each people}}* {{name}}{{/each}}', array(
-      'people' => array()
-    )));
+    $this->assertEquals('', $this->evaluate('{{#each people}}* {{name}}{{/each}}', [
+      'people' => []
+    ]));
   }
 
   #[@test]
   public function with_one_element_list() {
-    $this->assertEquals('Test', $this->evaluate('{{#each people}}{{name}}{{/each}}', array(
-      'people' => array(
-        array('name' => 'Test')
-      )
-    )));
+    $this->assertEquals('Test', $this->evaluate('{{#each people}}{{name}}{{/each}}', [
+      'people' => [
+        ['name' => 'Test']
+      ]
+    ]));
   }
 
   #[@test]
@@ -107,21 +107,21 @@ class EachHelperTest extends HelperTest {
 
   #[@test, @values(['else', '^'])]
   public function else_invoked_for_non_truthy($else) {
-    $this->assertEquals('Default', $this->evaluate('{{#each var}}-{{.}}-{{'.$else.'}}Default{{/each}}', array(
+    $this->assertEquals('Default', $this->evaluate('{{#each var}}-{{.}}-{{'.$else.'}}Default{{/each}}', [
       'var' => false
-    )));
+    ]));
   }
 
   #[@test, @ignore('Not yet supported, not sure how to implement')]
   public function segment_literal_notation_for_invalid_identifiers() {
-    $this->assertEquals('Comment', $this->evaluate('{{#each articles.[10].[#comments]}}{{text}}{{/each}}', array(
-      'articles' => array(
-        10 => array(
-          '#comments' => array(
-            array('text' => 'Comment')
-          )
-        )
-      )
-    )));
+    $this->assertEquals('Comment', $this->evaluate('{{#each articles.[10].[#comments]}}{{text}}{{/each}}', [
+      'articles' => [
+        10 => [
+          '#comments' => [
+            ['text' => 'Comment']
+          ]
+        ]
+      ]
+    ]));
   }
 }

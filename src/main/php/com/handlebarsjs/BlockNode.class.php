@@ -26,7 +26,7 @@ class BlockNode extends Node {
    * @param string $start
    * @param string $end
    */
-  public function __construct($name, $options= array(), NodeList $fn= null, NodeList $inverse= null, $start= '{{', $end= '}}') {
+  public function __construct($name, $options= [], NodeList $fn= null, NodeList $inverse= null, $start= '{{', $end= '}}') {
     $this->name= $name;
     $this->options= $options;
     $this->fn= $fn ?: new NodeList();
@@ -109,7 +109,7 @@ class BlockNode extends Node {
     if ($context->isCallable($value)) {
       return $context->asRendering($value, $target, array_merge(
         $this->options,
-        array('fn' => $this->fn, 'inverse' => $this->inverse)
+        ['fn' => $this->fn, 'inverse' => $this->inverse]
       ));
     } else if ($context->isList($value)) {
       $output= '';

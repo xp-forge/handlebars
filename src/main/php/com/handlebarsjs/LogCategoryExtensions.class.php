@@ -25,6 +25,6 @@ class LogCategoryExtensions extends \lang\Object {
    * @param  var[] $args
    */
   public static function log(LogCategory $self, $level, $args) {
-    call_user_func_array(array($self, LogLevel::nameOf($level)), $args);
+    call_user_func_array([$self, LogLevel::nameOf($level)], $args);
   }
 }

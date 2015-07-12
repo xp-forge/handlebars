@@ -13,7 +13,7 @@ class ResourcesIn extends \com\github\mustache\ResourcesIn {
    * @param var $base The delegate, either an IClassLoader or a string
    * @param string[] $extensions File extensions to check, including leading "."
    */
-  public function __construct($arg, $extensions= array('.handlebars')) {
+  public function __construct($arg, $extensions= ['.handlebars']) {
     parent::__construct($arg, $extensions);
   }
 }

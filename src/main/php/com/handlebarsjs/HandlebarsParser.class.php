@@ -27,7 +27,7 @@ class HandlebarsParser extends AbstractMustacheParser {
    */
   public function options($tag) {
     $o= strcspn($tag, ' ');
-    $parsed= array(substr($tag, 0, $o));
+    $parsed= [substr($tag, 0, $o)];
     $key= null;
     for ($o++, $l= strlen($tag); $o < $l; $o+= $p + 1) {
       if ('"' === $tag{$o} || "'" === $tag{$o}) {           // Single and double quoted strings

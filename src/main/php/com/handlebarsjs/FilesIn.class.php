@@ -13,7 +13,7 @@ class FilesIn extends \com\github\mustache\FilesIn {
    * @param var $base The base folder, either an io.Folder or a string
    * @param string[] $extensions File extensions to check, including leading "."
    */
-  public function __construct($arg, $extensions= array('.handlebars')) {
+  public function __construct($arg, $extensions= ['.handlebars']) {
     parent::__construct($arg, $extensions);
   }
 }
