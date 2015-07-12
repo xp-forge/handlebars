@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 0.4.1 / 2015-07-12
+
+* Rewrote codebase to use short array syntax - @thekid
+
 ## 0.4.0 / 2015-07-12
 
 * Added forward compatibility with XP 6.4.0 (@thekid)
