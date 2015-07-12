@@ -25,7 +25,7 @@ class SubexpressionsTest extends \unittest\TestCase {
    * @return com.github.mustache.Node
    */
   protected function parse($template) {
-    return create(new HandlebarsEngine())->compile($template)->root()->nodeAt(0);
+    return (new HandlebarsEngine())->compile($template)->root()->nodeAt(0);
   }
 
   /**
@@ -36,7 +36,7 @@ class SubexpressionsTest extends \unittest\TestCase {
    * @return com.github.mustache.Node
    */
   protected function evaluate($template, $variables) {
-    return create(new HandlebarsEngine())
+    return (new HandlebarsEngine())
       ->withHelper('equal', function($a, $b) { return $a === $b; })
       ->withHelper('test', function($items, $context, $options) { return 'tested: '.($options[0] ? 'true' : 'false'); })
       ->render($template, $variables)

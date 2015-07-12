@@ -12,7 +12,7 @@ class ExecutionTest extends \unittest\TestCase {
    * @return string
    */
   protected function evaluate($template, $variables) {
-    return create(new HandlebarsEngine())->render($template, $variables);
+    return (new HandlebarsEngine())->render($template, $variables);
   }
 
   #[@test]

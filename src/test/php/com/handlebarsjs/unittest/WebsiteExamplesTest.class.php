@@ -13,7 +13,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
    * @return string
    */
   protected function render($template, $variables, $helpers= array()) {
-    return create(new HandlebarsEngine())->withHelpers($helpers)->render($template, $variables);
+    return (new HandlebarsEngine())->withHelpers($helpers)->render($template, $variables);
   }
 
   #[@test]
