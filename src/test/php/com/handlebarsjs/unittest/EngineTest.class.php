@@ -1,5 +1,6 @@
 <?php namespace com\handlebarsjs\unittest;
 
+use lang\IllegalArgumentException;
 use com\handlebarsjs\HandlebarsEngine;
 use util\log\LogCategory;
 
@@ -35,7 +36,7 @@ class EngineTest extends \unittest\TestCase {
     $this->assertNull($engine->helper('log'));
   }
 
-  #[@test, @expect('lang.IllegalArgumentException')]
+  #[@test, @expect(IllegalArgumentException::class)]
   public function with_non_callable_logger() {
     (new HandlebarsEngine())->withLogger('log');
   }
