@@ -20,13 +20,13 @@ class EngineTest extends \unittest\TestCase {
   #[@test]
   public function withLogger_using_closure_sets_logger() {
     $engine= (new HandlebarsEngine())->withLogger(function($args) { });
-    $this->assertInstanceOf('Closure', $engine->helper('log'));
+    $this->assertInstanceOf('function(?): void', $engine->helper('log'));
   }
 
   #[@test]
   public function withLogger_using_LogCategory_sets_logger() {
     $engine= (new HandlebarsEngine())->withLogger(new LogCategory('test'));
-    $this->assertInstanceOf('Closure', $engine->helper('log'));
+    $this->assertInstanceOf('function(?): void', $engine->helper('log'));
   }
 
   #[@test]
