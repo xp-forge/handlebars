@@ -3,6 +3,12 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 0.5.0 / 2015-10-10
+
+* Dropped dependency on `com.handlebarsjs.LogCategoryExtensions` which
+  was necessary as long as xp-framework/core#4 hadn't been merged
+  (@thekid)
+
 ## 0.4.1 / 2015-07-12
 
 * Rewrote codebase to use short array syntax - @thekid

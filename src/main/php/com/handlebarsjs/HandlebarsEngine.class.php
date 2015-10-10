@@ -6,7 +6,6 @@ use com\github\mustache\TemplateLoader;
 use util\log\LogCategory;
 use util\log\LogLevel;
 use lang\IllegalArgumentException;
-new import('com.handlebarsjs.LogCategoryExtensions');
 
 /**
  * Handlebars implementation for the XP Framework.
