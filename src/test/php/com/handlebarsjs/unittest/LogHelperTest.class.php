@@ -9,9 +9,9 @@ class LogHelperTest extends \unittest\TestCase {
 
   #[@test]
   public function log_to_closure() {
-    $messages= create('new util.collections.Vector<string[]>()');
-    $engine= (new HandlebarsEngine())->withLogger(function($args) use($messages) {
-      $messages->add($args);
+    $messages= [];
+    $engine= (new HandlebarsEngine())->withLogger(function($args) use(&$messages) {
+      $messages[]= $args;
     });
     $engine->render('{{log "Look at me!"}}', []);
     $this->assertEquals(['Look at me!'], $messages[0]);
@@ -19,10 +19,10 @@ class LogHelperTest extends \unittest\TestCase {
 
   #[@test]
   public function log_to_closure_with_multiple_arguments() {
-    $messages= create('new util.collections.Vector<string>()');
-    $engine= (new HandlebarsEngine())->withLogger(function($args) use($messages) {
+    $messages= [];
+    $engine= (new HandlebarsEngine())->withLogger(function($args) use(&$messages) {
       $level= array_shift($args);
-      $messages->add('['.$level.'] '.implode(' ', $args));
+      $messages[]= '['.$level.'] '.implode(' ', $args);
     });
     $engine->render('{{log "info" "Look at me!"}}', []);
     $this->assertEquals('[info] Look at me!', $messages[0]);
