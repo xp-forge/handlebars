@@ -3,6 +3,12 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 1.0.1 / 2015-12-20
+
+* Declared dependency on xp-framework/logging, which has since been
+  extracted from XP core.
+  (@thekid)
+
 ## 1.0.0 / 2015-12-14
 
 * **Heads up**: Changed minimum XP version to XP 6.5.0, and with it the

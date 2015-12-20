@@ -8,7 +8,11 @@
   "require" : {
     "xp-framework/core": "^6.5",
     "xp-forge/mustache": "^1.4.0",
+    "xp-framework/logging": "^6.5",
     "php" : ">=5.5.0"
+  },
+  "require-dev" : {
+    "xp-framework/unittest": "^6.5"
   },
   "autoload" : {
     "files" : ["src/main/php/autoload.php"]
