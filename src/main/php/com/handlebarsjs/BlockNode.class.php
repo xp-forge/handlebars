@@ -79,7 +79,7 @@ class BlockNode extends Node {
   public function toString() {
     return sprintf(
       "%s([\n  #%s%s -> %s else -> %s\n])",
-      $this->getClassName(),
+      nameof($this),
       $this->name,
       ($this->options ? ' '.implode(' ', $this->options) : ''),
       \xp::stringOf($this->fn, '  '),
