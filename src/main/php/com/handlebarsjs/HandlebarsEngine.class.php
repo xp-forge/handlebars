@@ -36,13 +36,17 @@ class HandlebarsEngine extends \lang\Object {
     $this->mustache= (new MustacheEngine())->withParser(new HandlebarsParser());
 
     // This: Access the current value in the context
-    $this->setBuiltin('this', function($items, $context, $options) {
+    $this->setBuiltin('this', function($node, $context, $options) {
       $variable= $context->lookup(null);
       if ($context->isHash($variable) || $context->isList($variable)) {
         return current($context->asTraversable($variable));
       } else {
         return $variable;
       }
+    });
+
+    $this->setBuiltin('lookup', function($node, $context, $options) {
+      return $options[0][$options[1]];
     });
   }
 

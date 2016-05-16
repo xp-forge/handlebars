@@ -3,6 +3,15 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Added support for the `lookup` builtin added in HandleBars.js 2.0.0
+  See https://github.com/wycats/handlebars.js/commit/306feb4
+  (@thekid)
+* Fixed subexpressions lookup for *current nodeset* (`.`).
+  (@thekid)
+* Made helper signature for subexpressions consistent with signatures
+  for nodes: `function(Node $items, Context $context, $options)`
+  (@thekid)
+
 ## 2.0.0 / 2016-02-21
 
 * Added version compatibility with XP 7 - @thekid
