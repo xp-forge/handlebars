@@ -12,8 +12,8 @@ class ExecutionTest extends \unittest\TestCase {
    * @param  [:var] $variables
    * @return string
    */
-  protected function evaluate($template, $variables) {
-    return (new HandlebarsEngine())->withTemplates(new InMemory(['test' => 'Partial']))->render($template, $variables);
+  protected function evaluate($template, $variables, $templates= ['test' => 'Partial']) {
+    return (new HandlebarsEngine())->withTemplates(new InMemory($templates))->render($template, $variables);
   }
 
   #[@test]
@@ -48,5 +48,23 @@ class ExecutionTest extends \unittest\TestCase {
   #[@test]
   public function complex_dynamic_partial() {
     $this->assertEquals('Partial', $this->evaluate('{{> (lookup . "template")}}', ['template' => 'test']));
+  }
+
+  #[@test]
+  public function partial_with_context() {
+    $this->assertEquals('fetched from context', $this->evaluate(
+      '{{> test context}}',
+      ['context' => ['name' => 'from context'], 'name' => 'globally'],
+      ['test' => 'fetched {{name}}']
+    ));
+  }
+
+  #[@test]
+  public function partial_with_parameters() {
+    $this->assertEquals('name was overwritten', $this->evaluate(
+      '{{> test name="overwritten"}}',
+      ['field' => 'name', 'name' => 'not overwritten, but should have!'],
+      ['test' => '{{field}} was {{name}}']
+    ));
   }
 }

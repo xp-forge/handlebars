@@ -3,6 +3,9 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Implemented partials contexts and parameters. These can be used to
+  create shared partials and to expose data from other contexts.
+  (@thekid)
 * Implemented [dynamic partials](http://handlebarsjs.com/partials.html)
   (@thekid)
 * Added support for the `lookup` builtin added in HandleBars.js 2.0.0

@@ -115,13 +115,13 @@ class HandlebarsParser extends AbstractMustacheParser {
 
     // > partial
     $this->withHandler('>', true, function($tag, $state, $parse) {
-      $expr= trim(substr($tag, 1));
-      if ('(' === $expr{0}) {
-        $partial= $parse->options(trim($tag));
-      } else {
-        $partial= [null, new Quoted($expr)];
+      $options= $parse->options(trim($tag));
+      array_shift($options);
+      $template= array_shift($options);
+      if ($template instanceof Lookup) {
+        $template= new Quoted((string)$template);
       }
-      $state->target->add(new PartialNode($partial[1], $state->padding));
+      $state->target->add(new PartialNode($template, $options, $state->padding));
     });
 
     // ! ... for comments
