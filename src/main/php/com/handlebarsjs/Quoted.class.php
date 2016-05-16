@@ -40,4 +40,13 @@ class Quoted extends \lang\Object {
   public function equals($cmp) {
     return $cmp instanceof self && $this->chars === $cmp->chars;
   }
+
+  /**
+   * Creates a string representation
+   *
+   * @return string
+   */
+  public function toString() {
+    return nameof($this).'('.$this.')';
+  }
 }

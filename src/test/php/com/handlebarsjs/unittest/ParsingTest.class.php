@@ -81,4 +81,20 @@ class ParsingTest extends \unittest\TestCase {
       $this->parse('{{> (lookup . "partial")}}')
     );
   }
+
+  #[@test]
+  public function partial_with_context() {
+    $this->assertEquals(
+      new NodeList([new PartialNode(new Quoted('userMessage'), ['tagName' => new Quoted('h1')])]),
+      $this->parse('{{> userMessage tagName="h1"}}')
+    );
+  }
+
+  #[@test]
+  public function dynamic_partial_with_context() {
+    $this->assertEquals(
+      new NodeList([new PartialNode(new Expression('partial'), ['tagName' => new Quoted('h1')])]),
+      $this->parse('{{> (partial) tagName="h1"}}')
+    );
+  }
 }

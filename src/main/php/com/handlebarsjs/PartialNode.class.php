@@ -1,6 +1,7 @@
 <?php namespace com\handlebarsjs;
 
 use lang\Object;
+use util\Objects;
 
 /**
  * Partials
@@ -9,17 +10,18 @@ use lang\Object;
  * @test xp://com.handlebarsjs.unittest.PartialNodeTest
  */
 class PartialNode extends \com\github\mustache\Node {
-  protected $template;
-  protected $indent;
+  protected $template, $options, $indent;
 
   /**
    * Creates a new partial node
    *
    * @param lang.Object $template The template
+   * @param [:var] $options
    * @param string $indent What to indent with
    */
-  public function __construct(Object $template, $indent= '') {
+  public function __construct(Object $template, $options= [], $indent= '') {
     $this->template= $template;
+    $this->options= $options;
     $this->indent= $indent;
   }
 
@@ -31,12 +33,37 @@ class PartialNode extends \com\github\mustache\Node {
   public function template() { return $this->template; }
 
   /**
+   * Returns options passed to this section
+   *
+   * @return string[]
+   */
+  public function options() { return $this->options; }
+
+  /**
+   * Returns options as string, indented with a space on the left if
+   * non-empty, an empty string otherwise.
+   *
+   * @return string
+   */
+  protected function optionString() {
+    $r= '';
+    foreach ($this->options as $key => $option) {
+      if (false !== strpos($option, ' ')) {
+        $r.= ' '.$key.'= "'.$option.'"';
+      } else {
+        $r.= ' '.$key.'= '.$option;
+      }
+    }
+    return $r;
+  }
+
+  /**
    * Creates a string representation of this node
    *
    * @return string
    */
   public function toString() {
-    return nameof($this).'{{> '.$this->template->toString().'}}, indent= "'.$this->indent.'"';
+    return nameof($this).'{{> '.$this->template->toString().$this->optionString().'}}, indent= "'.$this->indent.'"';
   }
 
   /**
@@ -49,6 +76,7 @@ class PartialNode extends \com\github\mustache\Node {
     return 
       $cmp instanceof self &&
       $this->indent === $cmp->indent &&
+      Objects::equal($this->options, $cmp->options) &&
       $this->template->equals($cmp->template)
     ;
   }
@@ -60,6 +88,10 @@ class PartialNode extends \com\github\mustache\Node {
    * @return string
    */
   public function evaluate($context) {
+    if ($this->options) {
+      $context= $context->newInstance($this->options);
+    }
+
     try {
       return $context->engine->transform($this->template->__invoke($context), $context, '{{', '}}', $this->indent);
     } catch (TemplateNotFoundException $e) {
@@ -73,6 +105,6 @@ class PartialNode extends \com\github\mustache\Node {
    * @return string
    */
   public function __toString() {
-    return '{{> '.$this->template.'}}';
+    return '{{> '.$this->template.$this->optionString().'}}';
   }
 }

@@ -3,6 +3,8 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Implemented partials options - can be used to create shared partials
+  (@thekid)
 * Implemented [dynamic partials](http://handlebarsjs.com/partials.html)
   (@thekid)
 * Added support for the `lookup` builtin added in HandleBars.js 2.0.0

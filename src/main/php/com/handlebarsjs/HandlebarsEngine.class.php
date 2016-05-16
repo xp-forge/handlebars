@@ -45,6 +45,7 @@ class HandlebarsEngine extends \lang\Object {
       }
     });
 
+    // Lookup: <where> <what>
     $this->setBuiltin('lookup', function($node, $context, $options) {
       return $options[0][$options[1]];
     });
