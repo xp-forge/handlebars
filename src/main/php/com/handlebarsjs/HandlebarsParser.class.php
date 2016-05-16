@@ -2,7 +2,6 @@
 
 use com\github\mustache\AbstractMustacheParser;
 use com\github\mustache\TemplateFormatException;
-use com\github\mustache\PartialNode;
 use com\github\mustache\CommentNode;
 use com\github\mustache\IteratorNode;
 use com\github\mustache\VariableNode;
@@ -115,8 +114,14 @@ class HandlebarsParser extends AbstractMustacheParser {
     });
 
     // > partial
-    $this->withHandler('>', true, function($tag, $state) {
-      $state->target->add(new PartialNode(trim(substr($tag, 1), ' '), $state->padding));
+    $this->withHandler('>', true, function($tag, $state, $parse) {
+      $expr= trim(substr($tag, 1));
+      if ('(' === $expr{0}) {
+        $partial= $parse->options(trim($tag));
+      } else {
+        $partial= [null, new Quoted($expr)];
+      }
+      $state->target->add(new PartialNode($partial[1], $state->padding));
     });
 
     // ! ... for comments

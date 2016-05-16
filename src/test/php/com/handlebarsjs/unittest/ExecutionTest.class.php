@@ -1,6 +1,7 @@
 <?php namespace com\handlebarsjs\unittest;
 
 use com\handlebarsjs\HandlebarsEngine;
+use com\github\mustache\InMemory;
 
 class ExecutionTest extends \unittest\TestCase {
 
@@ -12,7 +13,7 @@ class ExecutionTest extends \unittest\TestCase {
    * @return string
    */
   protected function evaluate($template, $variables) {
-    return (new HandlebarsEngine())->render($template, $variables);
+    return (new HandlebarsEngine())->withTemplates(new InMemory(['test' => 'Partial']))->render($template, $variables);
   }
 
   #[@test]
@@ -32,5 +33,20 @@ class ExecutionTest extends \unittest\TestCase {
         'person' => ['name' => 'Person']
       ])
     );
+  }
+
+  #[@test]
+  public function partial() {
+    $this->assertEquals('Partial', $this->evaluate('{{> test}}', []));
+  }
+
+  #[@test]
+  public function dynamic_partial() {
+    $this->assertEquals('Partial', $this->evaluate('{{> (template)}}', ['template' => 'test']));
+  }
+
+  #[@test]
+  public function complex_dynamic_partial() {
+    $this->assertEquals('Partial', $this->evaluate('{{> (lookup . "template")}}', ['template' => 'test']));
   }
 }

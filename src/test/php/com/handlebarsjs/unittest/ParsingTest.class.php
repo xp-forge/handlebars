@@ -2,11 +2,13 @@
 
 use com\handlebarsjs\HandlebarsParser;
 use com\handlebarsjs\BlockNode;
+use com\handlebarsjs\PartialNode;
 use com\handlebarsjs\Lookup;
 use com\handlebarsjs\Quoted;
 use com\handlebarsjs\Expression;
 use com\github\mustache\NodeList;
 use com\github\mustache\VariableNode;
+use text\StringTokenizer;
 
 class ParsingTest extends \unittest\TestCase {
 
@@ -18,7 +20,7 @@ class ParsingTest extends \unittest\TestCase {
    * @return string
    */
   protected function parse($template) {
-    return (new HandlebarsParser())->parse(new \text\StringTokenizer($template));
+    return (new HandlebarsParser())->parse(new StringTokenizer($template));
   }
 
   #[@test]
@@ -53,6 +55,30 @@ class ParsingTest extends \unittest\TestCase {
     $this->assertEquals(
       new NodeList([new VariableNode('log', true, [new Quoted($value)])]),
       $this->parse($notation)
+    );
+  }
+
+  #[@test]
+  public function partial() {
+    $this->assertEquals(
+      new NodeList([new PartialNode(new Quoted('partial'))]),
+      $this->parse('{{> partial}}')
+    );
+  }
+
+  #[@test]
+  public function dynamic_partial() {
+    $this->assertEquals(
+      new NodeList([new PartialNode(new Expression('partial'))]),
+      $this->parse('{{> (partial)}}')
+    );
+  }
+
+  #[@test]
+  public function dynamic_partial_with_lookup_helper() {
+    $this->assertEquals(
+      new NodeList([new PartialNode(new Expression('lookup', [new Lookup(null), new Quoted('partial')]))]),
+      $this->parse('{{> (lookup . "partial")}}')
     );
   }
 }

@@ -3,6 +3,8 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Implemented [dynamic partials](http://handlebarsjs.com/partials.html)
+  (@thekid)
 * Added support for the `lookup` builtin added in HandleBars.js 2.0.0
   See https://github.com/wycats/handlebars.js/commit/306feb4
   (@thekid)
