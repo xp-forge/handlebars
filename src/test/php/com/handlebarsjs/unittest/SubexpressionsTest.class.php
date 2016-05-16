@@ -37,7 +37,7 @@ class SubexpressionsTest extends \unittest\TestCase {
    */
   protected function evaluate($template, $variables) {
     return (new HandlebarsEngine())
-      ->withHelper('equal', function($a, $b) { return $a === $b; })
+      ->withHelper('equal', function($items, $context, $options) { return $options[0] === $options[1]; })
       ->withHelper('test', function($items, $context, $options) { return 'tested: '.($options[0] ? 'true' : 'false'); })
       ->render($template, $variables)
     ;

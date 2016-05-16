@@ -40,7 +40,7 @@ class Expression extends \lang\Object {
       foreach ($this->options as $option) {
         $pass[]= $option($context);
       }
-      return call_user_func_array($r, $pass);
+      return $r(null, $context, $pass);
     } else {
       return $r;
     }
