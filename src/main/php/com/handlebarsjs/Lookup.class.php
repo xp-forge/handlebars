@@ -18,7 +18,7 @@ class Lookup extends \lang\Object {
    * @return string
    */
   public function __toString() {
-    return $this->name;
+    return (string)$this->name;
   }
 
   /**
@@ -39,5 +39,14 @@ class Lookup extends \lang\Object {
    */
   public function equals($cmp) {
     return $cmp instanceof self && $this->name === $cmp->name;
+  }
+
+  /**
+   * Creates a string representation
+   *
+   * @return string
+   */
+  public function toString() {
+    return nameof($this).'('.$this->name.')';
   }
 }

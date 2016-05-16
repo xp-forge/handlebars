@@ -66,6 +66,8 @@ class HandlebarsParser extends AbstractMustacheParser {
             $value= new Boolean(true);
           } else if ('false' === $token) {
             $value= new Boolean(false);
+          } else if ('.' === $token) {
+            $value= new Lookup(null);
           } else if (strspn($token, '0123456789') === strlen($token)) {
             $value= new Integer($token);
           } else {
