@@ -60,10 +60,10 @@ class ExecutionTest extends \unittest\TestCase {
   }
 
   #[@test]
-  public function partial_with_parameters() {
+  public function partial_with_parameter() {
     $this->assertEquals('name was overwritten', $this->evaluate(
       '{{> test name="overwritten"}}',
-      ['field' => 'name', 'name' => 'not overwritten, but should have!'],
+      ['field' => 'name', 'name' => 'not overwritten, but should have!', ],
       ['test' => '{{field}} was {{name}}']
     ));
   }
