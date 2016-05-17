@@ -2,6 +2,7 @@
 
 use com\handlebarsjs\HandlebarsEngine;
 use com\github\mustache\InMemory;
+use com\github\mustache\TemplateNotFoundException;
 
 class ExecutionTest extends \unittest\TestCase {
 
@@ -66,5 +67,15 @@ class ExecutionTest extends \unittest\TestCase {
       ['field' => 'name', 'name' => 'not overwritten, but should have!', ],
       ['test' => '{{field}} was {{name}}']
     ));
+  }
+
+  #[@test, @expect(class= TemplateNotFoundException::class, withMessage= '/Cannot find template undefined/')]
+  public function undefined_partial() {
+    $this->evaluate('{{> undefined}}', []);
+  }
+
+  #[@test, @expect(class= TemplateNotFoundException::class, withMessage= '/Cannot find template undefined/')]
+  public function undefined_dynamic_partial() {
+    $this->evaluate('{{> (template)}}', ['template' => 'undefined']);
   }
 }
