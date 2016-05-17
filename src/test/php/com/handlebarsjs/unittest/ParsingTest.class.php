@@ -5,6 +5,7 @@ use com\handlebarsjs\BlockNode;
 use com\handlebarsjs\PartialNode;
 use com\handlebarsjs\Lookup;
 use com\handlebarsjs\Quoted;
+use com\handlebarsjs\Constant;
 use com\handlebarsjs\Expression;
 use com\github\mustache\NodeList;
 use com\github\mustache\VariableNode;
@@ -62,7 +63,7 @@ class ParsingTest extends \unittest\TestCase {
   #[@test]
   public function partial() {
     $this->assertEquals(
-      new NodeList([new PartialNode(new Quoted('partial'))]),
+      new NodeList([new PartialNode(new Constant('partial'))]),
       $this->parse('{{> partial}}')
     );
   }
@@ -86,7 +87,7 @@ class ParsingTest extends \unittest\TestCase {
   #[@test]
   public function partial_with_context() {
     $this->assertEquals(
-      new NodeList([new PartialNode(new Quoted('userMessage'), ['tagName' => new Quoted('h1')])]),
+      new NodeList([new PartialNode(new Constant('userMessage'), ['tagName' => new Quoted('h1')])]),
       $this->parse('{{> userMessage tagName="h1"}}')
     );
   }

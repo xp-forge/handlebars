@@ -3,7 +3,7 @@
 use com\handlebarsjs\HandlebarsEngine;
 use com\handlebarsjs\Lookup;
 use com\handlebarsjs\Expression;
-use com\handlebarsjs\Boolean;
+use com\handlebarsjs\Constant;
 use com\github\mustache\VariableNode;
 
 /**
@@ -97,8 +97,8 @@ class SubexpressionsTest extends \unittest\TestCase {
   public function parse_supports_much_nesting() {
     $this->assertEquals(
       new VariableNode('test', true, [new Expression('equal', [
-        new Expression('equal', [new Boolean(true), new Boolean(true)]),
-        new Boolean(true)
+        new Expression('equal', [new Constant(true), new Constant(true)]),
+        new Constant(true)
       ])]),
       $this->parse('{{test (equal (equal true true) true)}}')
     );

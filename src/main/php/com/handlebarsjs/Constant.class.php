@@ -1,12 +1,12 @@
 <?php namespace com\handlebarsjs;
 
-class Boolean extends \lang\Object {
+class Constant extends \lang\Object {
   protected $value;
 
   /**
-   * Creates a new boolean instance
+   * Creates a new constant
    *
-   * @param  bool $value
+   * @param  var $value
    */
   public function __construct($value) {
     $this->value= $value;
@@ -18,7 +18,15 @@ class Boolean extends \lang\Object {
    * @return string
    */
   public function __toString() {
-    return $this->value ? 'true' : 'false';
+    if (null === $this->value) {
+      return 'null';
+    } else if (false === $this->value) {
+      return 'false';
+    } else if (true === $this->value) {
+      return 'true';
+    } else {
+      return (string)$this->value;
+    }
   }
 
   /**

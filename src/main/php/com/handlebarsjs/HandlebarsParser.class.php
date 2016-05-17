@@ -62,13 +62,13 @@ class HandlebarsParser extends AbstractMustacheParser {
         } else {
           $token= substr($tag, $o, $p);
           if ('true' === $token) {
-            $value= new Boolean(true);
+            $value= new Constant(true);
           } else if ('false' === $token) {
-            $value= new Boolean(false);
+            $value= new Constant(false);
           } else if ('.' === $token) {
             $value= new Lookup(null);
           } else if (strspn($token, '0123456789') === strlen($token)) {
-            $value= new Integer($token);
+            $value= new Constant($token);
           } else {
             $value= new Lookup($token);
           }
@@ -119,7 +119,7 @@ class HandlebarsParser extends AbstractMustacheParser {
       array_shift($options);
       $template= array_shift($options);
       if ($template instanceof Lookup) {
-        $template= new Quoted((string)$template);
+        $template= new Constant((string)$template);
       }
       $state->target->add(new PartialNode($template, $options, $state->padding));
     });
