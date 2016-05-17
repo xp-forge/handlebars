@@ -108,7 +108,7 @@ class HandlebarsParser extends AbstractMustacheParser {
       $name= trim(substr($tag, 1));
       $block= array_pop($state->parents);
       if ($name !== $block->name()) {
-        throw new TemplateFormatException('Illegal nesting, expected /'.$state->target->name().', have /'.$name);
+        throw new TemplateFormatException('Illegal nesting, expected {{/'.$block->name().'}}, have {{/'.$name.'}}');
       }
       $state->target= array_pop($state->parents);
     });

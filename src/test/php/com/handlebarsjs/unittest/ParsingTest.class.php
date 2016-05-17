@@ -8,6 +8,7 @@ use com\handlebarsjs\Quoted;
 use com\handlebarsjs\Expression;
 use com\github\mustache\NodeList;
 use com\github\mustache\VariableNode;
+use com\github\mustache\TemplateFormatException;
 use text\StringTokenizer;
 
 class ParsingTest extends \unittest\TestCase {
@@ -96,5 +97,10 @@ class ParsingTest extends \unittest\TestCase {
       new NodeList([new PartialNode(new Expression('partial'), ['tagName' => new Quoted('h1')])]),
       $this->parse('{{> (partial) tagName="h1"}}')
     );
+  }
+
+  #[@test, @expect(class= TemplateFormatException::class, withMessage= '/Illegal nesting/')]
+  public function incorrect_ending_tag() {
+    $this->parse('{{#each users}}...{{/each users}}');
   }
 }

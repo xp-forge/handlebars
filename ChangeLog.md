@@ -3,6 +3,7 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Fixed issue #3: Error with incorrect end tag - @thekid
 * Implemented partials contexts and parameters. These can be used to
   create shared partials and to expose data from other contexts.
   (@thekid)
