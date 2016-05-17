@@ -37,8 +37,8 @@ class Expression extends \lang\Object {
       // Subexpressions are called with their options as arguments,
       // which in turn may be subexpressions or values to be looked up.
       $pass= [];
-      foreach ($this->options as $option) {
-        $pass[]= $option($context);
+      foreach ($this->options as $key => $option) {
+        $pass[$key]= $option($context);
       }
       return $r(null, $context, $pass);
     } else {

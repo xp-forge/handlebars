@@ -37,6 +37,7 @@ class SubexpressionsTest extends \unittest\TestCase {
    */
   protected function evaluate($template, $variables) {
     return (new HandlebarsEngine())
+      ->withHelper('pass', function($items, $context, $options) { return $options[0]; })
       ->withHelper('join', function($items, $context, $options) { return key($options).'='.current($options); })
       ->withHelper('equal', function($items, $context, $options) { return $options[0] === $options[1]; })
       ->withHelper('test', function($items, $context, $options) { return 'tested: '.($options[0] ? 'true' : 'false'); })
@@ -81,6 +82,14 @@ class SubexpressionsTest extends \unittest\TestCase {
     $this->assertEquals(
       'key=value',
       $this->evaluate('{{join key="value"}}', [])
+    );
+  }
+
+  #[@test]
+  public function execute_subexpression_w_kv_args() {
+    $this->assertEquals(
+      'key=value',
+      $this->evaluate('{{pass (join key="value")}}', [])
     );
   }
 
