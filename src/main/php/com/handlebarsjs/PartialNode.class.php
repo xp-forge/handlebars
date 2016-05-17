@@ -96,11 +96,7 @@ class PartialNode extends \com\github\mustache\Node {
       $context= $context->newInstance($context->asTraversable($this->options));
     }
 
-    try {
-      return $context->engine->transform($this->template->__invoke($context), $context, '{{', '}}', $this->indent);
-    } catch (TemplateNotFoundException $e) {
-      return '';    // Spec dictates this, though I think this is not good behaviour.
-    }
+    return $context->engine->transform($this->template->__invoke($context), $context, '{{', '}}', $this->indent);
   }
 
   /**
