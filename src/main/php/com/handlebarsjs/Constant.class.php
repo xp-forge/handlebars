@@ -1,7 +1,7 @@
 <?php namespace com\handlebarsjs;
 
 class Constant extends \lang\Object {
-  protected $value;
+  private $value;
 
   /**
    * Creates a new constant
@@ -47,5 +47,14 @@ class Constant extends \lang\Object {
    */
   public function equals($cmp) {
     return $cmp instanceof self && $this->value === $cmp->value;
+  }
+
+  /**
+   * Creates a string representation
+   *
+   * @return string
+   */
+  public function toString() {
+    return nameof($this).'('.$this.')';
   }
 }

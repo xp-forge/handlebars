@@ -34,7 +34,8 @@ class HandlebarsParser extends AbstractMustacheParser {
         while ($o < $l) {
           $p= strcspn($tag, $tag{$o}, $o + 1) + 2;
           $chars.= substr($tag, $o + 1, $p - 2);
-          if ('\\' === $chars{strlen($chars) - 1}) {
+          $c= strlen($chars);
+          if ($c > 0 && '\\' === $chars{$c - 1}) {
             $chars= substr($chars, 0, -1).$tag{$o};
             $o+= $p - 1;
             continue;
@@ -65,10 +66,12 @@ class HandlebarsParser extends AbstractMustacheParser {
             $value= new Constant(true);
           } else if ('false' === $token) {
             $value= new Constant(false);
+          } else if ('null' === $token) {
+            $value= new Constant(null);
           } else if ('.' === $token) {
             $value= new Lookup(null);
-          } else if (strspn($token, '0123456789') === strlen($token)) {
-            $value= new Constant($token);
+          } else if (strspn($token, '-.0123456789') === strlen($token)) {
+            $value= new Constant(strstr($token, '.') ? (double)$token : (int)$token);
           } else {
             $value= new Lookup($token);
           }

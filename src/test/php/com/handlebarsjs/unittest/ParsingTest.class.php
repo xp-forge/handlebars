@@ -104,4 +104,27 @@ class ParsingTest extends \unittest\TestCase {
   public function incorrect_ending_tag() {
     $this->parse('{{#each users}}...{{/each users}}');
   }
+
+  #[@test, @values([
+  #  ['-1', -1], ['0', 0], ['1', 1], ['6100', 6100],
+  #  ['-1.0', -1.0], ['0.0', 0.0], ['1.5', 1.5], ['47.11', 47.11],
+  #  ['true', true], ['false', false], ['null', null]
+  #])]
+  public function constants($literal, $value) {
+    $this->assertEquals(
+      [new Constant($value)],
+      $this->parse('{{test '.$literal.'}}')->nodeAt(0)->options()
+    );
+  }
+
+  #[@test, @values([
+  #  ['""', ''], ['"Test"', 'Test'],
+  #  ['"\""', '"'], ['"\"\""', '""'], ['"\"Quoted\""', '"Quoted"']
+  #])]
+  public function quoted($literal, $value) {
+    $this->assertEquals(
+      [new Quoted($value)],
+      $this->parse('{{test '.$literal.'}}')->nodeAt(0)->options()
+    );
+  }
 }
