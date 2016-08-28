@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 3.0.0 / 2016-08-28
+
+* **Heads up: Dropped PHP 5.5 support!** - @thekid
+* Added forward compatibility with XP 8.0.0 - @thekid
 * Fixed issue #4: Missing tests for literals - by adding tests and
   fixing numbers, null and empty strings in the course of doing so
   (@thekid)
