@@ -26,7 +26,7 @@ Helpers supported
 The following helpers are built in:
 
 ### The "if" block
-```HTML+Django
+```handlebars
 {{#if licence}}
   A licence is available
 {{/if}}
@@ -39,21 +39,21 @@ The following helpers are built in:
 ```
 
 ### The "unless" block
-```HTML+Django
+```handlebars
 {{#unless licence}}
   <em>Warning: No licence is available!</em>
 {{/unless}}
 ```
 
 ### The "with" block
-```HTML+Django
+```handlebars
 {{#with person}}
   Full name: {{firstName}} {{lastName}}
 {{/with}}
 ```
 
 ### The "each" block
-```HTML+Django
+```handlebars
 <ul>
   {{#each students}}
   <li>Student's name: {{firstName}} {{lastName}}</li>
@@ -64,7 +64,7 @@ The following helpers are built in:
 All of the above block helpers support the `else` statement.
 
 ### The "log" helper
-```HTML+Django
+```handlebars
 {{log '"Hello", Frank\'s mother said.'}}
 ```
 
