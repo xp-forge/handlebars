@@ -124,4 +124,30 @@ class EachHelperTest extends HelperTest {
       ]
     ]));
   }
+
+  #[@test]
+  public function nested_each_with_hashes() {
+    $this->assertEquals('timm :crown: :snowman:', $this->evaluate(
+      '{{#each player}}{{name}}{{#each badges}} :{{name}}:{{/each}}{{/each}}',
+      ['player' => [
+        '#1549' => ['name' => 'timm', 'badges' => [
+          '#1' => ['name' => 'crown'],
+          '#2' => ['name' => 'snowman']
+        ]]
+      ]]
+    ));
+  }
+
+  #[@test]
+  public function nested_each_with_lists() {
+    $this->assertEquals('timm :crown: :snowman:', $this->evaluate(
+      '{{#each player}}{{name}}{{#each badges}} :{{name}}:{{/each}}{{/each}}',
+      ['player' => [
+        ['name' => 'timm', 'badges' => [
+          ['name' => 'crown'],
+          ['name' => 'snowman']
+        ]]
+      ]]
+    ));
+  }
 }

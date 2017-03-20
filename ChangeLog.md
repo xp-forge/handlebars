@@ -3,6 +3,12 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 3.0.1 / 2017-03-20
+
+* Fixed lang.Error (Argument 3 passed to ListContext::__construct() must
+  be an instance of com\github\mustache\Context, none given.
+  (@thekid)
+
 ## 3.0.0 / 2016-08-28
 
 * **Heads up: Dropped PHP 5.5 support!** - @thekid

@@ -1,11 +1,14 @@
 <?php namespace com\handlebarsjs;
 
+use com\github\mustache\Context;
+use com\github\mustache\DataContext;
+
 /**
  * List context for the `each` helper.
  *
  * @test  xp://com.handlebarsjs.unittest.EachHelperTest
  */
-class ListContext extends \com\github\mustache\Context {
+class ListContext extends Context {
   protected $index;
   protected $last;
   protected $backing;
@@ -22,6 +25,16 @@ class ListContext extends \com\github\mustache\Context {
     $this->index= $index;
     $this->last= $size - 1;
     $this->backing= $backing;
+  }
+
+  /**
+   * Returns a context inherited from this context
+   *
+   * @param  var $result
+   * @return self
+   */
+  public function asContext($result) {
+    return new DataContext($result, $this);
   }
 
   /**
