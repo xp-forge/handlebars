@@ -107,7 +107,7 @@ class HandlebarsEngine extends \lang\Object {
     } else if (null === $logger) {
       $this->setBuiltin('log', null);
     } else {
-      throw new IllegalArgumentException('Expect either a closure, a util.log.LogCategory or NULL, '.\xp::typeOf($logger).' given');
+      throw new IllegalArgumentException('Expect either a closure, a util.log.LogCategory or NULL, '.typeof($logger)->getName().' given');
     }
     return $this;
   }

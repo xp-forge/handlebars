@@ -3,6 +3,12 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 3.0.2 / 2017-05-20
+
+* Refactored code to use `typeof()` instead of `xp::typeOf()`, see
+  https://github.com/xp-framework/rfc/issues/323
+  (@thekid)
+
 ## 3.0.1 / 2017-03-20
 
 * Fixed lang.Error (Argument 3 passed to ListContext::__construct() must
