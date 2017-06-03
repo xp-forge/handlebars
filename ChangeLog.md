@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 4.0.0 / 2017-07-03
+
+* Added forward compatibility with XP 9.0.0 - @thekid
+
 ## 3.0.2 / 2017-05-20
 
 * Refactored code to use `typeof()` instead of `xp::typeOf()`, see
