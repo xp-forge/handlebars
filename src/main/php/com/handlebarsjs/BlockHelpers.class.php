@@ -5,7 +5,7 @@ use lang\XPClass;
 /**
  * Block helpers factory
  */
-class BlockHelpers extends \lang\Object {
+class BlockHelpers {
   protected static $byName= [];
 
   static function __static() {

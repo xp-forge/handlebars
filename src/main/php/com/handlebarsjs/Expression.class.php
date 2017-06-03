@@ -1,6 +1,8 @@
 <?php namespace com\handlebarsjs;
 
-class Expression extends \lang\Object {
+use util\Objects;
+
+class Expression implements \lang\Value {
   protected $name;
   protected $options;
 
@@ -47,16 +49,24 @@ class Expression extends \lang\Object {
   }
 
   /**
-   * Returns whether another lookup is equal to this
+   * Compares
    *
-   * @param  var $cmp
-   * @return bool
+   * @param  var $value
+   * @return int
    */
-  public function equals($cmp) {
-    return (
-      $cmp instanceof self &&
-      $this->name === $cmp->name &&
-      \util\Objects::equal($this->options, $cmp->options)
-    );
+  public function compareTo($value) {
+    if (!($value instanceof self)) return 1;
+    if (0 !== ($c= strcmp($this->name, $value->name))) return $c;
+    return Objects::compare($this->options, $value->options);
+  }
+
+  /** @return string */
+  public function hashCode() {
+    return md5($this->name.serialize($this->options));
+  }
+
+  /** @return string */
+  public function toString() {
+    return nameof($this).'('.$this.')';
   }
 }

@@ -1,6 +1,6 @@
 <?php namespace com\handlebarsjs;
 
-class Quoted extends \lang\Object {
+class Quoted implements \lang\Value {
   protected $name;
 
   /**
@@ -32,20 +32,21 @@ class Quoted extends \lang\Object {
   }
 
   /**
-   * Returns whether another String is equal to this
+   * Compares
    *
-   * @param  var $cmp
-   * @return bool
+   * @param  var $value
+   * @return int
    */
-  public function equals($cmp) {
-    return $cmp instanceof self && $this->chars === $cmp->chars;
+  public function compareTo($value) {
+    return $value instanceof self ? strcmp($this->chars, $value->chars) : 1;
   }
 
-  /**
-   * Creates a string representation
-   *
-   * @return string
-   */
+  /** @return string */
+  public function hashCode() {
+    return md5($this->chars);
+  }
+
+  /** @return string */
   public function toString() {
     return nameof($this).'('.$this.')';
   }
