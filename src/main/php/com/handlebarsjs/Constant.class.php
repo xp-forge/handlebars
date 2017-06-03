@@ -1,6 +1,6 @@
 <?php namespace com\handlebarsjs;
 
-class Constant extends \lang\Object {
+class Constant implements \lang\Value {
   private $value;
 
   /**
@@ -40,20 +40,21 @@ class Constant extends \lang\Object {
   }
 
   /**
-   * Returns whether another boolean is equal to this
+   * Compares
    *
-   * @param  var $cmp
-   * @return bool
+   * @param  var $value
+   * @return int
    */
-  public function equals($cmp) {
-    return $cmp instanceof self && $this->value === $cmp->value;
+  public function compareTo($value) {
+    return $value instanceof self ? strcmp($this->value, $value->value) : 1;
   }
 
-  /**
-   * Creates a string representation
-   *
-   * @return string
-   */
+  /** @return string */
+  public function hashCode() {
+    return md5($this->value);
+  }
+
+  /** @return string */
   public function toString() {
     return nameof($this).'('.$this.')';
   }

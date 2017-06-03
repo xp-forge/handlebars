@@ -1,6 +1,6 @@
 <?php namespace com\handlebarsjs;
 
-use lang\Object;
+use lang\Value;
 use util\Objects;
 
 /**
@@ -15,11 +15,11 @@ class PartialNode extends \com\github\mustache\Node {
   /**
    * Creates a new partial node
    *
-   * @param lang.Object $template The template
+   * @param lang.Value $template The template
    * @param [:var] $options
    * @param string $indent What to indent with
    */
-  public function __construct(Object $template, $options= [], $indent= '') {
+  public function __construct(Value $template, $options= [], $indent= '') {
     $this->template= $template;
     $this->options= $options;
     $this->indent= $indent;
@@ -28,7 +28,7 @@ class PartialNode extends \com\github\mustache\Node {
   /**
    * Returns this partial's template
    *
-   * @return lang.Object
+   * @return lang.Value
    */
   public function template() { return $this->template; }
 

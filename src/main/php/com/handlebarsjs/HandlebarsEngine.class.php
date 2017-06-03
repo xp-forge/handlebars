@@ -25,7 +25,7 @@ use lang\IllegalArgumentException;
  * @test  xp://com.handlebarsjs.unittest.WebsiteExamplesTest
  * @see   http://handlebarsjs.com/
  */
-class HandlebarsEngine extends \lang\Object {
+class HandlebarsEngine {
   protected $mustache;
   protected $builtin= [];
 

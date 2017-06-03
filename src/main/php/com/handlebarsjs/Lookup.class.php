@@ -1,6 +1,6 @@
 <?php namespace com\handlebarsjs;
 
-class Lookup extends \lang\Object {
+class Lookup implements \lang\Value {
   protected $name;
 
   /**
@@ -32,20 +32,21 @@ class Lookup extends \lang\Object {
   }
 
   /**
-   * Returns whether another lookup is equal to this
+   * Compares
    *
-   * @param  var $cmp
-   * @return bool
+   * @param  var $value
+   * @return int
    */
-  public function equals($cmp) {
-    return $cmp instanceof self && $this->name === $cmp->name;
+  public function compareTo($value) {
+    return $value instanceof self ? strcmp($this->name, $value->name) : 1;
   }
 
-  /**
-   * Creates a string representation
-   *
-   * @return string
-   */
+  /** @return string */
+  public function hashCode() {
+    return md5($this->name);
+  }
+
+  /** @return string */
   public function toString() {
     return nameof($this).'('.$this->name.')';
   }
