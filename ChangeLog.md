@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 4.0.1 / 2017-06-12
+
+* Fixed issue #6: Dependencies - @thekid
+
 ## 4.0.0 / 2017-06-03
 
 * Added forward compatibility with XP 9.0.0 - @thekid
