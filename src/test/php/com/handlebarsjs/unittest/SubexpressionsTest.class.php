@@ -86,10 +86,26 @@ class SubexpressionsTest extends \unittest\TestCase {
   }
 
   #[@test]
-  public function execute_subexpression_w_kv_args() {
+  public function execute_subexpression_w_kv_args_constant() {
     $this->assertEquals(
       'key=value',
       $this->evaluate('{{pass (join key="value")}}', [])
+    );
+  }
+
+  #[@test]
+  public function execute_subexpression_w_kv_args_variable() {
+    $this->assertEquals(
+      'key=value',
+      $this->evaluate('{{pass (join key=var)}}', ['var' => 'value'])
+    );
+  }
+
+  #[@test]
+  public function execute_subexpression_w_kv_args_path() {
+    $this->assertEquals(
+      'key=value',
+      $this->evaluate('{{pass (join key=var.val)}}', ['var' => ['val' => 'value']])
     );
   }
 
