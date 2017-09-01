@@ -3,6 +3,12 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 4.0.2 / 2017-09-01
+
+* Fixed issue #8: Call to undefined method `VariableNode::lookup()` when
+  using variables for partial context
+  (@thekid)
+
 ## 4.0.1 / 2017-06-12
 
 * Fixed issue #6: Dependencies - @thekid
