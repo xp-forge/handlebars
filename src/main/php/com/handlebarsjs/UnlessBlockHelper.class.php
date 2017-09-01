@@ -28,7 +28,7 @@ class UnlessBlockHelper extends BlockNode {
    */
   public function evaluate($context) {
     $f= $this->options[0];
-    if ($context->isTruthy($f($context))) {
+    if ($context->isTruthy($f($this, $context, []))) {
       return $this->inverse->evaluate($context);
     } else {
       return $this->fn->evaluate($context);

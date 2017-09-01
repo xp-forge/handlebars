@@ -28,7 +28,7 @@ class EachBlockHelper extends BlockNode {
    */
   public function evaluate($context) {
     $f= $this->options[0];
-    $target= $f($context);
+    $target= $f($this, $context, []);
     $out= '';
     if ($context->isList($target)) {
       $list= $context->asTraversable($target);

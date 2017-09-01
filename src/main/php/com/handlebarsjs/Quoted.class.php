@@ -24,10 +24,12 @@ class Quoted implements \lang\Value {
   /**
    * Invocation overloading
    *
-   * @param  var $context
+   * @param  com.github.mustache.Node $node
+   * @param  com.github.mustache.Context $context
+   * @param  var[] $options
    * @return var
    */
-  public function __invoke($context) {
+  public function __invoke($node, $context, $options) {
     return $this->chars;
   }
 

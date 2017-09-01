@@ -28,7 +28,7 @@ class WithBlockHelper extends BlockNode {
    */
   public function evaluate($context) {
     $f= $this->options[0];
-    $target= $f($context);
+    $target= $f($this, $context, []);
     if ($context->isTruthy($target)) {
       return $this->fn->evaluate($context->asContext($target));
     } else {

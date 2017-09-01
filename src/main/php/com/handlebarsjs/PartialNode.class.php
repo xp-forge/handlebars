@@ -91,12 +91,12 @@ class PartialNode extends \com\github\mustache\Node {
 
     // {{> partial context}} vs {{> partial key="Value"}}
     if (isset($this->options[0])) {
-      $context= $context->newInstance($this->options[0]($context));
+      $context= $context->newInstance($this->options[0]($this, $context, []));
     } else if ($this->options) {
       $context= $context->newInstance($context->asTraversable($this->options));
     }
 
-    return $context->engine->transform($this->template->__invoke($context), $context, '{{', '}}', $this->indent);
+    return $context->engine->transform($this->template->__invoke($this, $context, []), $context, '{{', '}}', $this->indent);
   }
 
   /**

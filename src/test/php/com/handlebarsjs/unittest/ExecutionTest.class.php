@@ -61,10 +61,19 @@ class ExecutionTest extends \unittest\TestCase {
   }
 
   #[@test]
-  public function partial_with_parameter() {
+  public function partial_with_constant_parameter() {
     $this->assertEquals('name was overwritten', $this->evaluate(
       '{{> test name="overwritten"}}',
-      ['field' => 'name', 'name' => 'not overwritten, but should have!', ],
+      ['field' => 'name', 'name' => 'not overwritten, but should have!'],
+      ['test' => '{{field}} was {{name}}']
+    ));
+  }
+
+  #[@test]
+  public function partial_with_variable_parameter() {
+    $this->assertEquals('name was overwritten', $this->evaluate(
+      '{{> test name=val}}',
+      ['field' => 'name', 'name' => 'not overwritten, but should have!', 'val' => 'overwritten'],
       ['test' => '{{field}} was {{name}}']
     ));
   }
