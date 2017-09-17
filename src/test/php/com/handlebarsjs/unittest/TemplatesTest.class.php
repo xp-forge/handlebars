@@ -2,6 +2,7 @@
 
 use com\handlebarsjs\Templates;
 use com\github\mustache\TextNode;
+use com\github\mustache\InMemory;
 
 class TemplatesTest extends \unittest\TestCase {
 
@@ -40,5 +41,32 @@ class TemplatesTest extends \unittest\TestCase {
     $prev[]= $fixture->register('@partial-block', 'C')->code();
 
     $this->assertEquals([null, 'A', 'B'], $prev);
+  }
+
+  #[@test]
+  public function listing_empty_by_default() {
+    $this->assertEquals([], (new Templates())->listing()->templates());
+  }
+
+  #[@test]
+  public function listing_with_registered() {
+    $fixture= new Templates();
+    $fixture->register('test', 'My content');
+    $this->assertEquals(['test'], $fixture->listing()->templates());
+  }
+
+  #[@test]
+  public function listing_with_delegate() {
+    $fixture= new Templates();
+    $fixture->delegate(new InMemory(['test' => 'My content']));
+    $this->assertEquals(['test'], $fixture->listing()->templates());
+  }
+
+  #[@test]
+  public function listing_with_delegate_and_registered() {
+    $fixture= new Templates();
+    $fixture->register('a', 'My content');
+    $fixture->delegate(new InMemory(['b' => 'My content']));
+    $this->assertEquals(['a', 'b'], $fixture->listing()->templates());
   }
 }

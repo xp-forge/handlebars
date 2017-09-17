@@ -3,9 +3,11 @@
 use text\StringTokenizer;
 use com\github\mustache\Node;
 use com\github\mustache\Template;
+use com\github\mustache\TemplateListing;
 use com\github\mustache\templates\Tokens;
 use com\github\mustache\templates\Compiled;
 use com\github\mustache\templates\NotFound;
+use lang\ClassLoader;
 
 /**
  * Template loading implementation
@@ -13,8 +15,30 @@ use com\github\mustache\templates\NotFound;
  * @test  xp://com.handlebarsjs.unittest.TemplatesTest
  */
 class Templates extends \com\github\mustache\templates\Templates {
+  private static $composite= null;
   private $templates= [];
   private $delegate;
+
+  /** @return lang.XPClass */
+  private function composite() {
+    if (null === self::$composite) {
+      self::$composite= ClassLoader::defineClass('CompositeListing', TemplateListing::class, [], [
+        'templates' => null,
+        'delegate' => null,
+        '__construct' => function($templates, $delegate) {
+          $this->templates= $templates;
+          $this->delegate= $delegate;
+        },
+        'templates' => function() {
+          return array_merge(array_keys($this->templates), $this->delegate->templates());
+        },
+        'packages' => function() {
+          return $this->delegate->packages();
+        }
+      ]);
+    }
+    return self::$composite;
+  }
 
   /**
    * Sets delegate loader
@@ -61,6 +85,10 @@ class Templates extends \com\github\mustache\templates\Templates {
 
   /** @return com.github.mustache.TemplateListing */
   public function listing() {
-    return $this->delegate->listing();
+    if ($this->delegate) {
+      return $this->composite()->newInstance($this->templates, $this->delegate->listing());
+    } else {
+      return new TemplateListing(null, function($package) { return array_keys($this->templates); });
+    }
   }
 }
