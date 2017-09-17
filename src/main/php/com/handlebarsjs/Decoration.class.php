@@ -2,6 +2,12 @@
 
 use lang\MethodNotImplementedException;
 
+/** 
+ * Decorators allow for blocks to be annotated with metadata or wrapped in
+ * functionality prior to execution of the block.
+ *
+ * @see  https://github.com/wycats/handlebars.js/blob/master/docs/decorators-api.md
+ */
 class Decoration {
   private $name, $options, $fn;
 
