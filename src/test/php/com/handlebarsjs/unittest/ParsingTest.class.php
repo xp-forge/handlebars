@@ -7,7 +7,9 @@ use com\handlebarsjs\Lookup;
 use com\handlebarsjs\Quoted;
 use com\handlebarsjs\Constant;
 use com\handlebarsjs\Expression;
+use com\handlebarsjs\PartialBlockHelper;
 use com\github\mustache\NodeList;
+use com\github\mustache\TextNode;
 use com\github\mustache\VariableNode;
 use com\github\mustache\TemplateFormatException;
 use text\StringTokenizer;
@@ -97,6 +99,16 @@ class ParsingTest extends \unittest\TestCase {
     $this->assertEquals(
       new NodeList([new PartialNode(new Expression('partial'), ['tagName' => new Quoted('h1')])]),
       $this->parse('{{> (partial) tagName="h1"}}')
+    );
+  }
+
+  #[@test]
+  public function partial_with_failover() {
+    $this->assertEquals(
+      new NodeList([new PartialBlockHelper(['layout'], new NodeList([
+        new TextNode('Content')
+      ]))]),
+      $this->parse('{{#> layout}}Content{{/layout}}')
     );
   }
 
