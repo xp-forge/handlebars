@@ -9,11 +9,12 @@ class BlockHelpers {
   protected static $byName= [];
 
   static function __static() {
-    self::$byName['>']= XPClass::forName('com.handlebarsjs.PartialBlockHelper');
     self::$byName['if']= XPClass::forName('com.handlebarsjs.IfBlockHelper');
     self::$byName['unless']= XPClass::forName('com.handlebarsjs.UnlessBlockHelper');
     self::$byName['with']= XPClass::forName('com.handlebarsjs.WithBlockHelper');
     self::$byName['each']= XPClass::forName('com.handlebarsjs.EachBlockHelper');
+    self::$byName['>']= XPClass::forName('com.handlebarsjs.PartialBlockHelper');
+    self::$byName['*inline']= XPClass::forName('com.handlebarsjs.InlinePartialHelper');
   }
 
   /**

@@ -8,6 +8,7 @@ use com\handlebarsjs\Quoted;
 use com\handlebarsjs\Constant;
 use com\handlebarsjs\Expression;
 use com\handlebarsjs\PartialBlockHelper;
+use com\handlebarsjs\InlinePartialHelper;
 use com\github\mustache\NodeList;
 use com\github\mustache\TextNode;
 use com\github\mustache\VariableNode;
@@ -103,12 +104,22 @@ class ParsingTest extends \unittest\TestCase {
   }
 
   #[@test]
-  public function partial_with_failover() {
+  public function partial_block() {
     $this->assertEquals(
       new NodeList([new PartialBlockHelper(['layout'], new NodeList([
         new TextNode('Content')
       ]))]),
       $this->parse('{{#> layout}}Content{{/layout}}')
+    );
+  }
+
+  #[@test]
+  public function inline_partial() {
+    $this->assertEquals(
+      new NodeList([new InlinePartialHelper([new Quoted('myPartial')], new NodeList([
+        new TextNode('Content')
+      ]))]),
+      $this->parse('{{#*inline "myPartial"}}Content{{/inline}}')
     );
   }
 
