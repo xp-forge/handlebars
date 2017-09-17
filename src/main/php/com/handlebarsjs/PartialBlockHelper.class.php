@@ -32,11 +32,20 @@ class PartialBlockHelper extends BlockNode {
    */
   public function evaluate($context) {
     $templates= $context->engine->getTemplates();
-    $block= $this->fn->evaluate($context);
+
+    // Eagerly evaluate inline partials
+    $block= new NodeList();
+    foreach ($this->fn as $node) {
+      if ($node instanceof InlinePartialHelper) {
+        $node->evaluate($context);
+      } else {
+        $block->add($node);
+      }
+    }
 
     $source= $templates->source($this->name);
     if ($source->exists()) {
-      $previous= $templates->register('@partial-block', $block);
+      $previous= $templates->register('@partial-block', $this->fn);
 
       // {{#> partial context}} vs {{> partial key="Value"}}
       if (isset($this->options[0])) {
@@ -51,7 +60,7 @@ class PartialBlockHelper extends BlockNode {
         $templates->register('@partial-block', $previous);
       }
     } else {
-      return $block;
+      return $block->evaluate($context);
     }
   }
 }

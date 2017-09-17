@@ -26,6 +26,15 @@ class PartialBlockHelperTest extends HelperTest {
   }
 
   #[@test]
+  public function partial_inside_each() {
+    $this->templates->add('list', '[{{#each .}}<item>{{> @partial-block}}</item>{{/each}}]');
+    $this->assertEquals(
+      '[<item>value = a</item><item>value = b</item><item>value = c</item>]',
+      $this->evaluate('{{#> list value}}value = {{.}}{{/list}}', ['value' => ['a', 'b', 'c']])
+    );
+  }
+
+  #[@test]
   public function layout() {
     $this->templates->add('includes/hero', '<div class="hero"><img src="{{hero-src}}" alt="{{hero-alt}}"/></div>');
     $this->templates->add('layout', trim('
