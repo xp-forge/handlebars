@@ -1,7 +1,6 @@
 <?php namespace com\handlebarsjs\unittest;
 
 use com\handlebarsjs\Templates;
-use com\github\mustache\TemplateNotFoundException;
 
 class TemplatesTest extends \unittest\TestCase {
 
@@ -11,23 +10,33 @@ class TemplatesTest extends \unittest\TestCase {
   }
 
   #[@test]
-  public function load() {
+  public function source() {
     $fixture= new Templates();
-    $fixture->register('@partial-block', 'My content');
-    $this->assertEquals('My content', $fixture->load('@partial-block')->read());
+    $fixture->register('test', 'My content');
+    $this->assertEquals('My content', $fixture->source('test')->code());
   }
 
-  #[@test, @expect(TemplateNotFoundException::class)]
-  public function load_non_existant() {
+  #[@test]
+  public function non_existant_source() {
     $fixture= new Templates();
-    $fixture->load('non-existant');
+    $this->assertFalse($fixture->source('non-existant')->exists());
   }
 
-  #[@test, @expect(TemplateNotFoundException::class)]
-  public function load_removed() {
+  #[@test]
+  public function existant_source() {
     $fixture= new Templates();
-    $fixture->register('@partial-block', 'My content');
-    $fixture->remove('@partial-block');
-    $fixture->load('@partial-block');
+    $fixture->register('test', 'My content');
+    $this->assertTrue($fixture->source('test')->exists());
+  }
+
+  #[@test]
+  public function register_returns_previous() {
+    $fixture= new Templates();
+
+    $prev= [];
+    $prev[]= $fixture->register('@partial-block', 'A');
+    $prev[]= $fixture->register('@partial-block', 'B')->code();
+
+    $this->assertEquals([null, 'A'], $prev);
   }
 }

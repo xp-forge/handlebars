@@ -1,7 +1,6 @@
 <?php namespace com\handlebarsjs;
 
 use com\github\mustache\NodeList;
-use com\github\mustache\TemplateNotFoundException;
 
 /**
  * Partial blocks
@@ -34,13 +33,16 @@ class PartialBlockHelper extends BlockNode {
   public function evaluate($context) {
     $templates= $context->engine->getTemplates();
 
-    try {
-      $templates->register('@partial-block', $this->fn);
-      return $context->engine->transform($this->name, $context, $this->start, $this->end, '');
-    } catch (TemplateNotFoundException $e) {
+    $source= $templates->source($this->name);
+    if ($source->exists()) {
+      $previous= $templates->register('@partial-block', $this->fn);
+      try {
+        return $context->engine->render($source, $context, $this->start, $this->end, '');
+      } finally {
+        $templates->register('@partial-block', $previous);
+      }
+    } else {
       return $this->fn->evaluate($context);
-    } finally {
-      $templates->remove('@partial-block');
     }
   }
 }
