@@ -33,6 +33,13 @@ class PartialBlockHelper extends BlockNode {
   public function evaluate($context) {
     $templates= $context->engine->getTemplates();
 
+    // {{#> partial context}} vs {{> partial key="Value"}}
+    if (isset($this->options[0])) {
+      $context= $context->newInstance($this->options[0]($this, $context, []));
+    } else if ($this->options) {
+      $context= $context->newInstance($context->asTraversable($this->options));
+    }
+
     // Eagerly evaluate inline partials
     $block= new NodeList();
     foreach ($this->fn as $node) {
@@ -46,14 +53,6 @@ class PartialBlockHelper extends BlockNode {
     $source= $templates->source($this->name);
     if ($source->exists()) {
       $previous= $templates->register('@partial-block', $this->fn);
-
-      // {{#> partial context}} vs {{> partial key="Value"}}
-      if (isset($this->options[0])) {
-        $context= $context->newInstance($this->options[0]($this, $context, []));
-      } else if ($this->options) {
-        $context= $context->newInstance($context->asTraversable($this->options));
-      }
-
       try {
         return $context->engine->render($source, $context, $this->start, $this->end, '');
       } finally {

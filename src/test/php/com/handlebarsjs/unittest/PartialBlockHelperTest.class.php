@@ -26,6 +26,17 @@ class PartialBlockHelperTest extends HelperTest {
   }
 
   #[@test]
+  public function default_can_reference_options() {
+    $this->assertEquals('Title', $this->evaluate('{{#> layout title="Title"}}{{title}}{{/layout}}', []));
+  }
+
+  #[@test]
+  public function block_can_reference_options() {
+    $this->templates->add('layout', '{{title}}');
+    $this->assertEquals('Title', $this->evaluate('{{#> layout title="Title"}}Default{{/layout}}', []));
+  }
+
+  #[@test]
   public function partial_inside_each() {
     $this->templates->add('list', '[{{#each .}}<item>{{> @partial-block}}</item>{{/each}}]');
     $this->assertEquals(
