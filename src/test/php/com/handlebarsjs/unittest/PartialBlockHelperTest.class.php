@@ -20,6 +20,12 @@ class PartialBlockHelperTest extends HelperTest {
   }
 
   #[@test]
+  public function nested_partial_block() {
+    $this->templates->add('layout', '{{#> inner}}Inner{{/inner}} {{> @partial-block }}');
+    $this->assertEquals('Inner Outer', $this->evaluate('{{#> layout}}Outer{{/layout}}', []));
+  }
+
+  #[@test]
   public function layout() {
     $this->templates->add('includes/hero', '<div class="hero"><img src="{{hero-src}}" alt="{{hero-alt}}"/></div>');
     $this->templates->add('layout', trim('
