@@ -50,6 +50,12 @@ class HandlebarsEngine {
     $this->setBuiltin('lookup', function($node, $context, $options) {
       return $options[0][$options[1]];
     });
+
+    // Inline partials
+    $this->setBuiltin('*inline', function($node, $context, $options) {
+      $f= $options[0];
+      $context->engine->getTemplates()->register($f($node, $context, []), $node);
+    });
   }
 
   /** @return com.github.mustache.TemplateLoader */

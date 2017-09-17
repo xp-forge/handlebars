@@ -14,7 +14,6 @@ class BlockHelpers {
     self::$byName['with']= XPClass::forName('com.handlebarsjs.WithBlockHelper');
     self::$byName['each']= XPClass::forName('com.handlebarsjs.EachBlockHelper');
     self::$byName['>']= XPClass::forName('com.handlebarsjs.PartialBlockHelper');
-    self::$byName['*inline']= XPClass::forName('com.handlebarsjs.InlinePartialHelper');
   }
 
   /**

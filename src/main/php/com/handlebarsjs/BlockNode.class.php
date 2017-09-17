@@ -1,14 +1,11 @@
 <?php namespace com\handlebarsjs;
 
-use com\github\mustache\Node;
-use com\github\mustache\NodeList;
-
 /**
  * A block starts with {{#sec}} (or {{^sec}} for inverted blocks)
  * and ends with {{/sec}} and consists of 0..n nested nodes.
  * Optionally, a block may have an "else" section.
  */
-class BlockNode extends Node {
+class BlockNode extends \com\github\mustache\Node {
   protected $name;
   protected $options;
   protected $fn;
@@ -21,16 +18,16 @@ class BlockNode extends Node {
    *
    * @param string $name
    * @param string[] $options
-   * @param com.github.mustache.NodeList $fn
-   * @param com.github.mustache.NodeList $inverse
+   * @param com.handlebarsjs.Nodes $fn
+   * @param com.handlebarsjs.Nodes $inverse
    * @param string $start
    * @param string $end
    */
-  public function __construct($name, $options= [], NodeList $fn= null, NodeList $inverse= null, $start= '{{', $end= '}}') {
+  public function __construct($name, $options= [], Nodes $fn= null, Nodes $inverse= null, $start= '{{', $end= '}}') {
     $this->name= $name;
     $this->options= $options;
-    $this->fn= $fn ?: new NodeList();
-    $this->inverse= $inverse ?: new NodeList();
+    $this->fn= $fn ?: new Nodes();
+    $this->inverse= $inverse ?: new Nodes();
     $this->start= $start;
     $this->end= $end;
   }
@@ -47,7 +44,7 @@ class BlockNode extends Node {
   /**
    * Returns fn
    *
-   * @return com.github.mustache.NodeList
+   * @return com.handlebarsjs.Nodes
    */
   public function fn() {
     return $this->fn;
@@ -56,7 +53,7 @@ class BlockNode extends Node {
   /**
    * Returns inverse
    *
-   * @return com.github.mustache.NodeList
+   * @return com.handlebarsjs.Nodes
    */
   public function inverse() {
     return $this->inverse;
