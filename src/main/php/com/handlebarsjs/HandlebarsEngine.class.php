@@ -26,14 +26,15 @@ use lang\IllegalArgumentException;
  * @see   http://handlebarsjs.com/
  */
 class HandlebarsEngine {
-  protected $mustache;
+  protected $mustache, $templates;
   protected $builtin= [];
 
   /**
    * Constructor. Initializes builtin helpers.
    */
   public function __construct() {
-    $this->mustache= (new MustacheEngine())->withParser(new HandlebarsParser());
+    $this->templates= new Templates();
+    $this->mustache= (new MustacheEngine())->withTemplates($this->templates)->withParser(new HandlebarsParser());
 
     // This: Access the current value in the context
     $this->setBuiltin('this', function($node, $context, $options) {
@@ -119,7 +120,7 @@ class HandlebarsEngine {
    * @return self this
    */
   public function withTemplates(TemplateLoader $l) {
-    $this->mustache->withTemplates($l);
+    $this->templates->delegate($l);
     return $this;
   }
 
