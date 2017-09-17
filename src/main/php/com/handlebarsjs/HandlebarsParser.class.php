@@ -100,7 +100,7 @@ class HandlebarsParser extends AbstractMustacheParser {
       $state->parents[]= $state->target;
 
       if ('*' === $name{0}) {
-        $block= $state->target->decorate(new Decoration(substr($name, 1), $parsed));
+        $block= $state->target->decorate(new Decoration($name, $parsed));
       } else {
         $block= $state->target->add(BlockHelpers::newInstance(
           $name,

@@ -9,23 +9,23 @@ use lang\MethodNotImplementedException;
  * @see  https://github.com/wycats/handlebars.js/blob/master/docs/decorators-api.md
  */
 class Decoration {
-  private $name, $options, $fn;
+  private $kind, $options, $fn;
 
   /**
    * Creates a new decoration
    *
-   * @param  string $name
+   * @param  string $kind
    * @param  var[] $options
    * @param  com.handlebarsjs.Nodes $fn
    */
-  public function __construct($name, $options, Nodes $fn= null) {
-    $this->name= $name;
+  public function __construct($kind, $options, Nodes $fn= null) {
+    $this->kind= $kind;
     $this->options= $options;
     $this->fn= $fn ?: new Nodes();
   }
 
   /** @return string */
-  public function name() { return $this->name; }
+  public function name() { return substr($this->kind, 1); }
 
   /** @return com.handlebarsjs.Nodes */
   public function fn() { return $this->fn; }
@@ -37,12 +37,11 @@ class Decoration {
    * @return void
    */
   public function evaluate($context) {
-    $l= '*'.$this->name;
-    if (isset($context->engine->helpers[$l])) {
-      $f= $context->engine->helpers[$l];
+    if (isset($context->engine->helpers[$this->kind])) {
+      $f= $context->engine->helpers[$this->kind];
       $f($this->fn, $context, $this->options);
     } else {
-      throw new MethodNotImplementedException('No such decorator '.$l);
+      throw new MethodNotImplementedException('No such decorator '.$this->kind);
     }
   }
 }
