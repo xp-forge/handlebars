@@ -36,7 +36,7 @@ class Decoration {
    * @param  com.github.mustache.Context $context the rendering context
    * @return void
    */
-  public function evaluate($context) {
+  public function enter($context) {
     if (isset($context->engine->helpers[$this->kind])) {
       $f= $context->engine->helpers[$this->kind];
       $f($this->fn, $context, $this->options);

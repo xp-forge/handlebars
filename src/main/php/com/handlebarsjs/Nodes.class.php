@@ -20,10 +20,11 @@ class Nodes extends NodeList {
    * Evaluates decorators
    *
    * @param  com.github.mustache.Context $context the rendering context
+   * @return void
    */
   public function enter($context) {
     foreach ($this->decorations as $decoration) {
-      $decoration->evaluate($context);
+      $decoration->enter($context);
     }
   }
 
@@ -31,10 +32,11 @@ class Nodes extends NodeList {
    * Evaluates this node
    *
    * @param  com.github.mustache.Context $context the rendering context
+   * @return string
    */
   public function evaluate($context) {
     foreach ($this->decorations as $decoration) {
-      $decoration->evaluate($context);
+      $decoration->enter($context);
     }
     return parent::evaluate($context);
   }
