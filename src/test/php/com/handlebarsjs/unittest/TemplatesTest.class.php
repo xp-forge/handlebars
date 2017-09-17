@@ -1,6 +1,7 @@
 <?php namespace com\handlebarsjs\unittest;
 
 use com\handlebarsjs\Templates;
+use com\github\mustache\TextNode;
 
 class TemplatesTest extends \unittest\TestCase {
 
@@ -35,8 +36,9 @@ class TemplatesTest extends \unittest\TestCase {
 
     $prev= [];
     $prev[]= $fixture->register('@partial-block', 'A');
-    $prev[]= $fixture->register('@partial-block', 'B')->code();
+    $prev[]= $fixture->register('@partial-block', new TextNode('B'))->code();
+    $prev[]= $fixture->register('@partial-block', 'C')->code();
 
-    $this->assertEquals([null, 'A'], $prev);
+    $this->assertEquals([null, 'A', 'B'], $prev);
   }
 }
