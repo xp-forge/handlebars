@@ -21,7 +21,7 @@ class Nodes extends NodeList {
    *
    * @param  com.github.mustache.Context $context the rendering context
    */
-  public function decorators($context) {
+  public function enter($context) {
     foreach ($this->decorations as $decoration) {
       $decoration->evaluate($context);
     }
