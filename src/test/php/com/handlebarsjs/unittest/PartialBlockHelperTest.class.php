@@ -18,4 +18,15 @@ class PartialBlockHelperTest extends HelperTest {
   public function non_existant_partial_renders_default() {
     $this->assertEquals('My content', $this->evaluate('{{#> layout}}My content{{/layout}}', []));
   }
+
+  #[@test]
+  public function layout() {
+    $this->templates->add('layout', '<head><title>{{title}}</title>{{#> head}}{{/head}}</head>');
+    $this->assertEquals('<head><title>Home</title><link rel="stylesheet" href="style.css"></head>', $this->evaluate(
+      '{{#> layout title="Home"}}'.
+        '{{#*inline "head"}}<link rel="stylesheet" href="style.css">{{/inline}}'.
+      '{{/layout}}',
+      []
+    ));
+  }
 }
