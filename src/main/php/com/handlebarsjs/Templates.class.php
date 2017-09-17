@@ -4,6 +4,11 @@ use com\github\mustache\TemplateLoader;
 use com\github\mustache\TemplateNotFoundException;
 use io\streams\MemoryInputStream;
 
+/**
+ * Template loading implementation
+ *
+ * @test  xp://com.handlebarsjs.unittest.TemplatesTest
+ */
 class Templates implements TemplateLoader {
   private $templates= [];
   private $delegate;
