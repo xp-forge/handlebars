@@ -34,5 +34,6 @@ class InlinePartialHelper extends BlockNode {
     $target= $f($this, $context, []);
 
     $context->engine->getTemplates()->register($target, $this->fn);
+    return '';
   }
 }
