@@ -36,7 +36,7 @@ class PartialBlockHelper extends BlockNode {
 
     $source= $templates->source($this->name);
     if ($source->exists()) {
-      $previous= $templates->register('@partial-block', $this->fn);
+      $previous= $templates->register('@partial-block', $block);
 
       // {{#> partial context}} vs {{> partial key="Value"}}
       if (isset($this->options[0])) {
