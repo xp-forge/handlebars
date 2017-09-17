@@ -8,14 +8,33 @@ class Templates implements TemplateLoader {
   private $templates= [];
   private $delegate;
 
+  /**
+   * Sets delegate loader
+   *
+   * @param  com.github.mustache.TemplateLoader $delegate
+   * @return void
+   */
   public function delegate($delegate) {
     $this->delegate= $delegate;
   }
 
+  /**
+   * Adds template
+   *
+   * @param  string $name
+   * @param  string $content
+   * @return void
+   */
   public function register($name, $content) {
     $this->templates[$name]= $content;
   }
 
+  /**
+   * Removes template
+   *
+   * @param  string $name
+   * @return void
+   */
   public function remove($name) {
     unset($this->templates[$name]);
   }
