@@ -4,6 +4,7 @@ use text\StringTokenizer;
 use com\github\mustache\Node;
 use com\github\mustache\Template;
 use com\github\mustache\TemplateListing;
+use com\github\mustache\templates\Source;
 use com\github\mustache\templates\Tokens;
 use com\github\mustache\templates\Compiled;
 use com\github\mustache\templates\NotFound;
@@ -54,16 +55,22 @@ class Templates extends \com\github\mustache\templates\Templates {
    * Adds template
    *
    * @param  string $name
-   * @param  string|com.github.mustache.Node $content
+   * @param  string|com.github.mustache.templates.Source|com.github.mustache.Node $content
    * @return string
    */
   public function register($name, $content) {
     $previous= isset($this->templates[$name]) ? $this->templates[$name] : null;
-    if ($content instanceof Node) {
+
+    if (null === $content) {
+      unset($this->templates[$name]);
+    } else if ($content instanceof Source) {
+      $this->templates[$name]= $content;
+    } else if ($content instanceof Node) {
       $this->templates[$name]= new Compiled(new Template($name, $content));
     } else {
       $this->templates[$name]= new Tokens($name, new StringTokenizer($content));
     }
+
     return $previous;
   }
 
