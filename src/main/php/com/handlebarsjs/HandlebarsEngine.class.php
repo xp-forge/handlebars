@@ -53,8 +53,7 @@ class HandlebarsEngine {
 
     // Inline partials
     $this->setBuiltin('*inline', function($node, $context, $options) {
-      $f= $options[0];
-      $context->engine->getTemplates()->register($f($node, $context, []), $node);
+      $context->engine->getTemplates()->register($options[0]($node, $context, []), $node);
     });
   }
 
