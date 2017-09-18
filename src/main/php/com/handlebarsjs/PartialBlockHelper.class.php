@@ -43,7 +43,7 @@ class PartialBlockHelper extends BlockNode {
     $source= $templates->source($this->name);
     if ($source->exists()) {
       $this->fn->enter($context);
-      $previous= $templates->register('@partial-block', $this->fn);
+      $previous= $templates->register('@partial-block', $this->fn->block());
       try {
         return $context->engine->render($source, $context, $this->start, $this->end, '');
       } finally {

@@ -29,6 +29,13 @@ class Nodes extends NodeList {
   }
 
   /**
+   * Returns block without decorators
+   *
+   * @return com.github.mustache.NodeList
+   */
+  public function block() { return new NodeList($this->nodes); }
+
+  /**
    * Evaluates this node
    *
    * @param  com.github.mustache.Context $context the rendering context
