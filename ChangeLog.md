@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 4.1.0 / 2017-11-26
+
+* Merged pull request #9: Partial blocks and inline partials - @thekid
+
 ## 4.0.2 / 2017-09-01
 
 * Fixed issue #8: Call to undefined method `VariableNode::lookup()` when
@@ -25,8 +29,8 @@ HandleBars change log
 
 ## 3.0.1 / 2017-03-20
 
-* Fixed lang.Error (Argument 3 passed to ListContext::__construct() must
-  be an instance of com\github\mustache\Context, none given.
+* Fixed lang.Error (Argument 3 passed to `ListContext::__construct()`
+  must be an instance of com\github\mustache\Context, none given).
   (@thekid)
 
 ## 3.0.0 / 2016-08-28
