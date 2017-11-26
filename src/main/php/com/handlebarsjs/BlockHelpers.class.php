@@ -13,6 +13,7 @@ class BlockHelpers {
     self::$byName['unless']= XPClass::forName('com.handlebarsjs.UnlessBlockHelper');
     self::$byName['with']= XPClass::forName('com.handlebarsjs.WithBlockHelper');
     self::$byName['each']= XPClass::forName('com.handlebarsjs.EachBlockHelper');
+    self::$byName['>']= XPClass::forName('com.handlebarsjs.PartialBlockHelper');
   }
 
   /**

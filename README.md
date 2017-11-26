@@ -84,3 +84,7 @@ $logger= function($arg) { Console::writeLine('[LOG] ', $arg); };
 $engine= (new HandlebarsEngine())->withLogger($logger);
 $engine->render(...);
 ```
+
+Futher reading
+--------------
+https://handlebars-lang.github.io/spec/

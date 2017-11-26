@@ -26,14 +26,15 @@ use lang\IllegalArgumentException;
  * @see   http://handlebarsjs.com/
  */
 class HandlebarsEngine {
-  protected $mustache;
+  protected $mustache, $templates;
   protected $builtin= [];
 
   /**
    * Constructor. Initializes builtin helpers.
    */
   public function __construct() {
-    $this->mustache= (new MustacheEngine())->withParser(new HandlebarsParser());
+    $this->templates= new Templates();
+    $this->mustache= (new MustacheEngine())->withTemplates($this->templates)->withParser(new HandlebarsParser());
 
     // This: Access the current value in the context
     $this->setBuiltin('this', function($node, $context, $options) {
@@ -48,6 +49,11 @@ class HandlebarsEngine {
     // Lookup: <where> <what>
     $this->setBuiltin('lookup', function($node, $context, $options) {
       return $options[0][$options[1]];
+    });
+
+    // Inline partials
+    $this->setBuiltin('*inline', function($node, $context, $options) {
+      $context->engine->getTemplates()->register($options[0]($node, $context, []), $node);
     });
   }
 
@@ -115,11 +121,11 @@ class HandlebarsEngine {
   /**
    * Sets template loader to be used
    *
-   * @param  com.github.mustache.TemplateLoader $l
+   * @param  com.github.mustache.templates.Templates|com.github.mustache.TemplateLoader $l
    * @return self this
    */
-  public function withTemplates(TemplateLoader $l) {
-    $this->mustache->withTemplates($l);
+  public function withTemplates($l) {
+    $this->templates->delegate($l);
     return $this;
   }
 

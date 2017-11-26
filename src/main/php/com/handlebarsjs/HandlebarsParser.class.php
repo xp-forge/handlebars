@@ -5,6 +5,7 @@ use com\github\mustache\TemplateFormatException;
 use com\github\mustache\CommentNode;
 use com\github\mustache\IteratorNode;
 use com\github\mustache\VariableNode;
+use lang\MethodNotImplementedException;
 
 /**
  * Parses handlebars templates
@@ -95,17 +96,23 @@ class HandlebarsParser extends AbstractMustacheParser {
     // Sections
     $this->withHandler('#', true, function($tag, $state, $parse) {
       $parsed= $parse->options(trim(substr($tag, 1)));
+      $name= array_shift($parsed);
       $state->parents[]= $state->target;
-      $block= $state->target->add(BlockHelpers::newInstance(
-        array_shift($parsed),
-        $parsed,
-        null,
-        null,
-        $state->start,
-        $state->end
-      ));
-      $state->target= $block->fn();
+
+      if ('*' === $name{0}) {
+        $block= $state->target->decorate(new Decoration($name, $parsed));
+      } else {
+        $block= $state->target->add(BlockHelpers::newInstance(
+          $name,
+          $parsed,
+          null,
+          null,
+          $state->start,
+          $state->end
+        ));
+      }
       $state->parents[]= $block;
+      $state->target= $block->fn();
     });
     $this->withHandler('/', true, function($tag, $state) {
       $name= trim(substr($tag, 1));
@@ -163,7 +170,7 @@ class HandlebarsParser extends AbstractMustacheParser {
         $state->target= $block->inverse();
         return;
       }
-      raise('lang.MethodNotImplementedException', '^blocks not yet implemented');
+      throw new MethodNotImplementedException('^blocks not yet implemented');
     });
 
     // Default
@@ -182,5 +189,14 @@ class HandlebarsParser extends AbstractMustacheParser {
       }
       $state->target->add(new VariableNode($parsed[0], true, array_slice($parsed, 1)));
     });
+  }
+
+  /**
+   * Returns parsing target
+   *
+   * @return com.github.mustache.NodeList
+   */
+  protected function target() {
+    return new Nodes();
   }
 }
