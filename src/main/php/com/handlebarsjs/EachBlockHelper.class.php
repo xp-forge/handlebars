@@ -24,29 +24,26 @@ class EachBlockHelper extends BlockNode {
    * Evaluates this node
    *
    * @param  com.github.mustache.Context $context the rendering context
-   * @return string
+   * @param  io.streams.OutputStream $out
    */
-  public function evaluate($context) {
+  public function write($context, $out) {
     $f= $this->options[0];
     $target= $f($this, $context, []);
-    $out= '';
     if ($context->isList($target)) {
       $list= $context->asTraversable($target);
       $size= sizeof($list);
       foreach ($list as $index => $element) {
-        $out.= $this->fn->evaluate(new ListContext($index, $size, $context->asContext($element)));
+        $this->fn->write(new ListContext($index, $size, $context->asContext($element)), $out);
       }
     } else if ($context->isHash($target)) {
       $hash= $context->asTraversable($target);
-      $out= '';
       $first= true;
       foreach ($hash as $key => $value) {
-        $out.= $this->fn->evaluate(new HashContext($key, $first, $context->asContext($value)));
+        $this->fn->write(new HashContext($key, $first, $context->asContext($value)), $out);
         $first= false;
       }
     } else {
-      $out= $this->inverse->evaluate($context);
+      $this->inverse->write($context, $out);
     }
-    return $out;
   }
 }

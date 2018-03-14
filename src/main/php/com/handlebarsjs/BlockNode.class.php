@@ -1,11 +1,13 @@
 <?php namespace com\handlebarsjs;
 
+use com\github\mustache\Node;
+
 /**
  * A block starts with {{#sec}} (or {{^sec}} for inverted blocks)
  * and ends with {{/sec}} and consists of 0..n nested nodes.
  * Optionally, a block may have an "else" section.
  */
-class BlockNode extends \com\github\mustache\Node {
+class BlockNode extends Node {
   protected $name;
   protected $options;
   protected $fn;
@@ -88,9 +90,9 @@ class BlockNode extends \com\github\mustache\Node {
    * Evaluates this node
    *
    * @param  com.github.mustache.Context $context the rendering context
-   * @return string
+   * @param  io.streams.OutputStream $out
    */
-  public function evaluate($context) {
+  public function write($context, $out) {
     $value= $context->lookup($this->name);
     if ($context->isTruthy($value)) {
       $target= $this->fn;
@@ -104,20 +106,18 @@ class BlockNode extends \com\github\mustache\Node {
     // * If the value is a hash, use it as context
     // * Otherwise, simply delegate evaluation to node list
     if ($context->isCallable($value)) {
-      return $context->asRendering($value, $target, array_merge(
+      $out->write($context->asRendering($value, $target, array_merge(
         $this->options,
         ['fn' => $this->fn, 'inverse' => $this->inverse]
-      ));
+      )));
     } else if ($context->isList($value)) {
-      $output= '';
       foreach ($context->asTraversable($value) as $element) {
-        $output.= $target->evaluate($context->asContext($element));
+        $target->write($context->asContext($element), $out);
       }
-      return $output;
     } else if ($context->isHash($value)) {
-      return $target->evaluate($context->asContext($value));
+      $target->write($context->asContext($value), $out);
     } else {
-      return $target->evaluate($context);
+      $target->write($context, $out);
     }
   }
 

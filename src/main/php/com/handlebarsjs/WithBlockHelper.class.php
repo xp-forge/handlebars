@@ -24,15 +24,15 @@ class WithBlockHelper extends BlockNode {
    * Evaluates this node
    *
    * @param  com.github.mustache.Context $context the rendering context
-   * @return string
+   * @param  io.streams.OutputStream $out
    */
-  public function evaluate($context) {
+  public function write($context, $out) {
     $f= $this->options[0];
     $target= $f($this, $context, []);
     if ($context->isTruthy($target)) {
-      return $this->fn->evaluate($context->asContext($target));
+      $this->fn->write($context->asContext($target), $out);
     } else {
-      return $this->inverse->evaluate($context->asContext($target));
+      $this->inverse->write($context->asContext($target), $out);
     }
   }
 }
