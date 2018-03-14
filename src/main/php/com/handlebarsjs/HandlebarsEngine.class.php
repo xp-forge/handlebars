@@ -190,6 +190,18 @@ class HandlebarsEngine {
   }
 
   /**
+   * Evaluate a compiled template.
+   *
+   * @param  com.github.mustache.Template $template The template
+   * @param  var $arg Either a view context, or a Context instance
+   * @param  io.streams.OutputStream $out
+   * @return void
+   */
+  public function write(Template $template, $arg, $out) {
+    $this->mustache->write($template, $arg, $out);
+  }
+
+  /**
    * Render a template - like evaluate(), but will compile if necessary.
    *
    * @param  var $template The template, either as string or as compiled Template instance

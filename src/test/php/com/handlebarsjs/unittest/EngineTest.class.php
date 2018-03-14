@@ -3,6 +3,7 @@
 use lang\IllegalArgumentException;
 use com\handlebarsjs\HandlebarsEngine;
 use util\log\LogCategory;
+use io\streams\MemoryOutputStream;
 
 class EngineTest extends \unittest\TestCase {
 
@@ -39,5 +40,22 @@ class EngineTest extends \unittest\TestCase {
   #[@test, @expect(IllegalArgumentException::class)]
   public function with_non_callable_logger() {
     (new HandlebarsEngine())->withLogger('log');
+  }
+
+  #[@test]
+  public function evaluate() {
+    $engine= new HandlebarsEngine();
+    $result= $engine->evaluate($engine->compile('Hello {{name}}'), ['name' => 'World']);
+
+    $this->assertEquals('Hello World', $result);
+  }
+
+  #[@test]
+  public function write() {
+    $engine= new HandlebarsEngine();
+    $out= new MemoryOutputStream();
+    $engine->write($engine->compile('Hello {{name}}'), ['name' => 'World'], $out);
+
+    $this->assertEquals('Hello World', $out->getBytes());
   }
 }
