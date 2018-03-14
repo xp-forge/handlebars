@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 4.2.0 / 2018-03-14
+
+* Merged pull request #10: Add HandleBarsEngine::write() - @thekid
+
 ## 4.1.0 / 2017-11-26
 
 * Merged pull request #9: Partial blocks and inline partials - @thekid
