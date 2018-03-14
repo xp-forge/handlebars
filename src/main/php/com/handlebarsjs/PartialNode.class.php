@@ -2,6 +2,7 @@
 
 use lang\Value;
 use util\Objects;
+use com\github\mustache\Node;
 
 /**
  * Partials
@@ -9,7 +10,7 @@ use util\Objects;
  * @see  http://handlebarsjs.com/partials.html
  * @test xp://com.handlebarsjs.unittest.PartialNodeTest
  */
-class PartialNode extends \com\github\mustache\Node {
+class PartialNode extends Node {
   protected $template, $options, $indent;
 
   /**
@@ -85,9 +86,9 @@ class PartialNode extends \com\github\mustache\Node {
    * Evaluates this node
    *
    * @param  com.github.mustache.Context $context the rendering context
-   * @return string
+   * @param  io.streams.OutputStream $out
    */
-  public function evaluate($context) {
+  public function write($context, $out) {
 
     // {{> partial context}} vs {{> partial key="Value"}}
     if (isset($this->options[0])) {
@@ -96,7 +97,9 @@ class PartialNode extends \com\github\mustache\Node {
       $context= $context->newInstance($context->asTraversable($this->options));
     }
 
-    return $context->engine->transform($this->template->__invoke($this, $context, []), $context, '{{', '}}', $this->indent);
+    $engine= $context->engine;
+    $template= $engine->load($this->template->__invoke($this, $context, []), '{{', '}}', $this->indent);
+    $engine->write($template, $context, $out);
   }
 
   /**

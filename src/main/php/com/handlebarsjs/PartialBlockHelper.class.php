@@ -28,9 +28,9 @@ class PartialBlockHelper extends BlockNode {
    * Evaluates this node
    *
    * @param  com.github.mustache.Context $context the rendering context
-   * @return string
+   * @param  io.streams.OutputStream $out
    */
-  public function evaluate($context) {
+  public function write($context, $out) {
     $templates= $context->engine->getTemplates();
 
     // {{#> partial context}} vs {{> partial key="Value"}}
@@ -43,14 +43,16 @@ class PartialBlockHelper extends BlockNode {
     $source= $templates->source($this->name);
     if ($source->exists()) {
       $this->fn->enter($context);
+
+      $template= $context->engine->load($this->name, $this->start, $this->end, '');
       $previous= $templates->register('@partial-block', $this->fn->block());
       try {
-        return $context->engine->render($source, $context, $this->start, $this->end, '');
+        $context->engine->write($template, $context, $out);
       } finally {
         $templates->register('@partial-block', $previous);
       }
     } else {
-      return $this->fn->evaluate($context);
+      $this->fn->write($context, $out);
     }
   }
 }
