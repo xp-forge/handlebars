@@ -3,6 +3,12 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 4.2.1 / 2018-04-22
+
+* Fixed issue #11: Call to a member function name() on null when no start
+  tag is present, but a close tag is encountered
+  (@thekid)
+
 ## 4.2.0 / 2018-03-14
 
 * Merged pull request #10: Add HandleBarsEngine::write() - @thekid

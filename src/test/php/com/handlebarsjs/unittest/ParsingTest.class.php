@@ -148,4 +148,9 @@ class ParsingTest extends \unittest\TestCase {
       $this->parse('{{test '.$literal.'}}')->nodeAt(0)->options()
     );
   }
+
+  #[@test, @expect(class= TemplateFormatException::class, withMessage= '/Illegal nesting, no start tag/')]
+  public function no_start_tag() {
+    $this->parse('{{if test}}X{{/if}}');
+  }
 }
