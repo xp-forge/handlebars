@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 4.2.2 / 2018-08-22
+
+* Fixed multiline tokens creating hundreds of zero option values - @thekid
+
 ## 4.2.1 / 2018-04-22
 
 * Fixed issue #11: Call to a member function name() on null when no start
