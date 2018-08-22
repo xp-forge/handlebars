@@ -1,9 +1,9 @@
 <?php namespace com\handlebarsjs;
 
 use com\github\mustache\AbstractMustacheParser;
-use com\github\mustache\TemplateFormatException;
 use com\github\mustache\CommentNode;
 use com\github\mustache\IteratorNode;
+use com\github\mustache\TemplateFormatException;
 use com\github\mustache\VariableNode;
 use lang\MethodNotImplementedException;
 
@@ -26,7 +26,7 @@ class HandlebarsParser extends AbstractMustacheParser {
    * @return string[]
    */
   public function options($tag) {
-    $o= strcspn($tag, ' ');
+    $o= strcspn($tag, "\r\n\t ");
     $parsed= [substr($tag, 0, $o)];
     $key= null;
     for ($o++, $l= strlen($tag); $o < $l; $o+= $p + 1) {
@@ -56,6 +56,9 @@ class HandlebarsParser extends AbstractMustacheParser {
         $p= 0;
         $sub= $this->options(substr($tag, $s + 1, $o - $s - 2));
         $value= new Expression(array_shift($sub), $sub);
+      } else if (' ' === $tag{$o} || "\t" === $tag{$o} || "\r" === $tag{$o} || "\n" === $tag{$o}) {
+        $p= strcspn($tag, "\r\n\t ", $o);
+        continue;
       } else {
         $p= strcspn($tag, ' =', $o);
         if ($o + $p < $l && '=' === $tag{$o + $p}) {

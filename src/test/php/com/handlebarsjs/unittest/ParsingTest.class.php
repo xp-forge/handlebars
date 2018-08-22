@@ -1,18 +1,18 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use com\handlebarsjs\HandlebarsParser;
-use com\handlebarsjs\Nodes;
-use com\handlebarsjs\BlockNode;
-use com\handlebarsjs\PartialNode;
-use com\handlebarsjs\Lookup;
-use com\handlebarsjs\Quoted;
-use com\handlebarsjs\Constant;
-use com\handlebarsjs\Expression;
-use com\handlebarsjs\Decoration;
-use com\handlebarsjs\PartialBlockHelper;
+use com\github\mustache\TemplateFormatException;
 use com\github\mustache\TextNode;
 use com\github\mustache\VariableNode;
-use com\github\mustache\TemplateFormatException;
+use com\handlebarsjs\BlockNode;
+use com\handlebarsjs\Constant;
+use com\handlebarsjs\Decoration;
+use com\handlebarsjs\Expression;
+use com\handlebarsjs\HandlebarsParser;
+use com\handlebarsjs\Lookup;
+use com\handlebarsjs\Nodes;
+use com\handlebarsjs\PartialBlockHelper;
+use com\handlebarsjs\PartialNode;
+use com\handlebarsjs\Quoted;
 use text\StringTokenizer;
 
 class ParsingTest extends \unittest\TestCase {
@@ -152,5 +152,15 @@ class ParsingTest extends \unittest\TestCase {
   #[@test, @expect(class= TemplateFormatException::class, withMessage= '/Illegal nesting, no start tag/')]
   public function no_start_tag() {
     $this->parse('{{if test}}X{{/if}}');
+  }
+
+  #[@test]
+  public function multiline_tag() {
+    $p= $this->parse(trim('
+      {{multiline
+        value
+      }}
+    '));
+    $this->assertEquals(new VariableNode('multiline', true, [new Lookup('value')]), $p->nodeAt(0));
   }
 }
