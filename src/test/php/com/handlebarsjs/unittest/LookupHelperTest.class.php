@@ -17,4 +17,14 @@ class LookupHelperTest extends HelperTest {
       'data'     => ['Zero', 'One']
     ]));
   }
+
+  #[@test, @values([
+  #  '{{lookup map key}}',
+  #  '{{lookup map key.name}}',
+  #  '{{lookup map.sub key}}',
+  #  '{{lookup map.sub key.name}}'
+  #])]
+  public function lookup_non_existant($expr) {
+    $this->assertEquals('', $this->evaluate($expr, []));
+  }
 }
