@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 4.2.3 / 2018-08-24
+
+* Made compatible with `xp-framework/logging` version 9.0.0 - @thekid
+
 ## 4.2.2 / 2018-08-22
 
 * Fixed multiline tokens creating hundreds of zero option values - @thekid
