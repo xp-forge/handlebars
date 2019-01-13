@@ -7,6 +7,8 @@ HandleBars change log
 
 * Added support for generators in `each`, where they are treated like
   hashes, producing `@key` and `@first` selectors for each yielded value.
+  Hoewever, note generators can only be iterated once due to the nature of
+  their implementation!
   (@thekid)
 * Added support for generators in `if` and `unless`. Iterators yielding
   at least one element are considered truthy.
