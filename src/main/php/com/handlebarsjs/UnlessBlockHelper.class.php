@@ -28,7 +28,9 @@ class UnlessBlockHelper extends BlockNode {
    */
   public function write($context, $out) {
     $f= $this->options[0];
-    if ($context->isTruthy($f($this, $context, []))) {
+    $target= $f($this, $context, []);
+
+    if ($target instanceof \Generator ? $target->valid() : $context->isTruthy($target)) {
       $this->inverse->write($context, $out);
     } else {
       $this->fn->write($context, $out);

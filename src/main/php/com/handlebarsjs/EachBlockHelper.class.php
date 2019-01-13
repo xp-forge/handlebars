@@ -29,7 +29,14 @@ class EachBlockHelper extends BlockNode {
   public function write($context, $out) {
     $f= $this->options[0];
     $target= $f($this, $context, []);
-    if ($context->isList($target)) {
+
+    if ($target instanceof \Generator) {
+      $first= true;
+      foreach ($target as $key => $value) {
+        $this->fn->write(new HashContext($key, $first, $context->asContext($value)), $out);
+        $first= false;
+      }
+    } else if ($context->isList($target)) {
       $list= $context->asTraversable($target);
       $size= sizeof($list);
       foreach ($list as $index => $element) {

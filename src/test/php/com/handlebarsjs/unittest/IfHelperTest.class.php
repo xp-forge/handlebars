@@ -34,4 +34,31 @@ class IfHelperTest extends HelperTest {
       'var' => false
     ]));
   }
+
+  #[@test]
+  public function from_iterator() {
+    $f= function() {
+      yield 'A';
+      yield 'B';
+      yield 'C';
+    };
+
+    $this->assertEquals('ABC', $this->evaluate(
+      '{{#if people}}{{#each people}}{{.}}{{/each}}{{else}}(empty){{/if}}',
+      ['people' => $f()]
+    ));
+  }
+
+  #[@test]
+  public function from_empty_iterator() {
+    $f= function() {
+      return;
+      yield 'A';
+    };
+
+    $this->assertEquals('(empty)', $this->evaluate(
+      '{{#if people}}{{#each people}}{{.}}{{/each}}{{else}}(empty){{/if}}',
+      ['people' => $f()]
+    ));
+  }
 }

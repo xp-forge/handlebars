@@ -3,6 +3,15 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 4.3.0 / 2019-01-13
+
+* Added support for generators in `each`, where they are treated like
+  hashes, producing `@key` and `@first` selectors for each yielded value.
+  (@thekid)
+* Added support for generators in `if` and `unless`. Iterators yielding
+  at least one element are considered truthy.
+  (@thekid)
+
 ## 4.2.3 / 2018-08-24
 
 * Made compatible with `xp-framework/logging` version 9.0.0 - @thekid

@@ -22,4 +22,31 @@ class UnlessHelperTest extends HelperTest {
       'var' => true
     ]));
   }
+
+  #[@test]
+  public function from_iterator() {
+    $f= function() {
+      yield 'A';
+      yield 'B';
+      yield 'C';
+    };
+
+    $this->assertEquals('ABC', $this->evaluate(
+      '{{#unless people}}(empty){{else}}{{#each people}}{{.}}{{/each}}{{/unless}}',
+      ['people' => $f()]
+    ));
+  }
+
+  #[@test]
+  public function from_empty_iterator() {
+    $f= function() {
+      return;
+      yield 'A';
+    };
+
+    $this->assertEquals('(empty)', $this->evaluate(
+      '{{#unless people}}(empty){{else}}{{#each people}}{{.}}{{/each}}{{/unless}}',
+      ['people' => $f()]
+    ));
+  }
 }

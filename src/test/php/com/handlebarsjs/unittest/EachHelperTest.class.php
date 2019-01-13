@@ -150,4 +150,32 @@ class EachHelperTest extends HelperTest {
       ]]
     ));
   }
+
+  #[@test]
+  public function from_iterator() {
+    $f= function() {
+      yield 'A';
+      yield 'B';
+      yield 'C';
+    };
+
+    $this->assertEquals('0:A,1:B,2:C', $this->evaluate(
+      '{{#each people}}{{#unless @first}},{{/unless}}{{@key}}:{{.}}{{/each}}',
+      ['people' => $f()]
+    ));
+  }
+
+  #[@test]
+  public function from_iterator_with_keys() {
+    $f= function() {
+      yield 'a' => 'A';
+      yield 'b' => 'B';
+      yield 'c' => 'C';
+    };
+
+    $this->assertEquals('a:A b:B c:C', $this->evaluate(
+      '{{#each people}}{{#unless @first}} {{/unless}}{{@key}}:{{.}}{{/each}}',
+      ['people' => $f()]
+    ));
+  }
 }
