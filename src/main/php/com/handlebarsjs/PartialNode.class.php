@@ -1,8 +1,8 @@
 <?php namespace com\handlebarsjs;
 
+use com\github\mustache\Node;
 use lang\Value;
 use util\Objects;
-use com\github\mustache\Node;
 
 /**
  * Partials

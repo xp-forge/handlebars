@@ -37,7 +37,11 @@ class PartialBlockHelper extends BlockNode {
     if (isset($this->options[0])) {
       $context= $context->newInstance($this->options[0]($this, $context, []));
     } else if ($this->options) {
-      $context= $context->newInstance($context->asTraversable($this->options));
+      $pass= [];
+      foreach ($context->asTraversable($this->options) as $key => $value) {
+        $pass[$key]= $value($this, $context, []);
+      }
+      $context= $context->newInstance($pass);
     }
 
     $source= $templates->source($this->name);
