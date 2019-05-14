@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 4.3.1 / 2019-05-14
+
+* Fix issue #12: Fix hash options passed to partials - @thekid
+
 ## 4.3.0 / 2019-01-13
 
 * Added support for generators in `each`, where they are treated like
