@@ -30,38 +30,38 @@ class HandlebarsParser extends AbstractMustacheParser {
     $parsed= [substr($tag, 0, $o)];
     $key= null;
     for ($o++, $l= strlen($tag); $o < $l; $o+= $p + 1) {
-      if ('"' === $tag{$o} || "'" === $tag{$o}) {           // Single and double quoted strings
+      if ('"' === $tag[$o] || "'" === $tag[$o]) {           // Single and double quoted strings
         $chars= '';
         while ($o < $l) {
-          $p= strcspn($tag, $tag{$o}, $o + 1) + 2;
+          $p= strcspn($tag, $tag[$o], $o + 1) + 2;
           $chars.= substr($tag, $o + 1, $p - 2);
           $c= strlen($chars);
-          if ($c > 0 && '\\' === $chars{$c - 1}) {
-            $chars= substr($chars, 0, -1).$tag{$o};
+          if ($c > 0 && '\\' === $chars[$c - 1]) {
+            $chars= substr($chars, 0, -1).$tag[$o];
             $o+= $p - 1;
             continue;
           }
           break;
         }
         $value= new Quoted($chars);
-      } else if ('(' === $tag{$o}) {                        // Subexpressions (+nesting!)
+      } else if ('(' === $tag[$o]) {                        // Subexpressions (+nesting!)
         $s= $o;
         $b= 0;
         do {
           $p= strcspn($tag, '()', $o);
-          if ('(' === $tag{$o + $p}) $b++;
-          if (')' === $tag{$o + $p}) $b--;
+          if ('(' === $tag[$o + $p]) $b++;
+          if (')' === $tag[$o + $p]) $b--;
           $o+= $p + 1;
         } while ($o < $l && $b);
         $p= 0;
         $sub= $this->options(substr($tag, $s + 1, $o - $s - 2));
         $value= new Expression(array_shift($sub), $sub);
-      } else if (' ' === $tag{$o} || "\t" === $tag{$o} || "\r" === $tag{$o} || "\n" === $tag{$o}) {
+      } else if (' ' === $tag[$o] || "\t" === $tag[$o] || "\r" === $tag[$o] || "\n" === $tag[$o]) {
         $p= strcspn($tag, "\r\n\t ", $o);
         continue;
       } else {
         $p= strcspn($tag, ' =', $o);
-        if ($o + $p < $l && '=' === $tag{$o + $p}) {
+        if ($o + $p < $l && '=' === $tag[$o + $p]) {
           $key= substr($tag, $o, $p);
           continue;
         } else {
@@ -102,7 +102,7 @@ class HandlebarsParser extends AbstractMustacheParser {
       $name= array_shift($parsed);
       $state->parents[]= $state->target;
 
-      if ('*' === $name{0}) {
+      if ('*' === $name[0]) {
         $block= $state->target->decorate(new Decoration($name, $parsed));
       } else {
         $block= $state->target->add(BlockHelpers::newInstance(

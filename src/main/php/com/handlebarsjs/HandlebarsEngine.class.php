@@ -3,9 +3,9 @@
 use com\github\mustache\MustacheEngine;
 use com\github\mustache\Template;
 use com\github\mustache\TemplateLoader;
+use lang\IllegalArgumentException;
 use util\log\LogCategory;
 use util\log\LogLevel;
-use lang\IllegalArgumentException;
 
 /**
  * Handlebars implementation for the XP Framework.
@@ -48,7 +48,7 @@ class HandlebarsEngine {
 
     // Lookup: <where> <what>
     $this->setBuiltin('lookup', function($node, $context, $options) {
-      return $options[0][$options[1]];
+      return isset($options[0][$options[1]]) ? $options[0][$options[1]] : null;
     });
 
     // Inline partials
