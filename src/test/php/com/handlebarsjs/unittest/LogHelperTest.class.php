@@ -2,8 +2,9 @@
 
 use com\handlebarsjs\HandlebarsEngine;
 use util\log\BufferedAppender;
+use util\log\Layout;
 use util\log\LogCategory;
-use util\log\layout\PatternLayout;
+use util\log\LogLevel;
 
 class LogHelperTest extends \unittest\TestCase {
 
@@ -30,21 +31,29 @@ class LogHelperTest extends \unittest\TestCase {
 
   #[@test]
   public function log_to_LogAppender_from_util_log() {
-    $appender= (new BufferedAppender())->withLayout(new PatternLayout('[%l] %m'));
+    $appender= (new BufferedAppender())->withLayout(newinstance(Layout::class, [], [
+      'format' => function($event) {
+        return sprintf('[%s] %s', LogLevel::nameOf($event->getLevel()), ...$event->getArguments());
+      }
+    ]));
     $engine= (new HandlebarsEngine())->withLogger(
       (new LogCategory('trace'))->withAppender($appender)
     );
     $engine->render('{{log "info" "Look at me!"}}', []);
-    $this->assertEquals('[info] Look at me!', $appender->getBuffer());
+    $this->assertEquals('[INFO] Look at me!', $appender->getBuffer());
   }
 
   #[@test]
   public function log_to_LogAppender_from_util_log_with_only_one_argument() {
-    $appender= (new BufferedAppender())->withLayout(new PatternLayout('[%l] %m'));
+    $appender= (new BufferedAppender())->withLayout(newinstance(Layout::class, [], [
+      'format' => function($event) {
+        return sprintf('[%s] %s', LogLevel::nameOf($event->getLevel()), ...$event->getArguments());
+      }
+    ]));
     $engine= (new HandlebarsEngine())->withLogger(
       (new LogCategory('trace'))->withAppender($appender)
     );
     $engine->render('{{log "Look at me!"}}', []);
-    $this->assertEquals('[debug] Look at me!', $appender->getBuffer());
+    $this->assertEquals('[DEBUG] Look at me!', $appender->getBuffer());
   }
 }
