@@ -3,6 +3,11 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 4.3.2 / 2019-08-20
+
+* Made compatible with PHP 7.4 - refrain using `{}` for string offsets
+  (@thekid)
+
 ## 4.3.1 / 2019-05-14
 
 * Fix issue #12: Fix hash options passed to partials - @thekid

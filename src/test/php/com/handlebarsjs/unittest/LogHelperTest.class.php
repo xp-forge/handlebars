@@ -5,6 +5,7 @@ use util\log\BufferedAppender;
 use util\log\Layout;
 use util\log\LogCategory;
 use util\log\LogLevel;
+use util\log\LoggingEvent;
 
 class LogHelperTest extends \unittest\TestCase {
 
@@ -32,7 +33,7 @@ class LogHelperTest extends \unittest\TestCase {
   #[@test]
   public function log_to_LogAppender_from_util_log() {
     $appender= (new BufferedAppender())->withLayout(newinstance(Layout::class, [], [
-      'format' => function($event) {
+      'format' => function(LoggingEvent $event) {
         return sprintf('[%s] %s', LogLevel::nameOf($event->getLevel()), ...$event->getArguments());
       }
     ]));
@@ -46,7 +47,7 @@ class LogHelperTest extends \unittest\TestCase {
   #[@test]
   public function log_to_LogAppender_from_util_log_with_only_one_argument() {
     $appender= (new BufferedAppender())->withLayout(newinstance(Layout::class, [], [
-      'format' => function($event) {
+      'format' => function(LoggingEvent $event) {
         return sprintf('[%s] %s', LogLevel::nameOf($event->getLevel()), ...$event->getArguments());
       }
     ]));
