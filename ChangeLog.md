@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 4.3.3 / 2019-12-01
+
+* Made compatible with XP 10 - @thekid
+
 ## 4.3.2 / 2019-08-20
 
 * Made compatible with PHP 7.4 - refrain using `{}` for string offsets
