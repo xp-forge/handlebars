@@ -121,7 +121,7 @@ class ParsingTest extends \unittest\TestCase {
     $this->assertEquals($nodes, $this->parse('{{#*inline "myPartial"}}Content{{/inline}}'));
   }
 
-  #[@test, @expect(class= TemplateFormatException::class, withMessage= '/Illegal nesting/')]
+  #[@test, @expect(['class' => TemplateFormatException::class, 'withMessage' => '/Illegal nesting/'])]
   public function incorrect_ending_tag() {
     $this->parse('{{#each users}}...{{/each users}}');
   }
@@ -149,7 +149,7 @@ class ParsingTest extends \unittest\TestCase {
     );
   }
 
-  #[@test, @expect(class= TemplateFormatException::class, withMessage= '/Illegal nesting, no start tag/')]
+  #[@test, @expect(['class' => TemplateFormatException::class, 'withMessage' => '/Illegal nesting, no start tag/'])]
   public function no_start_tag() {
     $this->parse('{{if test}}X{{/if}}');
   }

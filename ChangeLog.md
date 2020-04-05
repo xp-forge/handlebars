@@ -3,6 +3,11 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 4.3.4 / 2020-04-05
+
+* Implemented RFC #335: Remove deprecated key/value pair annotation syntax
+  (@thekid)
+
 ## 4.3.3 / 2019-12-01
 
 * Made compatible with XP 10 - @thekid
