@@ -28,11 +28,11 @@ class LogHelperTest extends \unittest\TestCase {
 
   #[@test]
   public function log_to_LogAppender_from_util_log() {
-    $appender= (new BufferedAppender())->withLayout(newinstance(Layout::class, [], [
-      'format' => function(LoggingEvent $event) {
+    $appender= (new BufferedAppender())->withLayout(new class() extends Layout {
+      public function format(LoggingEvent $event) {
         return sprintf('[%s] %s', LogLevel::nameOf($event->getLevel()), ...$event->getArguments());
       }
-    ]));
+    });
     $engine= (new HandlebarsEngine())->withLogger(
       (new LogCategory('trace'))->withAppender($appender)
     );
@@ -42,11 +42,11 @@ class LogHelperTest extends \unittest\TestCase {
 
   #[@test]
   public function log_to_LogAppender_from_util_log_with_only_one_argument() {
-    $appender= (new BufferedAppender())->withLayout(newinstance(Layout::class, [], [
-      'format' => function(LoggingEvent $event) {
+    $appender= (new BufferedAppender())->withLayout(new class() extends Layout {
+      public function format(LoggingEvent $event) {
         return sprintf('[%s] %s', LogLevel::nameOf($event->getLevel()), ...$event->getArguments());
       }
-    ]));
+    });
     $engine= (new HandlebarsEngine())->withLogger(
       (new LogCategory('trace'))->withAppender($appender)
     );
