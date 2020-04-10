@@ -1,7 +1,6 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use com\handlebarsjs\PartialNode;
-use com\handlebarsjs\Lookup;
+use com\handlebarsjs\{Lookup, PartialNode};
 
 class PartialNodeTest extends \unittest\TestCase {
   

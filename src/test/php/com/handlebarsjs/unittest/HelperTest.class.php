@@ -1,7 +1,7 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use com\handlebarsjs\HandlebarsEngine;
 use com\github\mustache\InMemory;
+use com\handlebarsjs\HandlebarsEngine;
 
 abstract class HelperTest extends \unittest\TestCase {
   protected $templates;

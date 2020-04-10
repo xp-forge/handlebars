@@ -1,14 +1,9 @@
 <?php namespace com\handlebarsjs;
 
-use text\StringTokenizer;
-use com\github\mustache\Node;
-use com\github\mustache\Template;
-use com\github\mustache\TemplateListing;
-use com\github\mustache\templates\Source;
-use com\github\mustache\templates\Tokens;
-use com\github\mustache\templates\Compiled;
-use com\github\mustache\templates\NotFound;
+use com\github\mustache\{Node, Template, TemplateListing};
+use com\github\mustache\templates\{Compiled, NotFound, Source, Tokens};
 use lang\ClassLoader;
+use text\StringTokenizer;
 
 /**
  * Template loading implementation

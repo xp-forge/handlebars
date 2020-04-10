@@ -1,7 +1,6 @@
 <?php namespace com\handlebarsjs;
 
-use com\github\mustache\Context;
-use com\github\mustache\DataContext;
+use com\github\mustache\{Context, DataContext};
 
 /**
  * List context for the `each` helper.

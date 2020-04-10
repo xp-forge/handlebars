@@ -1,11 +1,8 @@
 <?php namespace com\handlebarsjs;
 
-use com\github\mustache\MustacheEngine;
-use com\github\mustache\Template;
-use com\github\mustache\TemplateLoader;
+use com\github\mustache\{MustacheEngine, Template, TemplateLoader};
 use lang\IllegalArgumentException;
-use util\log\LogCategory;
-use util\log\LogLevel;
+use util\log\{LogCategory, LogLevel};
 
 /**
  * Handlebars implementation for the XP Framework.

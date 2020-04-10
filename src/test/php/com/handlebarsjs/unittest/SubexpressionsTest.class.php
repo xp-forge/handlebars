@@ -1,10 +1,7 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use com\handlebarsjs\HandlebarsEngine;
-use com\handlebarsjs\Lookup;
-use com\handlebarsjs\Expression;
-use com\handlebarsjs\Constant;
 use com\github\mustache\VariableNode;
+use com\handlebarsjs\{Constant, Expression, HandlebarsEngine, Lookup};
 
 /**
  * Tests subexpressions, which may appear inside node options inside

@@ -1,9 +1,9 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use lang\IllegalArgumentException;
 use com\handlebarsjs\HandlebarsEngine;
-use util\log\LogCategory;
 use io\streams\MemoryOutputStream;
+use lang\IllegalArgumentException;
+use util\log\LogCategory;
 
 class EngineTest extends \unittest\TestCase {
 

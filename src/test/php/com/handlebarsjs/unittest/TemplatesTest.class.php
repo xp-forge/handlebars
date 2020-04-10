@@ -1,8 +1,7 @@
 <?php namespace com\handlebarsjs\unittest;
 
+use com\github\mustache\{InMemory, TextNode};
 use com\handlebarsjs\Templates;
-use com\github\mustache\TextNode;
-use com\github\mustache\InMemory;
 
 class TemplatesTest extends \unittest\TestCase {
 

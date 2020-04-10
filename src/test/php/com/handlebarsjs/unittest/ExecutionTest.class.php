@@ -1,7 +1,6 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use com\github\mustache\InMemory;
-use com\github\mustache\TemplateNotFoundException;
+use com\github\mustache\{InMemory, TemplateNotFoundException};
 use com\handlebarsjs\HandlebarsEngine;
 
 class ExecutionTest extends \unittest\TestCase {

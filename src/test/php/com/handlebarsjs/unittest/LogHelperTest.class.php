@@ -1,11 +1,7 @@
 <?php namespace com\handlebarsjs\unittest;
 
 use com\handlebarsjs\HandlebarsEngine;
-use util\log\BufferedAppender;
-use util\log\Layout;
-use util\log\LogCategory;
-use util\log\LogLevel;
-use util\log\LoggingEvent;
+use util\log\{BufferedAppender, Layout, LogCategory, LogLevel, LoggingEvent};
 
 class LogHelperTest extends \unittest\TestCase {
 

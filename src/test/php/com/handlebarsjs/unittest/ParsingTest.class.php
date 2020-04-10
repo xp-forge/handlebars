@@ -1,18 +1,7 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use com\github\mustache\TemplateFormatException;
-use com\github\mustache\TextNode;
-use com\github\mustache\VariableNode;
-use com\handlebarsjs\BlockNode;
-use com\handlebarsjs\Constant;
-use com\handlebarsjs\Decoration;
-use com\handlebarsjs\Expression;
-use com\handlebarsjs\HandlebarsParser;
-use com\handlebarsjs\Lookup;
-use com\handlebarsjs\Nodes;
-use com\handlebarsjs\PartialBlockHelper;
-use com\handlebarsjs\PartialNode;
-use com\handlebarsjs\Quoted;
+use com\github\mustache\{TemplateFormatException, TextNode, VariableNode};
+use com\handlebarsjs\{BlockNode, Constant, Decoration, Expression, HandlebarsParser, Lookup, Nodes, PartialBlockHelper, PartialNode, Quoted};
 use text\StringTokenizer;
 
 class ParsingTest extends \unittest\TestCase {

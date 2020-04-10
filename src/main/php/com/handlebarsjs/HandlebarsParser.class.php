@@ -1,10 +1,6 @@
 <?php namespace com\handlebarsjs;
 
-use com\github\mustache\AbstractMustacheParser;
-use com\github\mustache\CommentNode;
-use com\github\mustache\IteratorNode;
-use com\github\mustache\TemplateFormatException;
-use com\github\mustache\VariableNode;
+use com\github\mustache\{AbstractMustacheParser, CommentNode, IteratorNode, TemplateFormatException, VariableNode};
 use lang\MethodNotImplementedException;
 
 /**
