@@ -45,7 +45,7 @@ class HandlebarsEngine {
 
     // Lookup: <where> <what>
     $this->setBuiltin('lookup', function($node, $context, $options) {
-      return isset($options[0][$options[1]]) ? $options[0][$options[1]] : null;
+      return $options[0][$options[1]] ?? null;
     });
 
     // Inline partials
@@ -67,7 +67,7 @@ class HandlebarsEngine {
    * @return var or NULL if no such helper exists.
    */
   public function helper($name) {
-    return isset($this->mustache->helpers[$name]) ? $this->mustache->helpers[$name] : null;
+    return $this->mustache->helpers[$name] ?? null;
   }
 
   /**

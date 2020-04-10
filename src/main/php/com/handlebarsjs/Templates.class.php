@@ -1,7 +1,7 @@
 <?php namespace com\handlebarsjs;
 
-use com\github\mustache\{Node, Template, TemplateListing};
 use com\github\mustache\templates\{Compiled, NotFound, Source, Tokens};
+use com\github\mustache\{Node, Template, TemplateListing};
 use lang\ClassLoader;
 use text\StringTokenizer;
 
@@ -54,7 +54,7 @@ class Templates extends \com\github\mustache\templates\Templates {
    * @return string
    */
   public function register($name, $content) {
-    $previous= isset($this->templates[$name]) ? $this->templates[$name] : null;
+    $previous= $this->templates[$name] ?? null;
 
     if (null === $content) {
       unset($this->templates[$name]);
