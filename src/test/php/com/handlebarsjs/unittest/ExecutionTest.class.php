@@ -2,6 +2,7 @@
 
 use com\github\mustache\{InMemory, TemplateNotFoundException};
 use com\handlebarsjs\HandlebarsEngine;
+use unittest\{Expect, Test};
 
 class ExecutionTest extends \unittest\TestCase {
 
@@ -16,7 +17,7 @@ class ExecutionTest extends \unittest\TestCase {
     return (new HandlebarsEngine())->withTemplates(new InMemory($templates))->render($template, $variables);
   }
 
-  #[@test]
+  #[Test]
   public function this_reference_resolves_to_current_scope() {
     $this->assertEquals(
       'Test',
@@ -24,7 +25,7 @@ class ExecutionTest extends \unittest\TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function dot_references_resolving_in_scopes() {
     $this->assertEquals(
       'TestPerson',
@@ -35,22 +36,22 @@ class ExecutionTest extends \unittest\TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function partial() {
     $this->assertEquals('Partial', $this->evaluate('{{> test}}', []));
   }
 
-  #[@test]
+  #[Test]
   public function dynamic_partial() {
     $this->assertEquals('Partial', $this->evaluate('{{> (template)}}', ['template' => 'test']));
   }
 
-  #[@test]
+  #[Test]
   public function complex_dynamic_partial() {
     $this->assertEquals('Partial', $this->evaluate('{{> (lookup . "template")}}', ['template' => 'test']));
   }
 
-  #[@test]
+  #[Test]
   public function partial_with_context() {
     $this->assertEquals('fetched from context', $this->evaluate(
       '{{> test context}}',
@@ -59,7 +60,7 @@ class ExecutionTest extends \unittest\TestCase {
     ));
   }
 
-  #[@test]
+  #[Test]
   public function partial_with_constant_parameter() {
     $this->assertEquals('name was overwritten', $this->evaluate(
       '{{> test name="overwritten"}}',
@@ -68,7 +69,7 @@ class ExecutionTest extends \unittest\TestCase {
     ));
   }
 
-  #[@test]
+  #[Test]
   public function partial_with_variable_parameter() {
     $this->assertEquals('name was overwritten', $this->evaluate(
       '{{> test name=val}}',
@@ -77,12 +78,12 @@ class ExecutionTest extends \unittest\TestCase {
     ));
   }
 
-  #[@test, @expect(['class' => TemplateNotFoundException::class, 'withMessage' => '/Cannot find template undefined/'])]
+  #[Test, Expect(['class' => TemplateNotFoundException::class, 'withMessage' => '/Cannot find template undefined/'])]
   public function undefined_partial() {
     $this->evaluate('{{> undefined}}', []);
   }
 
-  #[@test, @expect(['class' => TemplateNotFoundException::class, 'withMessage' => '/Cannot find template undefined/'])]
+  #[Test, Expect(['class' => TemplateNotFoundException::class, 'withMessage' => '/Cannot find template undefined/'])]
   public function undefined_dynamic_partial() {
     $this->evaluate('{{> (template)}}', ['template' => 'undefined']);
   }

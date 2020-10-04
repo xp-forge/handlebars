@@ -1,6 +1,7 @@
 <?php namespace com\handlebarsjs\unittest;
 
 use com\handlebarsjs\HandlebarsEngine;
+use unittest\Test;
 
 class WebsiteExamplesTest extends \unittest\TestCase {
 
@@ -16,7 +17,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
     return (new HandlebarsEngine())->withHelpers($helpers)->render($template, $variables);
   }
 
-  #[@test]
+  #[Test]
   public function getting_started() {
     $this->assertEquals(
       "<div class=\"entry\">\n".
@@ -40,7 +41,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function triple_stash() {
     $this->assertEquals(
       "<div class=\"entry\">\n".
@@ -64,7 +65,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function block_expressions() {
     $this->assertEquals(
       "<ul>\n".
@@ -95,7 +96,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function nested_paths() {
     $this->assertEquals(
       "<div class=\"entry\">\n".
@@ -127,7 +128,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function dot_dot_segments() {
     $this->assertEquals(
       "<h1>Comments</h1>\n".
@@ -157,7 +158,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function unless_with_license_as_first_option() {
     $this->assertEquals(
       "<div class=\"entry\">\n".
@@ -174,7 +175,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function the_each_block_helper() {
     $this->assertEquals(
       "<ul class=\"people_list\">\n".
@@ -197,7 +198,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function link_helper() {
     $this->assertEquals(
       '<a href="http://example.com/">See more...</a>',
@@ -211,7 +212,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function link_helper_with_hash_arguments() {
     $this->assertEquals(
       '<a href="http://example.com/" class="story">See more...</a>',

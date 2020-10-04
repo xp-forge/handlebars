@@ -1,26 +1,28 @@
 <?php namespace com\handlebarsjs\unittest;
 
+use unittest\Test;
+
 class PartialHelperTest extends HelperTest {
 
-  #[@test]
+  #[Test]
   public function existing_partial() {
     $this->templates->add('layout', 'My layout');
     $this->assertEquals('My layout', $this->evaluate('{{> layout}}', []));
   }
 
-  #[@test]
+  #[Test]
   public function dynamic_partial() {
     $this->templates->add('layout', 'My layout');
     $this->assertEquals('My layout', $this->evaluate('{{> (whichPartial)}}', ['whichPartial' => 'layout']));
   }
 
-  #[@test]
+  #[Test]
   public function dynamic_partial_via_lookup() {
     $this->templates->add('layout', 'My layout');
     $this->assertEquals('My layout', $this->evaluate('{{> (lookup . "whichPartial")}}', ['whichPartial' => 'layout']));
   }
 
-  #[@test]
+  #[Test]
   public function partial_contexts() {
     $this->templates->add('layout', 'My layout for {{name.en}}');
     $this->assertEquals('My layout for Tool', $this->evaluate('{{> layout theme}}', [
@@ -28,7 +30,7 @@ class PartialHelperTest extends HelperTest {
     ));
   }
 
-  #[@test]
+  #[Test]
   public function partial_parameters() {
     $this->templates->add('layout', 'My layout for {{name.en}}');
     $this->assertEquals('My layout for Tool', $this->evaluate('{{> layout name=theme.name}}', [

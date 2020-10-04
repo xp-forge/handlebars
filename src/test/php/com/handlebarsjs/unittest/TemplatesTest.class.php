@@ -2,35 +2,36 @@
 
 use com\github\mustache\{InMemory, TextNode};
 use com\handlebarsjs\Templates;
+use unittest\Test;
 
 class TemplatesTest extends \unittest\TestCase {
 
-  #[@test]
+  #[Test]
   public function can_create() {
     new Templates();
   }
 
-  #[@test]
+  #[Test]
   public function source() {
     $fixture= new Templates();
     $fixture->register('test', 'My content');
     $this->assertEquals('My content', $fixture->source('test')->code());
   }
 
-  #[@test]
+  #[Test]
   public function non_existant_source() {
     $fixture= new Templates();
     $this->assertFalse($fixture->source('non-existant')->exists());
   }
 
-  #[@test]
+  #[Test]
   public function existant_source() {
     $fixture= new Templates();
     $fixture->register('test', 'My content');
     $this->assertTrue($fixture->source('test')->exists());
   }
 
-  #[@test]
+  #[Test]
   public function register_returns_previous() {
     $fixture= new Templates();
 
@@ -42,26 +43,26 @@ class TemplatesTest extends \unittest\TestCase {
     $this->assertEquals([null, 'A', 'B'], $prev);
   }
 
-  #[@test]
+  #[Test]
   public function listing_empty_by_default() {
     $this->assertEquals([], (new Templates())->listing()->templates());
   }
 
-  #[@test]
+  #[Test]
   public function listing_with_registered() {
     $fixture= new Templates();
     $fixture->register('test', 'My content');
     $this->assertEquals(['test'], $fixture->listing()->templates());
   }
 
-  #[@test]
+  #[Test]
   public function listing_with_delegate() {
     $fixture= new Templates();
     $fixture->delegate(new InMemory(['test' => 'My content']));
     $this->assertEquals(['test'], $fixture->listing()->templates());
   }
 
-  #[@test]
+  #[Test]
   public function listing_with_delegate_and_registered() {
     $fixture= new Templates();
     $fixture->register('a', 'My content');

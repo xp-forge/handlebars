@@ -1,5 +1,7 @@
 <?php namespace com\handlebarsjs\unittest;
 
+use unittest\{Ignore, Test, Values};
+
 class EachHelperTest extends HelperTest {
 
   /**
@@ -26,21 +28,21 @@ class EachHelperTest extends HelperTest {
     return ['item' => ['color' => 'green', 'price' => '$12.40']];
   }
 
-  #[@test]
+  #[Test]
   public function with_null_list() {
     $this->assertEquals('', $this->evaluate('{{#each people}}* {{name}}{{/each}}', [
       'people' => null
     ]));
   }
 
-  #[@test]
+  #[Test]
   public function with_empty_list() {
     $this->assertEquals('', $this->evaluate('{{#each people}}* {{name}}{{/each}}', [
       'people' => []
     ]));
   }
 
-  #[@test]
+  #[Test]
   public function with_one_element_list() {
     $this->assertEquals('Test', $this->evaluate('{{#each people}}{{name}}{{/each}}', [
       'people' => [
@@ -49,7 +51,7 @@ class EachHelperTest extends HelperTest {
     ]));
   }
 
-  #[@test]
+  #[Test]
   public function with_elements() {
     $this->assertEquals('* A * B * C ', $this->evaluate(
       '{{#each people}}* {{name}} {{/each}}',
@@ -57,7 +59,7 @@ class EachHelperTest extends HelperTest {
     ));
   }
 
-  #[@test]
+  #[Test]
   public function with_elements_and_index() {
     $this->assertEquals('0: A 1: B 2: C ', $this->evaluate(
       '{{#each people}}{{@index}}: {{name}} {{/each}}',
@@ -65,7 +67,7 @@ class EachHelperTest extends HelperTest {
     ));
   }
 
-  #[@test]
+  #[Test]
   public function with_elements_and_first() {
     $this->assertEquals('true: A : B : C ', $this->evaluate(
       '{{#each people}}{{@first}}: {{name}} {{/each}}',
@@ -73,7 +75,7 @@ class EachHelperTest extends HelperTest {
     ));
   }
 
-  #[@test]
+  #[Test]
   public function with_elements_and_last() {
     $this->assertEquals(': A : B true: C ', $this->evaluate(
       '{{#each people}}{{@last}}: {{name}} {{/each}}',
@@ -81,7 +83,7 @@ class EachHelperTest extends HelperTest {
     ));
   }
 
-  #[@test]
+  #[Test]
   public function with_hash_properties() {
     $this->assertEquals('green $12.40 ', $this->evaluate(
       '{{#each item}}{{.}} {{/each}}',
@@ -89,7 +91,7 @@ class EachHelperTest extends HelperTest {
     ));
   }
 
-  #[@test]
+  #[Test]
   public function with_hash_properties_and_index() {
     $this->assertEquals('color: green price: $12.40 ', $this->evaluate(
       '{{#each item}}{{@key}}: {{.}} {{/each}}',
@@ -97,7 +99,7 @@ class EachHelperTest extends HelperTest {
     ));
   }
 
-  #[@test]
+  #[Test]
   public function with_hash_properties_and_first() {
     $this->assertEquals('true: green : $12.40 ', $this->evaluate(
       '{{#each item}}{{@first}}: {{.}} {{/each}}',
@@ -105,14 +107,14 @@ class EachHelperTest extends HelperTest {
     ));
   }
 
-  #[@test, @values(['else', '^'])]
+  #[Test, Values(['else', '^'])]
   public function else_invoked_for_non_truthy($else) {
     $this->assertEquals('Default', $this->evaluate('{{#each var}}-{{.}}-{{'.$else.'}}Default{{/each}}', [
       'var' => false
     ]));
   }
 
-  #[@test, @ignore('Not yet supported, not sure how to implement')]
+  #[Test, Ignore('Not yet supported, not sure how to implement')]
   public function segment_literal_notation_for_invalid_identifiers() {
     $this->assertEquals('Comment', $this->evaluate('{{#each articles.[10].[#comments]}}{{text}}{{/each}}', [
       'articles' => [
@@ -125,7 +127,7 @@ class EachHelperTest extends HelperTest {
     ]));
   }
 
-  #[@test]
+  #[Test]
   public function nested_each_with_hashes() {
     $this->assertEquals('timm :crown: :snowman:', $this->evaluate(
       '{{#each player}}{{name}}{{#each badges}} :{{name}}:{{/each}}{{/each}}',
@@ -138,7 +140,7 @@ class EachHelperTest extends HelperTest {
     ));
   }
 
-  #[@test]
+  #[Test]
   public function nested_each_with_lists() {
     $this->assertEquals('timm :crown: :snowman:', $this->evaluate(
       '{{#each player}}{{name}}{{#each badges}} :{{name}}:{{/each}}{{/each}}',
@@ -151,7 +153,7 @@ class EachHelperTest extends HelperTest {
     ));
   }
 
-  #[@test]
+  #[Test]
   public function from_iterator() {
     $f= function() {
       yield 'A';
@@ -165,7 +167,7 @@ class EachHelperTest extends HelperTest {
     ));
   }
 
-  #[@test]
+  #[Test]
   public function from_iterator_with_keys() {
     $f= function() {
       yield 'a' => 'A';
