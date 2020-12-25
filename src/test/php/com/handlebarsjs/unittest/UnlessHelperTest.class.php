@@ -1,26 +1,26 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use unittest\{Test, Values};
+use unittest\{Assert, Test, Values};
 
 class UnlessHelperTest extends HelperTest {
 
   #[Test, Values([null, false, '', 0, [[]]])]
   public function shows_for_falsy_values($value) {
-    $this->assertEquals('-Default-', $this->evaluate('{{#unless var}}-Default-{{/unless}}', [
+    Assert::equals('-Default-', $this->evaluate('{{#unless var}}-Default-{{/unless}}', [
       'var' => $value
     ]));
   }
 
   #[Test, Values([true, 'true', 1, 1.0, [['non-empty-array']] ])]
   public function does_not_show_for_truthy_values($value) {
-    $this->assertEquals('', $this->evaluate('{{#unless var}}-Default-{{/unless}}', [
+    Assert::equals('', $this->evaluate('{{#unless var}}-Default-{{/unless}}', [
       'var' => $value
     ]));
   }
 
   #[Test, Values(['else', '^'])]
   public function else_invoked_for_truthy($else) {
-    $this->assertEquals('Default', $this->evaluate('{{#unless var}}-{{var}}-{{'.$else.'}}Default{{/unless}}', [
+    Assert::equals('Default', $this->evaluate('{{#unless var}}-{{var}}-{{'.$else.'}}Default{{/unless}}', [
       'var' => true
     ]));
   }
@@ -33,7 +33,7 @@ class UnlessHelperTest extends HelperTest {
       yield 'C';
     };
 
-    $this->assertEquals('ABC', $this->evaluate(
+    Assert::equals('ABC', $this->evaluate(
       '{{#unless people}}(empty){{else}}{{#each people}}{{.}}{{/each}}{{/unless}}',
       ['people' => $f()]
     ));
@@ -46,7 +46,7 @@ class UnlessHelperTest extends HelperTest {
       yield 'A';
     };
 
-    $this->assertEquals('(empty)', $this->evaluate(
+    Assert::equals('(empty)', $this->evaluate(
       '{{#unless people}}(empty){{else}}{{#each people}}{{.}}{{/each}}{{/unless}}',
       ['people' => $f()]
     ));

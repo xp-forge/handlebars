@@ -2,7 +2,7 @@
 
 use com\github\mustache\VariableNode;
 use com\handlebarsjs\{Constant, Expression, HandlebarsEngine, Lookup};
-use unittest\Test;
+use unittest\{Assert, Test};
 
 /**
  * Tests subexpressions, which may appear inside node options inside
@@ -14,7 +14,7 @@ use unittest\Test;
  *
  * @see  https://github.com/wycats/handlebars.js/blob/master/spec/subexpressions.js
  */
-class SubexpressionsTest extends \unittest\TestCase {
+class SubexpressionsTest {
 
   /**
    * Parse a string template and return the first node in the parsed syntax
@@ -45,7 +45,7 @@ class SubexpressionsTest extends \unittest\TestCase {
 
   #[Test]
   public function parse_arg_less_helper() {
-    $this->assertEquals(
+    Assert::equals(
       new VariableNode('test', true, [new Expression('the-west')]),
       $this->parse('{{test (the-west)}}')
     );
@@ -53,7 +53,7 @@ class SubexpressionsTest extends \unittest\TestCase {
 
   #[Test]
   public function execute_arg_less_helper() {
-    $this->assertEquals(
+    Assert::equals(
       'tested: true',
       $this->evaluate('{{test (the-west)}}', ['the-west' => true])
     );
@@ -61,7 +61,7 @@ class SubexpressionsTest extends \unittest\TestCase {
 
   #[Test]
   public function parse_helper_w_args() {
-    $this->assertEquals(
+    Assert::equals(
       new VariableNode('test', true, [new Expression('equal', [new Lookup('a'), new Lookup('b')])]),
       $this->parse('{{test (equal a b)}}')
     );
@@ -69,7 +69,7 @@ class SubexpressionsTest extends \unittest\TestCase {
 
   #[Test]
   public function execute_helper_w_args() {
-    $this->assertEquals(
+    Assert::equals(
       'tested: false',
       $this->evaluate('{{test (equal a b)}}', ['a' => 1, 'b' => 2])
     );
@@ -77,7 +77,7 @@ class SubexpressionsTest extends \unittest\TestCase {
 
   #[Test]
   public function execute_helper_w_kv_args() {
-    $this->assertEquals(
+    Assert::equals(
       'key=value',
       $this->evaluate('{{join key="value"}}', [])
     );
@@ -85,7 +85,7 @@ class SubexpressionsTest extends \unittest\TestCase {
 
   #[Test]
   public function execute_subexpression_w_kv_args_constant() {
-    $this->assertEquals(
+    Assert::equals(
       'key=value',
       $this->evaluate('{{pass (join key="value")}}', [])
     );
@@ -93,7 +93,7 @@ class SubexpressionsTest extends \unittest\TestCase {
 
   #[Test]
   public function execute_subexpression_w_kv_args_variable() {
-    $this->assertEquals(
+    Assert::equals(
       'key=value',
       $this->evaluate('{{pass (join key=var)}}', ['var' => 'value'])
     );
@@ -101,7 +101,7 @@ class SubexpressionsTest extends \unittest\TestCase {
 
   #[Test]
   public function execute_subexpression_w_kv_args_path() {
-    $this->assertEquals(
+    Assert::equals(
       'key=value',
       $this->evaluate('{{pass (join key=var.val)}}', ['var' => ['val' => 'value']])
     );
@@ -109,7 +109,7 @@ class SubexpressionsTest extends \unittest\TestCase {
 
   #[Test]
   public function parse_supports_much_nesting() {
-    $this->assertEquals(
+    Assert::equals(
       new VariableNode('test', true, [new Expression('equal', [
         new Expression('equal', [new Constant(true), new Constant(true)]),
         new Constant(true)
@@ -120,7 +120,7 @@ class SubexpressionsTest extends \unittest\TestCase {
 
   #[Test]
   public function execute_supports_much_nesting() {
-    $this->assertEquals(
+    Assert::equals(
       'tested: true',
       $this->evaluate('{{test (equal (equal true true) true)}}', [])
     );

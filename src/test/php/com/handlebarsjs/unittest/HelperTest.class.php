@@ -2,12 +2,13 @@
 
 use com\github\mustache\InMemory;
 use com\handlebarsjs\HandlebarsEngine;
+use unittest\Before;
 
-abstract class HelperTest extends \unittest\TestCase {
+abstract class HelperTest {
   protected $templates;
 
-  /** @return void */
-  public function setUp() {
+  #[Before]
+  public function templates() {
     $this->templates= new InMemory();
   }
 
@@ -19,6 +20,10 @@ abstract class HelperTest extends \unittest\TestCase {
    * @return string
    */
   protected function evaluate($template, $variables) {
-    return (new HandlebarsEngine())->withTemplates($this->templates)->render($template, $variables);
+    try {
+      return (new HandlebarsEngine())->withTemplates($this->templates)->render($template, $variables);
+    } finally {
+      $this->templates->clear();
+    }
   }
 }

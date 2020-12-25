@@ -1,10 +1,10 @@
 <?php namespace com\handlebarsjs\unittest;
 
 use com\handlebarsjs\HandlebarsEngine;
-use unittest\Test;
+use unittest\{Assert, Test};
 use util\log\{BufferedAppender, Layout, LogCategory, LogLevel, LoggingEvent};
 
-class LogHelperTest extends \unittest\TestCase {
+class LogHelperTest {
 
   #[Test]
   public function log_to_closure() {
@@ -13,7 +13,7 @@ class LogHelperTest extends \unittest\TestCase {
       $messages[]= $args;
     });
     $engine->render('{{log "Look at me!"}}', []);
-    $this->assertEquals(['Look at me!'], $messages[0]);
+    Assert::equals(['Look at me!'], $messages[0]);
   }
 
   #[Test]
@@ -24,7 +24,7 @@ class LogHelperTest extends \unittest\TestCase {
       $messages[]= '['.$level.'] '.implode(' ', $args);
     });
     $engine->render('{{log "info" "Look at me!"}}', []);
-    $this->assertEquals('[info] Look at me!', $messages[0]);
+    Assert::equals('[info] Look at me!', $messages[0]);
   }
 
   #[Test]
@@ -38,7 +38,7 @@ class LogHelperTest extends \unittest\TestCase {
       (new LogCategory('trace'))->withAppender($appender)
     );
     $engine->render('{{log "info" "Look at me!"}}', []);
-    $this->assertEquals('[INFO] Look at me!', $appender->getBuffer());
+    Assert::equals('[INFO] Look at me!', $appender->getBuffer());
   }
 
   #[Test]
@@ -52,6 +52,6 @@ class LogHelperTest extends \unittest\TestCase {
       (new LogCategory('trace'))->withAppender($appender)
     );
     $engine->render('{{log "Look at me!"}}', []);
-    $this->assertEquals('[DEBUG] Look at me!', $appender->getBuffer());
+    Assert::equals('[DEBUG] Look at me!', $appender->getBuffer());
   }
 }

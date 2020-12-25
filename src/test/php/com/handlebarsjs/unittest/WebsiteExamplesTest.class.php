@@ -1,9 +1,9 @@
 <?php namespace com\handlebarsjs\unittest;
 
 use com\handlebarsjs\HandlebarsEngine;
-use unittest\Test;
+use unittest\{Assert, Test};
 
-class WebsiteExamplesTest extends \unittest\TestCase {
+class WebsiteExamplesTest {
 
   /**
    * Render a template with a list of variables
@@ -19,7 +19,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
 
   #[Test]
   public function getting_started() {
-    $this->assertEquals(
+    Assert::equals(
       "<div class=\"entry\">\n".
       "  <h1>My New Post</h1>\n".
       "  <div class=\"body\">\n".
@@ -43,7 +43,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
 
   #[Test]
   public function triple_stash() {
-    $this->assertEquals(
+    Assert::equals(
       "<div class=\"entry\">\n".
       "  <h1>All About &lt;p&gt; Tags</h1>\n".
       "  <div class=\"body\">\n".
@@ -67,7 +67,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
 
   #[Test]
   public function block_expressions() {
-    $this->assertEquals(
+    Assert::equals(
       "<ul>\n".
       "  <li>Yehuda Katz</li>\n".
       "  <li>Carl Lerche</li>\n".
@@ -98,7 +98,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
 
   #[Test]
   public function nested_paths() {
-    $this->assertEquals(
+    Assert::equals(
       "<div class=\"entry\">\n".
       "  <h1>My First Blog Post!</h1>\n".
       "  <h2>By Yehuda Katz</h2>\n".
@@ -130,7 +130,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
 
   #[Test]
   public function dot_dot_segments() {
-    $this->assertEquals(
+    Assert::equals(
       "<h1>Comments</h1>\n".
       "\n".
       "<div id=\"comments\">\n".
@@ -160,7 +160,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
 
   #[Test]
   public function unless_with_license_as_first_option() {
-    $this->assertEquals(
+    Assert::equals(
       "<div class=\"entry\">\n".
       "<h3 class=\"warning\">WARNING: This entry does not have a license!</h3>\n".
       "</div>\n",
@@ -177,7 +177,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
 
   #[Test]
   public function the_each_block_helper() {
-    $this->assertEquals(
+    Assert::equals(
       "<ul class=\"people_list\">\n".
       "  <li>Yehuda Katz</li>\n".
       "  <li>Carl Lerche</li>\n".
@@ -200,7 +200,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
 
   #[Test]
   public function link_helper() {
-    $this->assertEquals(
+    Assert::equals(
       '<a href="http://example.com/">See more...</a>',
       $this->render(
         '{{{link "See more..." story.url}}}',
@@ -214,7 +214,7 @@ class WebsiteExamplesTest extends \unittest\TestCase {
 
   #[Test]
   public function link_helper_with_hash_arguments() {
-    $this->assertEquals(
+    Assert::equals(
       '<a href="http://example.com/" class="story">See more...</a>',
       $this->render(
         '{{{link "See more..." href=story.url class="story"}}}',

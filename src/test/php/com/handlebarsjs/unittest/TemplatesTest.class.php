@@ -2,9 +2,9 @@
 
 use com\github\mustache\{InMemory, TextNode};
 use com\handlebarsjs\Templates;
-use unittest\Test;
+use unittest\{Assert, Test};
 
-class TemplatesTest extends \unittest\TestCase {
+class TemplatesTest {
 
   #[Test]
   public function can_create() {
@@ -15,20 +15,20 @@ class TemplatesTest extends \unittest\TestCase {
   public function source() {
     $fixture= new Templates();
     $fixture->register('test', 'My content');
-    $this->assertEquals('My content', $fixture->source('test')->code());
+    Assert::equals('My content', $fixture->source('test')->code());
   }
 
   #[Test]
   public function non_existant_source() {
     $fixture= new Templates();
-    $this->assertFalse($fixture->source('non-existant')->exists());
+    Assert::false($fixture->source('non-existant')->exists());
   }
 
   #[Test]
   public function existant_source() {
     $fixture= new Templates();
     $fixture->register('test', 'My content');
-    $this->assertTrue($fixture->source('test')->exists());
+    Assert::true($fixture->source('test')->exists());
   }
 
   #[Test]
@@ -40,26 +40,26 @@ class TemplatesTest extends \unittest\TestCase {
     $prev[]= $fixture->register('@partial-block', new TextNode('B'))->code();
     $prev[]= $fixture->register('@partial-block', 'C')->code();
 
-    $this->assertEquals([null, 'A', 'B'], $prev);
+    Assert::equals([null, 'A', 'B'], $prev);
   }
 
   #[Test]
   public function listing_empty_by_default() {
-    $this->assertEquals([], (new Templates())->listing()->templates());
+    Assert::equals([], (new Templates())->listing()->templates());
   }
 
   #[Test]
   public function listing_with_registered() {
     $fixture= new Templates();
     $fixture->register('test', 'My content');
-    $this->assertEquals(['test'], $fixture->listing()->templates());
+    Assert::equals(['test'], $fixture->listing()->templates());
   }
 
   #[Test]
   public function listing_with_delegate() {
     $fixture= new Templates();
     $fixture->delegate(new InMemory(['test' => 'My content']));
-    $this->assertEquals(['test'], $fixture->listing()->templates());
+    Assert::equals(['test'], $fixture->listing()->templates());
   }
 
   #[Test]
@@ -67,6 +67,6 @@ class TemplatesTest extends \unittest\TestCase {
     $fixture= new Templates();
     $fixture->register('a', 'My content');
     $fixture->delegate(new InMemory(['b' => 'My content']));
-    $this->assertEquals(['a', 'b'], $fixture->listing()->templates());
+    Assert::equals(['a', 'b'], $fixture->listing()->templates());
   }
 }

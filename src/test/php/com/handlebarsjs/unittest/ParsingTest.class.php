@@ -1,11 +1,22 @@
 <?php namespace com\handlebarsjs\unittest;
 
 use com\github\mustache\{TemplateFormatException, TextNode, VariableNode};
-use com\handlebarsjs\{BlockNode, Constant, Decoration, Expression, HandlebarsParser, Lookup, Nodes, PartialBlockHelper, PartialNode, Quoted};
+use com\handlebarsjs\{
+  BlockNode,
+  Constant,
+  Decoration,
+  Expression,
+  HandlebarsParser,
+  Lookup,
+  Nodes,
+  PartialBlockHelper,
+  PartialNode,
+  Quoted
+};
 use text\StringTokenizer;
-use unittest\{Expect, Test, Values};
+use unittest\{Assert, Expect, Test, Values};
 
-class ParsingTest extends \unittest\TestCase {
+class ParsingTest {
 
   /**
    * Evaluate a string template against given variables and return the output.
@@ -20,17 +31,17 @@ class ParsingTest extends \unittest\TestCase {
 
   #[Test]
   public function empty_string_parsed_to_empty_nodes() {
-    $this->assertEquals(new Nodes([]), $this->parse(''));
+    Assert::equals(new Nodes([]), $this->parse(''));
   }
 
   #[Test, Values(['foo', 'foo?', 'foo_', 'foo-', 'foo:', 'foo-bar'])]
   public function parses_simple_mustaches($value) {
-    $this->assertEquals(new Nodes([new VariableNode($value)]), $this->parse('{{'.$value.'}}'));
+    Assert::equals(new Nodes([new VariableNode($value)]), $this->parse('{{'.$value.'}}'));
   }
 
   #[Test]
   public function with_block_helper() {
-    $this->assertEquals(
+    Assert::equals(
       new Nodes([new BlockNode('with', [new Lookup('person')])]),
       $this->parse('{{#with person}}{{/with}}')
     );
@@ -38,7 +49,7 @@ class ParsingTest extends \unittest\TestCase {
 
   #[Test, Values([['message', '{{log "message"}}'], ['message', "{{log 'message'}}"], ['message ""', '{{log "message \"\""}}'], ['message \'\'', "{{log 'message \'\''}}"], ['message "a"', '{{log "message \"a\""}}'], ['message \'a\'', "{{log 'message \'a\''}}"], ['message "a b"', '{{log "message \"a b\""}}'], ['message \'a b\'', "{{log 'message \'a b\''}}"]])]
   public function log_helper_with_string_option($value, $notation) {
-    $this->assertEquals(
+    Assert::equals(
       new Nodes([new VariableNode('log', true, [new Quoted($value)])]),
       $this->parse($notation)
     );
@@ -46,7 +57,7 @@ class ParsingTest extends \unittest\TestCase {
 
   #[Test]
   public function partial() {
-    $this->assertEquals(
+    Assert::equals(
       new Nodes([new PartialNode(new Constant('partial'))]),
       $this->parse('{{> partial}}')
     );
@@ -54,7 +65,7 @@ class ParsingTest extends \unittest\TestCase {
 
   #[Test]
   public function dynamic_partial() {
-    $this->assertEquals(
+    Assert::equals(
       new Nodes([new PartialNode(new Expression('partial'))]),
       $this->parse('{{> (partial)}}')
     );
@@ -62,7 +73,7 @@ class ParsingTest extends \unittest\TestCase {
 
   #[Test]
   public function dynamic_partial_with_lookup_helper() {
-    $this->assertEquals(
+    Assert::equals(
       new Nodes([new PartialNode(new Expression('lookup', [new Lookup(null), new Quoted('partial')]))]),
       $this->parse('{{> (lookup . "partial")}}')
     );
@@ -70,7 +81,7 @@ class ParsingTest extends \unittest\TestCase {
 
   #[Test]
   public function partial_with_context() {
-    $this->assertEquals(
+    Assert::equals(
       new Nodes([new PartialNode(new Constant('userMessage'), ['tagName' => new Quoted('h1')])]),
       $this->parse('{{> userMessage tagName="h1"}}')
     );
@@ -78,7 +89,7 @@ class ParsingTest extends \unittest\TestCase {
 
   #[Test]
   public function dynamic_partial_with_context() {
-    $this->assertEquals(
+    Assert::equals(
       new Nodes([new PartialNode(new Expression('partial'), ['tagName' => new Quoted('h1')])]),
       $this->parse('{{> (partial) tagName="h1"}}')
     );
@@ -86,7 +97,7 @@ class ParsingTest extends \unittest\TestCase {
 
   #[Test]
   public function partial_block() {
-    $this->assertEquals(
+    Assert::equals(
       new Nodes([new PartialBlockHelper(['layout'], new Nodes([
         new TextNode('Content')
       ]))]),
@@ -99,7 +110,7 @@ class ParsingTest extends \unittest\TestCase {
     $nodes= new Nodes();
     $nodes->decorate(new Decoration('inline', [new Quoted('myPartial')], new Nodes([new TextNode('Content')])));
 
-    $this->assertEquals($nodes, $this->parse('{{#*inline "myPartial"}}Content{{/inline}}'));
+    Assert::equals($nodes, $this->parse('{{#*inline "myPartial"}}Content{{/inline}}'));
   }
 
   #[Test, Expect(['class' => TemplateFormatException::class, 'withMessage' => '/Illegal nesting/'])]
@@ -109,7 +120,7 @@ class ParsingTest extends \unittest\TestCase {
 
   #[Test, Values([['-1', -1], ['0', 0], ['1', 1], ['6100', 6100], ['-1.0', -1.0], ['0.0', 0.0], ['1.5', 1.5], ['47.11', 47.11], ['true', true], ['false', false], ['null', null]])]
   public function constants($literal, $value) {
-    $this->assertEquals(
+    Assert::equals(
       [new Constant($value)],
       $this->parse('{{test '.$literal.'}}')->nodeAt(0)->options()
     );
@@ -117,7 +128,7 @@ class ParsingTest extends \unittest\TestCase {
 
   #[Test, Values([['""', ''], ['"Test"', 'Test'], ['"\""', '"'], ['"\"\""', '""'], ['"\"Quoted\""', '"Quoted"']])]
   public function quoted($literal, $value) {
-    $this->assertEquals(
+    Assert::equals(
       [new Quoted($value)],
       $this->parse('{{test '.$literal.'}}')->nodeAt(0)->options()
     );
@@ -135,6 +146,6 @@ class ParsingTest extends \unittest\TestCase {
         value
       }}
     '));
-    $this->assertEquals(new VariableNode('multiline', true, [new Lookup('value')]), $p->nodeAt(0));
+    Assert::equals(new VariableNode('multiline', true, [new Lookup('value')]), $p->nodeAt(0));
   }
 }
