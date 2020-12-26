@@ -173,6 +173,11 @@ class HandlebarsParser extends AbstractMustacheParser {
         );
         return +1; // Skip "}"
       } else if ('/' === $tag[2]) {
+        $name= substr($tag, 3);
+        if ($name !== $state->target->name()) {
+          throw new TemplateFormatException('Illegal nesting, expected {{{{/'.$state->target->name().'}}}}, have {{{{/'.$name.'}}}}');
+        }
+
         $state->target= array_pop($state->parents);
         return +2; // Skip "}}"
       } else {
