@@ -254,7 +254,7 @@ class HandlebarsParser extends AbstractMustacheParser {
         } while ($s > 0 && '\\' === $line[$s - 1]);
 
         if (false === $s) {
-          $text= str_replace('\\{{', '{{', substr($line, $offset));
+          $text= str_replace('\\'.$state->start, $state->start, substr($line, $offset));
           $tag= null;
           $offset= $length;
         } else {
@@ -265,7 +265,7 @@ class HandlebarsParser extends AbstractMustacheParser {
             $line.= $indent.$tokens->nextToken().$tokens->nextToken();
           }
           $length= strlen($line);
-          $text= str_replace('\\{{', '{{', substr($line, $offset, $s - $offset));
+          $text= str_replace('\\'.$state->start, $state->start, substr($line, $offset, $s - $offset));
           $tag= substr($line, $s + strlen($state->start), $e - $s - strlen($state->end));
           $offset= $e + strlen($state->end);
 
