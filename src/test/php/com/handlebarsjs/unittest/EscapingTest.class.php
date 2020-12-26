@@ -46,4 +46,12 @@ class EscapingTest {
   public function backslash_mustaches_and_unescaped_mustache() {
     Assert::equals('Escaped {{a}}{{b}}+{{c}} tags', $this->render('Escaped \\{{a}}\\{{b}}{{and}}\\{{c}} tags', ['and' => '+']));
   }
+
+  #[Test]
+  public function raw_blocks() {
+    Assert::equals(
+      'Handlebars syntax here: {{handlebars}}!',
+      $this->render('Handlebars syntax here: {{{{raw}}}}{{handlebars}}{{{{/raw}}}}!')
+    );
+  }
 }

@@ -165,12 +165,21 @@ class HandlebarsParser extends AbstractMustacheParser {
 
     // triple mustache for unescaped, quadruple for raw
     $this->withHandler('{', false, function($tag, $state, $parse) {
-      $parsed= $parse->options(trim(substr($tag, 1)));
-      $state->target->add('.' === $parsed[0]
-        ? new IteratorNode(false)
-        : new VariableNode($parsed[0], false, array_slice($parsed, 1))
-      );
-      return +1; // Skip "}"
+      if ('{' !== $tag[1]) {
+        $parsed= $parse->options(trim(substr($tag, 1)));
+        $state->target->add('.' === $parsed[0]
+          ? new IteratorNode(false)
+          : new VariableNode($parsed[0], false, array_slice($parsed, 1))
+        );
+        return +1; // Skip "}"
+      } else if ('/' === $tag[2]) {
+        $state->target= array_pop($state->parents);
+        return +2; // Skip "}}"
+      } else {
+        $state->parents[]= $state->target;
+        $state->target= $state->target->add(new RawSection(substr($tag, 2)));
+        return +2; // Skip "}}"
+      }
     });
 
     // ^ is either an else by its own, or a negated block
@@ -255,6 +264,7 @@ class HandlebarsParser extends AbstractMustacheParser {
             }
             $line.= $indent.$tokens->nextToken().$tokens->nextToken();
           }
+          $length= strlen($line);
           $text= str_replace('\\{{', '{{', substr($line, $offset, $s - $offset));
           $tag= substr($line, $s + strlen($state->start), $e - $s - strlen($state->end));
           $offset= $e + strlen($state->end);
