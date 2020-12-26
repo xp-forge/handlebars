@@ -3,6 +3,13 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 5.1.0 / 2020-12-26
+
+* Merged PR #13: Add support for escaping tags - either by prefixing a
+  backslash (`\{{escaped}}`) or by using quadruple mustaches. See
+  https://handlebarsjs.com/guide/expressions.html#escaping-handlebars-expressions
+  (@thekid)
+
 ## 5.0.0 / 2020-04-10
 
 * Implemented xp-framework/rfc#334: Drop PHP 5.6:
