@@ -1,7 +1,16 @@
 <?php namespace com\handlebarsjs;
 
-use com\github\mustache\{AbstractMustacheParser, CommentNode, IteratorNode, TemplateFormatException, VariableNode};
+use com\github\mustache\{
+  AbstractMustacheParser,
+  CommentNode,
+  IteratorNode,
+  VariableNode,
+  TextNode,
+  TemplateFormatException,
+  ParseState
+};
 use lang\MethodNotImplementedException;
+use text\Tokenizer;
 
 /**
  * Parses handlebars templates
@@ -154,14 +163,28 @@ class HandlebarsParser extends AbstractMustacheParser {
       );
     });
 
-    // triple mustache for unescaped
+    // triple mustache for unescaped, quadruple for raw
     $this->withHandler('{', false, function($tag, $state, $parse) {
-      $parsed= $parse->options(trim(substr($tag, 1)));
-      $state->target->add('.' === $parsed[0]
-        ? new IteratorNode(false)
-        : new VariableNode($parsed[0], false, array_slice($parsed, 1))
-      );
-      return +1; // Skip "}"
+      if ('{' !== $tag[1]) {
+        $parsed= $parse->options(trim(substr($tag, 1)));
+        $state->target->add('.' === $parsed[0]
+          ? new IteratorNode(false)
+          : new VariableNode($parsed[0], false, array_slice($parsed, 1))
+        );
+        return +1; // Skip "}"
+      } else if ('/' === $tag[2]) {
+        $name= substr($tag, 3);
+        if ($name !== $state->target->name()) {
+          throw new TemplateFormatException('Illegal nesting, expected {{{{/'.$state->target->name().'}}}}, have {{{{/'.$name.'}}}}');
+        }
+
+        $state->target= array_pop($state->parents);
+        return +2; // Skip "}}"
+      } else {
+        $state->parents[]= $state->target;
+        $state->target= $state->target->add(new RawSection(substr($tag, 2)));
+        return +2; // Skip "}}"
+      }
     });
 
     // ^ is either an else by its own, or a negated block
@@ -193,11 +216,96 @@ class HandlebarsParser extends AbstractMustacheParser {
   }
 
   /**
-   * Returns parsing target
+   * Parse a template
    *
-   * @return com.github.mustache.NodeList
+   * @param  string $template The template as a string
+   * @param  string $start Initial start tag, defaults to "{{"
+   * @param  string $end Initial end tag, defaults to "}}"
+   * @param  string $indent What to prefix before each line
+   * @return com.github.mustache.Node The parsed template
+   * @throws com.github.mustache.TemplateFormatException
    */
-  protected function target() {
-    return new Nodes();
+  public function parse(Tokenizer $tokens, $start= '{{', $end= '}}', $indent= '') {
+    $state= new ParseState();
+    $state->target= new Nodes();
+    $state->start= $start;
+    $state->end= $end;
+    $state->parents= [];
+    $standalone= implode('', array_keys($this->standalone));
+
+    // Tokenize template
+    $tokens->delimiters= "\n";
+    $tokens->returnDelims= true;
+    while ($tokens->hasMoreTokens()) {
+      $token= $tokens->nextToken();
+
+      // Yield empty lines as separate text nodes
+      if ("\n" === $token) {
+        $state->target->add(new TextNode($indent.$token));
+        continue;
+      }
+
+      $line= $indent.$token.$tokens->nextToken();
+      $offset= 0;
+      $length= strlen($line);
+      do {
+        $state->padding= '';
+
+        // Find first unescaped `{{` starting at $offset
+        $o= $offset;
+        do {
+          $s= strpos($line, $state->start, $o);
+          $o= $s + 1;
+        } while ($s > 0 && '\\' === $line[$s - 1]);
+
+        if (false === $s) {
+          $text= substr($line, $offset);
+          $tag= null;
+          $offset= $length;
+        } else {
+          while (false === ($e= strpos($line, $state->end, $s + strlen($state->start)))) {
+            if (!$tokens->hasMoreTokens()) {
+              throw new TemplateFormatException('Unclosed '.$state->start.', expecting '.$state->end);
+            }
+            $line.= $indent.$tokens->nextToken().$tokens->nextToken();
+          }
+          $length= strlen($line);
+          $text= substr($line, $offset, $s - $offset);
+          $tag= substr($line, $s + strlen($state->start), $e - $s - strlen($state->end));
+          $offset= $e + strlen($state->end);
+
+          // Check for standalone tags on a line by themselves
+          if (0 === strcspn($tag, $standalone)) {
+            if ('' === trim(substr($line, 0, $s).substr($line, $offset))) {
+              $offset= $length;
+              $state->padding= substr($line, 0, $s);
+              $text= '';
+            }
+          }
+        }
+
+        // Handle text
+        if ('' !== $text) {
+          $state->target->add(new TextNode(str_replace('\\'.$state->start, $state->start, $text)));
+        }
+
+        // Handle tag
+        if (null === $tag) {
+          continue;
+        } else if (isset($this->handlers[$tag[0]])) {
+          $f= $this->handlers[$tag[0]];
+        } else {
+          $f= $this->handlers[null];
+        }
+        $offset+= $f($tag, $state, $this);
+      } while ($offset < $length);
+    }
+
+    // Check for unclosed sections
+    if (!empty($state->parents)) {
+      throw new TemplateFormatException('Unclosed section '.$state->target->name());
+    }
+
+    return $state->target;
   }
 }
