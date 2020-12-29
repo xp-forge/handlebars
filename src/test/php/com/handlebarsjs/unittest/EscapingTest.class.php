@@ -48,10 +48,18 @@ class EscapingTest {
   }
 
   #[Test]
-  public function raw_blocks() {
+  public function raw_block() {
     Assert::equals(
       'Handlebars syntax here: {{handlebars}}!',
       $this->render('Handlebars syntax here: {{{{raw}}}}{{handlebars}}{{{{/raw}}}}!')
+    );
+  }
+
+  #[Test]
+  public function raw_block_with_each_block_inside() {
+    Assert::equals(
+      'Handlebars syntax here: {{#each a}}{{b}}{{/each}}!',
+      $this->render('Handlebars syntax here: {{{{raw}}}}{{#each a}}{{b}}{{/each}}{{{{/raw}}}}!')
     );
   }
 }

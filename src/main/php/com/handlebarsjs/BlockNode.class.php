@@ -145,14 +145,11 @@ class BlockNode extends Node {
    * @return string
    */
   public function __toString() {
-    return sprintf(
-      "%5\$s%1\$s%2\$s%6\$s\n%4\$s%5\$selse%6\$s\n%5\$s/%1\$s%6\$s\n",
-      $this->name,
-      implode(' ', $this->options),
-      (string)$this->fn,
-      (string)$this->inverse,
-      $this->start,
-      $this->end
-    );
+    $s= $this->start.'#'.$this->name;
+    $this->options && $s.= ' '.implode(' ', $this->options);
+    $s.= $this->end.$this->fn->__toString();
+
+    $this->inverse->length() && $s.= $this->start.'else'.$this->end.$this->inverse->__toString();
+    return $s.$this->start.'/'.$this->name.$this->end;
   }
 }

@@ -3,6 +3,12 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 5.1.1 / 2020-12-29
+
+* Fixed `com.handlebarsjs.BlockNode` string cast not yielding options
+  correctly separated from node name
+  (@thekid)
+
 ## 5.1.0 / 2020-12-26
 
 * Merged PR #13: Add support for escaping tags - either by prefixing a
