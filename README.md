@@ -55,7 +55,7 @@ The following helpers are built in:
 ```handlebars
 <ul>
   {{#each students}}
-  <li>Student's name: {{firstName}} {{lastName}}</li>
+    <li>Student's name: {{firstName}} {{lastName}}</li>
   {{/each}}
 </ul>
 ```
