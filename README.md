@@ -70,12 +70,11 @@ All of the above block helpers support the `else` statement.
 To enable logging, pass either a closure or a `util.log.LogCategory` instance to the engine:
 
 ```php
-use util\log\LogCategory;
-use util\log\ConsoleAppender;
+use util\log\Logging;
 use util\cmd\Console;
 
 // Use a logger category:
-$logger= (new LogCategory('trace'))->withAppender(new ConsoleAppender());
+$logger= Logging::named('trace')->toConsole();
 
 // Or a closure:
 $logger= function($arg) { Console::writeLine('[LOG] ', $arg); };
