@@ -70,6 +70,17 @@ class Templates extends \com\github\mustache\templates\Templates {
   }
 
   /**
+   * Parses a template
+   *
+   * @param  string $content
+   * @param  string $name
+   * @return com.github.mustache.templates.Source
+   */
+  public function tokens($content, $name= '(string)') {
+    return new Tokens($name, new StringTokenizer((string)$content));
+  }
+
+  /**
    * Load a template by a given name
    *
    * @param  string $name The template name without file extension
@@ -90,7 +101,7 @@ class Templates extends \com\github\mustache\templates\Templates {
     if ($this->delegate) {
       return $this->composite()->newInstance($this->templates, $this->delegate->listing());
     } else {
-      return new TemplateListing(null, function($package) { return array_keys($this->templates); });
+      return new TemplateListing('', function($package) { return array_keys($this->templates); });
     }
   }
 }
