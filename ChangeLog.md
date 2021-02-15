@@ -3,6 +3,12 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 5.2.0 / 2021-02-15
+
+* Merged PR #14: Inline MustacheEngine, further reducing indirections and
+  dependencies
+  (@thekid)
+
 ## 5.1.1 / 2020-12-29
 
 * Fixed `com.handlebarsjs.BlockNode` string cast not yielding options
@@ -171,7 +177,7 @@ HandleBars change log
 
 ## 0.2.0 / 2015-02-12
 
-* Changed dependency to use XP ~6.0 (instead of dev-master) - @thekid
+* Changed dependency to use XP 6.0 (instead of dev-master) - @thekid
 * Fixed logging to a `util.log.LogCategory` with only one argument, e.g.
   `{{log 'Hello World'}}`. Use *debug* by by default.
   (@thekid)
