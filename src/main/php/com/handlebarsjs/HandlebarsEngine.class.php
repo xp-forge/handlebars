@@ -54,9 +54,6 @@ class HandlebarsEngine {
   }
 
   /** @return com.github.mustache.TemplateLoader */
-  public function getTemplates() { return $this->templates; }
-
-  /** @return com.github.mustache.TemplateLoader */
   public function templates() { return $this->templates; }
 
   /** @return [:var] */

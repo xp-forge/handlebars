@@ -31,7 +31,7 @@ class PartialBlockHelper extends BlockNode {
    * @param  io.streams.OutputStream $out
    */
   public function write($context, $out) {
-    $templates= $context->engine->getTemplates();
+    $templates= $context->engine->templates();
 
     // {{#> partial context}} vs {{> partial key="Value"}}
     if (isset($this->options[0])) {
