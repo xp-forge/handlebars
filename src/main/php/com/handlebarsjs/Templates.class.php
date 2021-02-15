@@ -70,6 +70,17 @@ class Templates extends \com\github\mustache\templates\Templates {
   }
 
   /**
+   * Parses a template
+   *
+   * @param  string $content
+   * @param  string $name
+   * @return com.github.mustache.templates.Source
+   */
+  public function tokens($content, $name= '(string)') {
+    return new Tokens($name, new StringTokenizer($content));
+  }
+
+  /**
    * Load a template by a given name
    *
    * @param  string $name The template name without file extension
