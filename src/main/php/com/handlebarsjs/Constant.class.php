@@ -48,7 +48,7 @@ class Constant implements \lang\Value {
    * @return int
    */
   public function compareTo($value) {
-    return $value instanceof self ? strcmp($this->value, $value->value) : 1;
+    return $value instanceof self ? $this->value <=> $value->value : 1;
   }
 
   /** @return string */
