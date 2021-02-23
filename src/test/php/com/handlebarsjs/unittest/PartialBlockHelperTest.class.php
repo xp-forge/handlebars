@@ -56,6 +56,15 @@ class PartialBlockHelperTest extends HelperTest {
   }
 
   #[Test]
+  public function inline() {
+    $this->templates->add('layout', 'The {{#> content}}failure{{/content}} comes here');
+    Assert::equals(
+      'The content comes here',
+      $this->evaluate('{{#> layout}}{{#*inline "content"}}content{{/inline}}{{/layout}}', [])
+    );
+  }
+
+  #[Test]
   public function layout() {
     $this->templates->add('includes/hero', '<div class="hero"><img src="{{hero-src}}" alt="{{hero-alt}}"/></div>');
     $this->templates->add('layout', trim('
