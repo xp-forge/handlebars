@@ -1,15 +1,20 @@
 <?php namespace com\handlebarsjs\unittest;
 
 use com\github\mustache\InMemory;
+use com\github\mustache\templates\Templates;
 use com\handlebarsjs\HandlebarsEngine;
-use unittest\Before;
 
+/** Base class for all helper tests */
 abstract class HelperTest {
-  protected $templates;
 
-  #[Before]
-  public function templates() {
-    $this->templates= new InMemory();
+  /** Returns in-memory templates initialized from a given map */
+  protected function templates(array $templates= []): Templates {
+    return new InMemory($templates);
+  }
+
+  /** Returns handlebars engine with specified templates */
+  protected function engine(Templates $templates= null): HandlebarsEngine {
+    return (new HandlebarsEngine())->withTemplates($templates ?? $this->templates());
   }
 
   /**
@@ -20,10 +25,6 @@ abstract class HelperTest {
    * @return string
    */
   protected function evaluate($template, $variables) {
-    try {
-      return (new HandlebarsEngine())->withTemplates($this->templates)->render($template, $variables);
-    } finally {
-      $this->templates->clear();
-    }
+    return $this->engine()->render($template, $variables);
   }
 }

@@ -6,34 +6,34 @@ class PartialHelperTest extends HelperTest {
 
   #[Test]
   public function existing_partial() {
-    $this->templates->add('layout', 'My layout');
-    Assert::equals('My layout', $this->evaluate('{{> layout}}', []));
+    $templates= $this->templates(['layout' => 'My layout']);
+    Assert::equals('My layout', $this->engine($templates)->render('{{> layout}}', []));
   }
 
   #[Test]
   public function dynamic_partial() {
-    $this->templates->add('layout', 'My layout');
-    Assert::equals('My layout', $this->evaluate('{{> (whichPartial)}}', ['whichPartial' => 'layout']));
+    $templates= $this->templates(['layout' => 'My layout']);
+    Assert::equals('My layout', $this->engine($templates)->render('{{> (whichPartial)}}', ['whichPartial' => 'layout']));
   }
 
   #[Test]
   public function dynamic_partial_via_lookup() {
-    $this->templates->add('layout', 'My layout');
-    Assert::equals('My layout', $this->evaluate('{{> (lookup . "whichPartial")}}', ['whichPartial' => 'layout']));
+    $templates= $this->templates(['layout' => 'My layout']);
+    Assert::equals('My layout', $this->engine($templates)->render('{{> (lookup . "whichPartial")}}', ['whichPartial' => 'layout']));
   }
 
   #[Test]
   public function partial_contexts() {
-    $this->templates->add('layout', 'My layout for {{name.en}}');
-    Assert::equals('My layout for Tool', $this->evaluate('{{> layout theme}}', [
+    $templates= $this->templates(['layout' => 'My layout for {{name.en}}']);
+    Assert::equals('My layout for Tool', $this->engine($templates)->render('{{> layout theme}}', [
       'theme' => ['name' => ['en' => 'Tool']]]
     ));
   }
 
   #[Test]
   public function partial_parameters() {
-    $this->templates->add('layout', 'My layout for {{name.en}}');
-    Assert::equals('My layout for Tool', $this->evaluate('{{> layout name=theme.name}}', [
+    $templates= $this->templates(['layout' => 'My layout for {{name.en}}']);
+    Assert::equals('My layout for Tool', $this->engine($templates)->render('{{> layout name=theme.name}}', [
       'theme' => ['name' => ['en' => 'Tool']]]
     ));
   }
