@@ -2,7 +2,7 @@
 
 use com\github\mustache\templates\{Compiled, NotFound, Source, Tokens};
 use com\github\mustache\{Node, Template, TemplateListing};
-use lang\ClassLoader;
+use lang\{ClassLoader, IllegalArgumentException};
 use text\StringTokenizer;
 
 /**
@@ -10,7 +10,7 @@ use text\StringTokenizer;
  *
  * @test  xp://com.handlebarsjs.unittest.TemplatesTest
  */
-class Templates extends \com\github\mustache\templates\Templates {
+class Templates {
   private static $composite= null;
   private $templates= [];
   private $delegate;
@@ -44,6 +44,21 @@ class Templates extends \com\github\mustache\templates\Templates {
    */
   public function delegate($delegate) {
     $this->delegate= $delegate;
+  }
+
+  /**
+   * Declares an inline template
+   *
+   * @param  string $name
+   * @param  com.github.mustache.Node $node
+   * @throws lang.IllegalArgumentException
+   * @return void
+   */
+  public function declare($name, Node $node) {
+    if (isset($this->templates[$name])) {
+      throw new IllegalArgumentException('Cannot redeclare template "'.$name.'"');
+    }
+    $this->templates[$name]= new Compiled(new Template($name, $node));
   }
 
   /**
@@ -90,7 +105,7 @@ class Templates extends \com\github\mustache\templates\Templates {
     if (isset($this->templates[$name])) {
       return $this->templates[$name];
     } else if ($this->delegate) {
-      return $this->delegate->source($name);
+      return $this->templates[$name]= $this->delegate->source($name);
     } else {
       return new NotFound('Cannot find template '.$name);
     }

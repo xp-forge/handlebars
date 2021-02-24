@@ -1,6 +1,7 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use unittest\{Assert, Test};
+use lang\IllegalArgumentException;
+use unittest\{Assert, Test, Expect};
 
 class PartialBlockHelperTest extends HelperTest {
 
@@ -92,5 +93,22 @@ class PartialBlockHelperTest extends HelperTest {
         []
       )
     );
+  }
+
+  #[Test, Expect(IllegalArgumentException::class)]
+  public function inline_may_not_redeclare_inline() {
+    $templates= $this->templates([
+      'content' => '{{#*inline "content"}}1{{/inline}}{{#*inline "content"}}2{{/inline}}'
+    ]);
+    $this->engine($templates)->transform('content', []);
+  }
+
+  #[Test, Expect(IllegalArgumentException::class)]
+  public function inline_may_not_overwrite_declaring_template() {
+    $templates= $this->templates([
+      'layout'  => 'The {{#> content}}failure{{/content}} comes here',
+      'content' => '{{#> layout}}{{#*inline "content"}}content{{/inline}}{{/layout}}'
+    ]);
+    $this->engine($templates)->transform('content', []);
   }
 }
