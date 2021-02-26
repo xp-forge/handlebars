@@ -97,18 +97,34 @@ class PartialBlockHelperTest extends HelperTest {
 
   #[Test, Expect(IllegalArgumentException::class)]
   public function inline_may_not_redeclare_inline() {
-    $templates= $this->templates([
-      'content' => '{{#*inline "content"}}1{{/inline}}{{#*inline "content"}}2{{/inline}}'
-    ]);
-    $this->engine($templates)->transform('content', []);
+    $engine= $this->engine($this->templates([
+      'content' => '{{#*inline "one"}}1{{/inline}}{{#*inline "one"}}2{{/inline}}'
+    ]));
+    $engine->transform('content', []);
   }
 
   #[Test, Expect(IllegalArgumentException::class)]
   public function inline_may_not_overwrite_declaring_template() {
-    $templates= $this->templates([
+    $engine= $this->engine($this->templates([
       'layout'  => 'The {{#> content}}failure{{/content}} comes here',
       'content' => '{{#> layout}}{{#*inline "content"}}content{{/inline}}{{/layout}}'
-    ]);
-    $this->engine($templates)->transform('content', []);
+    ]));
+    $engine->transform('content', []);
+  }
+
+  #[Test]
+  public function templates_can_be_transformed_twice() {
+    $engine= $this->engine($this->templates(['content' => '1']));
+
+    Assert::equals('1', $engine->transform('content', []));
+    Assert::equals('1', $engine->transform('content', []));
+  }
+
+  #[Test]
+  public function inline_can_be_transformed_twice() {
+    $engine= $this->engine($this->templates(['content' => '{{#*inline "one"}}1{{/inline}}{{> one}}']));
+
+    Assert::equals('1', $engine->transform('content', []));
+    Assert::equals('1', $engine->transform('content', []));
   }
 }
