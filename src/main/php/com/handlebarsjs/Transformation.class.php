@@ -1,7 +1,7 @@
 <?php namespace com\handlebarsjs;
 
 use com\github\mustache\templates\Compiled;
-use com\github\mustache\{Scope, Node, Templating};
+use com\github\mustache\{Templating, Node};
 use lang\IllegalArgumentException;
 
 class Transformation extends Templating {
