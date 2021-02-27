@@ -24,16 +24,16 @@ use util\log\{LogCategory, LogLevel};
  */
 class HandlebarsEngine {
   protected static $builtin;
-  public $templates, $helpers;
+  private $templates, $helpers;
 
   static function __static() {
     self::$builtin= [
       'this'    => function($node, $context, $options) {
-        $variable= $context->lookup(null);
-        if ($context->isHash($variable) || $context->isList($variable)) {
-          return current($context->asTraversable($variable));
+        $value= $context->lookup(null);
+        if ($context->isHash($value) || $context->isList($value)) {
+          return current($value);
         } else {
-          return $variable;
+          return $value;
         }
       },
       'lookup'  => function($node, $context, $options) {
