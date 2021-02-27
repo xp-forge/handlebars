@@ -1,6 +1,6 @@
 <?php namespace com\handlebarsjs;
 
-use com\github\mustache\{Context, DataContext, Template};
+use com\github\mustache\{Scope, Context, DataContext, Templating, Template};
 use lang\IllegalArgumentException;
 use util\log\{LogCategory, LogLevel};
 
@@ -24,8 +24,7 @@ use util\log\{LogCategory, LogLevel};
  */
 class HandlebarsEngine {
   protected static $builtin;
-  protected $parser, $templates;
-  public $helpers;
+  public $templates, $helpers;
 
   static function __static() {
     self::$builtin= [
@@ -48,8 +47,7 @@ class HandlebarsEngine {
 
   /** Create new instance and initialize builtin helpers */
   public function __construct() {
-    $this->templates= new Templates();
-    $this->parser= new HandlebarsParser();
+    $this->templates= new Templating(new FilesIn('.'),  new HandlebarsParser());
     $this->helpers= self::$builtin;
   }
 
@@ -110,7 +108,7 @@ class HandlebarsEngine {
    * @return self this
    */
   public function withTemplates($l) {
-    $this->templates->delegate($l);
+    $this->templates->from($l);
     return $this;
   }
 
@@ -147,7 +145,7 @@ class HandlebarsEngine {
    * @return com.github.mustache.Template
    */
   public function compile($template, $start= '{{', $end= '}}', $indent= '') {
-    return $this->templates->tokens($template)->compile($this->parser, $start, $end, $indent);
+     return $this->templates->compile($template, $start, $end, $indent);
   }
 
   /**
@@ -160,7 +158,7 @@ class HandlebarsEngine {
    * @return com.github.mustache.Template
    */
   public function load($name, $start= '{{', $end= '}}', $indent= '') {
-    return $this->templates->source($name)->compile($this->parser, $start, $end, $indent);
+    return $this->templates->compile($this->templates->load($name), $start, $end, $indent);
   }
 
   /**
@@ -172,7 +170,7 @@ class HandlebarsEngine {
    */
   public function evaluate(Template $template, $arg) {
     $c= $arg instanceof Context ? $arg : new DataContext($arg);
-    return $template->evaluate($c->inScope($this));
+    return $template->evaluate($c->inScope(new Scope(new Transformation($this->templates), $this->helpers)));
   }
 
   /**
@@ -185,7 +183,7 @@ class HandlebarsEngine {
    */
   public function write(Template $template, $arg, $out) {
     $c= $arg instanceof Context ? $arg : new DataContext($arg);
-    $template->write($c->inScope($this), $out);
+    $template->write($c->inScope(new Scope(new Transformation($this->templates), $this->helpers)), $out);
   }
 
   /**

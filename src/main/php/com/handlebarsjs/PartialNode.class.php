@@ -101,9 +101,8 @@ class PartialNode extends Node {
       $context= $context->asContext($pass);
     }
 
-    $engine= $context->scope;
-    $template= $engine->load($this->template->__invoke($this, $context, []), '{{', '}}', $this->indent);
-    $engine->write($template, $context, $out);
+    $source= $context->scope->templates->load($this->template->__invoke($this, $context, []));
+    $context->scope->templates->compile($source, '{{', '}}', $this->indent)->write($context, $out);
   }
 
   /**

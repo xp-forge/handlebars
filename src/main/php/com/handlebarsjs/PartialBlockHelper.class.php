@@ -31,7 +31,6 @@ class PartialBlockHelper extends BlockNode {
    * @param  io.streams.OutputStream $out
    */
   public function write($context, $out) {
-    $templates= $context->scope->templates();
 
     // {{#> partial context}} vs {{> partial key="Value"}}
     if (isset($this->options[0])) {
@@ -44,16 +43,16 @@ class PartialBlockHelper extends BlockNode {
       $context= $context->asContext($pass);
     }
 
-    $source= $templates->source($this->name);
+    $source= $context->scope->templates->load($this->name);
     if ($source->exists()) {
       $this->fn->enter($context);
 
-      $template= $context->scope->load($this->name, $this->start, $this->end, '');
-      $previous= $templates->register('@partial-block', $this->fn->block());
+      $template= $context->scope->templates->compile($source, $this->start, $this->end, '');
+      $previous= $context->scope->templates->register('@partial-block', $this->fn->block());
       try {
-        $context->scope->write($template, $context, $out);
+        $template->write($context, $out);
       } finally {
-        $templates->register('@partial-block', $previous);
+        $context->scope->templates->register('@partial-block', $previous);
       }
     } else {
       $this->fn->write($context, $out);
