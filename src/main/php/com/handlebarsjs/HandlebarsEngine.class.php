@@ -51,7 +51,7 @@ class HandlebarsEngine {
     $this->helpers= self::$builtin;
   }
 
-  /** @return com.github.mustache.TemplateLoader */
+  /** @return com.github.mustache.Templating */
   public function templates() { return $this->templates; }
 
   /** @return [:var] */
@@ -104,11 +104,11 @@ class HandlebarsEngine {
   /**
    * Sets template loader to be used
    *
-   * @param  com.github.mustache.templates.Templates|com.github.mustache.TemplateLoader $l
+   * @param  com.github.mustache.templates.Sources $sources
    * @return self this
    */
-  public function withTemplates($l) {
-    $this->templates->from($l);
+  public function withTemplates($sources) {
+    $this->templates->from($sources);
     return $this;
   }
 
