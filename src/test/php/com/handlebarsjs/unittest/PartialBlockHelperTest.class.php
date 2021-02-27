@@ -103,13 +103,13 @@ class PartialBlockHelperTest extends HelperTest {
     $engine->transform('content', []);
   }
 
-  #[Test, Expect(IllegalArgumentException::class)]
-  public function inline_may_not_overwrite_declaring_template() {
+  #[Test]
+  public function inline_may_have_same_name_as_declaring_template() {
     $engine= $this->engine($this->templates([
       'layout'  => 'The {{#> content}}failure{{/content}} comes here',
       'content' => '{{#> layout}}{{#*inline "content"}}content{{/inline}}{{/layout}}'
     ]));
-    $engine->transform('content', []);
+    Assert::equals('The content comes here', $engine->transform('content', []));
   }
 
   #[Test]
