@@ -22,7 +22,7 @@ class Transformation extends Templating {
    */
   public function declare($name, Node $template) {
     if (isset($this->inline[$name])) {
-      throw new IllegalArgumentException('Cannot redeclare template "'.$name.'"');
+      throw new IllegalArgumentException('Cannot redeclare *inline "'.$name.'"');
     }
     $this->inline[$name]= new Compiled($template);
   }
