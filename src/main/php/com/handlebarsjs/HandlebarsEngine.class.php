@@ -41,7 +41,7 @@ class HandlebarsEngine {
         return $options[0][$options[1]] ?? null;
       },
       '*inline' => function($node, $context, $options) {
-        $context->engine->templates->declare($options[0]($node, $context, []), $node);
+        $context->scope->templates->declare($options[0]($node, $context, []), $node);
       }
     ];
   }
@@ -172,7 +172,7 @@ class HandlebarsEngine {
    */
   public function evaluate(Template $template, $arg) {
     $c= $arg instanceof Context ? $arg : new DataContext($arg);
-    return $template->evaluate($c->withEngine($this));
+    return $template->evaluate($c->inScope($this));
   }
 
   /**
@@ -185,7 +185,7 @@ class HandlebarsEngine {
    */
   public function write(Template $template, $arg, $out) {
     $c= $arg instanceof Context ? $arg : new DataContext($arg);
-    $template->write($c->withEngine($this), $out);
+    $template->write($c->inScope($this), $out);
   }
 
   /**

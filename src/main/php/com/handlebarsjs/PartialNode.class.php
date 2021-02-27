@@ -92,16 +92,16 @@ class PartialNode extends Node {
 
     // {{> partial context}} vs {{> partial key="Value"}}
     if (isset($this->options[0])) {
-      $context= $context->newInstance($this->options[0]($this, $context, []));
+      $context= $context->asContext($this->options[0]($this, $context, []));
     } else if ($this->options) {
       $pass= [];
       foreach ($context->asTraversable($this->options) as $key => $value) {
         $pass[$key]= $value($this, $context, []);
       }
-      $context= $context->newInstance($pass);
+      $context= $context->asContext($pass);
     }
 
-    $engine= $context->engine;
+    $engine= $context->scope;
     $template= $engine->load($this->template->__invoke($this, $context, []), '{{', '}}', $this->indent);
     $engine->write($template, $context, $out);
   }

@@ -1,9 +1,8 @@
 <?php namespace com\handlebarsjs;
 
-use com\github\mustache\templates\{Compiled, NotFound, Source, Tokens};
-use com\github\mustache\{Node, Template, TemplateListing};
+use com\github\mustache\templates\{Compiled, NotFound, Source, Listing, InString};
+use com\github\mustache\{Node, Template};
 use lang\{ClassLoader, IllegalArgumentException};
-use text\StringTokenizer;
 
 /**
  * Template loading implementation
@@ -18,7 +17,7 @@ class Templates {
   /** @return lang.XPClass */
   private function composite() {
     if (null === self::$composite) {
-      self::$composite= ClassLoader::defineClass('CompositeListing', TemplateListing::class, [], [
+      self::$composite= ClassLoader::defineClass('CompositeListing', Listing::class, [], [
         'templates' => null,
         'delegate' => null,
         '__construct' => function($templates, $delegate) {
@@ -78,7 +77,7 @@ class Templates {
     } else if ($content instanceof Node) {
       $this->templates[$name]= new Compiled(new Template($name, $content));
     } else {
-      $this->templates[$name]= new Tokens($name, new StringTokenizer($content));
+      $this->templates[$name]= new InString($name, $content);
     }
 
     return $previous;
@@ -92,7 +91,7 @@ class Templates {
    * @return com.github.mustache.templates.Source
    */
   public function tokens($content, $name= '(string)') {
-    return new Tokens($name, new StringTokenizer((string)$content));
+    return new InString($name, (string)$content);
   }
 
   /**
@@ -111,12 +110,12 @@ class Templates {
     }
   }
 
-  /** @return com.github.mustache.TemplateListing */
+  /** @return com.github.mustache.templates.Listing */
   public function listing() {
     if ($this->delegate) {
       return $this->composite()->newInstance($this->templates, $this->delegate->listing());
     } else {
-      return new TemplateListing('', function($package) { return array_keys($this->templates); });
+      return new Listing('', function($package) { return array_keys($this->templates); });
     }
   }
 }

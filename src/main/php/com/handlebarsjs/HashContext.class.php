@@ -30,10 +30,11 @@ class HashContext extends Context {
    * Returns a context inherited from this context
    *
    * @param  var $result
+   * @param  parent $parent
    * @return self
    */
-  public function asContext($result) {
-    return new DataContext($result, $this);
+  public function asContext($result, $parent= null) {
+    return new DataContext($result, $parent ?? $this);
   }
 
   /**

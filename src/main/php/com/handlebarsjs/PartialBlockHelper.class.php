@@ -31,27 +31,27 @@ class PartialBlockHelper extends BlockNode {
    * @param  io.streams.OutputStream $out
    */
   public function write($context, $out) {
-    $templates= $context->engine->templates();
+    $templates= $context->scope->templates();
 
     // {{#> partial context}} vs {{> partial key="Value"}}
     if (isset($this->options[0])) {
-      $context= $context->newInstance($this->options[0]($this, $context, []));
+      $context= $context->asContext($this->options[0]($this, $context, []));
     } else if ($this->options) {
       $pass= [];
       foreach ($context->asTraversable($this->options) as $key => $value) {
         $pass[$key]= $value($this, $context, []);
       }
-      $context= $context->newInstance($pass);
+      $context= $context->asContext($pass);
     }
 
     $source= $templates->source($this->name);
     if ($source->exists()) {
       $this->fn->enter($context);
 
-      $template= $context->engine->load($this->name, $this->start, $this->end, '');
+      $template= $context->scope->load($this->name, $this->start, $this->end, '');
       $previous= $templates->register('@partial-block', $this->fn->block());
       try {
-        $context->engine->write($template, $context, $out);
+        $context->scope->write($template, $context, $out);
       } finally {
         $templates->register('@partial-block', $previous);
       }

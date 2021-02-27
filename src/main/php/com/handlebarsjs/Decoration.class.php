@@ -37,11 +37,11 @@ class Decoration {
    * @return void
    */
   public function enter($context) {
-    if (isset($context->engine->helpers[$this->kind])) {
-      $f= $context->engine->helpers[$this->kind];
+    if (isset($context->scope->helpers[$this->kind])) {
+      $f= $context->scope->helpers[$this->kind];
       $f($this->fn, $context, $this->options);
     } else {
-      throw new MethodNotImplementedException('No such decorator '.$this->kind);
+      throw new MethodNotImplementedException('No such decorator', $this->kind);
     }
   }
 }
