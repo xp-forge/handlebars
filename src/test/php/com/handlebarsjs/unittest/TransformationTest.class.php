@@ -6,7 +6,8 @@ use unittest\{Assert, Test};
 
 class TransformationTest {
 
-  private function templating() {
+  /** Returns templating for use as constructor parameter */
+  private function templating(): Templating {
     return new Templating(new InMemory(), new HandlebarsParser());
   }
 
@@ -18,21 +19,21 @@ class TransformationTest {
   #[Test]
   public function source() {
     $fixture= new Transformation($this->templating());
-    $fixture->register('test', new TextNode('My content'));
-    Assert::equals('My content', $fixture->load('test')->code());
+    $fixture->templates->register('test', new TextNode('My content'));
+    Assert::equals('My content', $fixture->templates->load('test')->code());
   }
 
   #[Test]
   public function non_existant_source() {
     $fixture= new Transformation($this->templating());
-    Assert::false($fixture->load('non-existant')->exists());
+    Assert::false($fixture->templates->load('non-existant')->exists());
   }
 
   #[Test]
   public function existant_source() {
     $fixture= new Transformation($this->templating());
-    $fixture->register('test', new TextNode('My content'));
-    Assert::true($fixture->load('test')->exists());
+    $fixture->templates->register('test', new TextNode('My content'));
+    Assert::true($fixture->templates->load('test')->exists());
   }
 
   #[Test]
@@ -40,9 +41,9 @@ class TransformationTest {
     $fixture= new Transformation($this->templating());
 
     $prev= [];
-    $prev[]= $fixture->register('@partial-block', new TextNode('A'));
-    $prev[]= (string)$fixture->register('@partial-block', new TextNode('B'));
-    $prev[]= (string)$fixture->register('@partial-block', new TextNode('C'));
+    $prev[]= $fixture->templates->register('@partial-block', new TextNode('A'));
+    $prev[]= (string)$fixture->templates->register('@partial-block', new TextNode('B'));
+    $prev[]= (string)$fixture->templates->register('@partial-block', new TextNode('C'));
 
     Assert::equals([null, 'A', 'B'], $prev);
   }

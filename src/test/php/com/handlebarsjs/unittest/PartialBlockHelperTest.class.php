@@ -1,6 +1,6 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use lang\IllegalArgumentException;
+use com\github\mustache\TemplateFormatException;
 use unittest\{Assert, Test, Expect};
 
 class PartialBlockHelperTest extends HelperTest {
@@ -95,7 +95,7 @@ class PartialBlockHelperTest extends HelperTest {
     );
   }
 
-  #[Test, Expect(IllegalArgumentException::class)]
+  #[Test, Expect(TemplateFormatException::class)]
   public function inline_may_not_redeclare_inline() {
     $engine= $this->engine($this->templates([
       'content' => '{{#*inline "one"}}1{{/inline}}{{#*inline "one"}}2{{/inline}}'

@@ -170,7 +170,7 @@ class HandlebarsEngine {
    */
   public function evaluate(Template $template, $arg) {
     $c= $arg instanceof Context ? $arg : new DataContext($arg);
-    return $template->evaluate($c->inScope(new Scope(new Transformation($this->templates), $this->helpers)));
+    return $template->evaluate($c->inScope(new Transformation($this->templates, $this->helpers)));
   }
 
   /**
@@ -183,7 +183,7 @@ class HandlebarsEngine {
    */
   public function write(Template $template, $arg, $out) {
     $c= $arg instanceof Context ? $arg : new DataContext($arg);
-    $template->write($c->inScope(new Scope(new Transformation($this->templates), $this->helpers)), $out);
+    $template->write($c->inScope(new Transformation($this->templates, $this->helpers)), $out);
   }
 
   /**
