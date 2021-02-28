@@ -165,11 +165,11 @@ class HandlebarsEngine {
    * Evaluate a compiled template.
    *
    * @param  com.github.mustache.Template $template The template
-   * @param  [:var]|com.github.mustache.Context $arg Context
+   * @param  [:var]|com.github.mustache.Context $context Context
    * @return string The rendered output
    */
-  public function evaluate(Template $template, $arg) {
-    $c= $arg instanceof Context ? $arg : new DataContext($arg);
+  public function evaluate(Template $template, $context) {
+    $c= $context instanceof Context ? $context : new DataContext($context);
     return $template->evaluate($c->inScope(new Transformation($this->templates, $this->helpers)));
   }
 
@@ -177,12 +177,12 @@ class HandlebarsEngine {
    * Evaluate a compiled template.
    *
    * @param  com.github.mustache.Template $template The template
-   * @param  [:var]|com.github.mustache.Context $arg Context
+   * @param  [:var]|com.github.mustache.Context $context Context
    * @param  io.streams.OutputStream $out
    * @return void
    */
-  public function write(Template $template, $arg, $out) {
-    $c= $arg instanceof Context ? $arg : new DataContext($arg);
+  public function write(Template $template, $context, $out) {
+    $c= $context instanceof Context ? $context : new DataContext($context);
     $template->write($c->inScope(new Transformation($this->templates, $this->helpers)), $out);
   }
 
