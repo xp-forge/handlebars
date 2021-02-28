@@ -72,7 +72,7 @@ class HandlebarsEngine {
    * instance or NULL (to unset).
    *
    * @param  var $logger
-   * @return self this
+   * @return self
    * @throws lang.IllegalArgumentException on argument mismatch
    */
   public function withLogger($logger) {
@@ -105,7 +105,7 @@ class HandlebarsEngine {
    * Sets template loader to be used
    *
    * @param  com.github.mustache.templates.Sources $sources
-   * @return self this
+   * @return self
    */
   public function withTemplates($sources) {
     $this->templates->from($sources);
@@ -117,7 +117,7 @@ class HandlebarsEngine {
    *
    * @param  string $name
    * @param  var $helper
-   * @return self this
+   * @return self
    */
   public function withHelper($name, $helper) {
     $this->helpers[$name]= $helper;
@@ -128,7 +128,7 @@ class HandlebarsEngine {
    * Sets helpers
    *
    * @param  [:var] $helpers
-   * @return self this
+   * @return self
    */
   public function withHelpers(array $helpers) {
     $this->helpers= self::$builtin + $helpers;
