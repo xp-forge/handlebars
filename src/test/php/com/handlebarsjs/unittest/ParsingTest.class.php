@@ -55,19 +55,27 @@ class ParsingTest {
     );
   }
 
-  #[Test]
-  public function partial() {
+  #[Test, Values([['{{> partial}}'], ['{{>partial}}']])]
+  public function partial($notation) {
     Assert::equals(
       new Nodes([new PartialNode(new Constant('partial'))]),
-      $this->parse('{{> partial}}')
+      $this->parse($notation)
     );
   }
 
-  #[Test]
-  public function dynamic_partial() {
+  #[Test, Values([['{{> (partial)}}'], ['{{>(partial)}}']])]
+  public function dynamic_partial($notation) {
     Assert::equals(
       new Nodes([new PartialNode(new Expression('partial'))]),
-      $this->parse('{{> (partial)}}')
+      $this->parse($notation)
+    );
+  }
+
+  #[Test, Values([['{{& html}}'], ['{{&html}}']])]
+  public function unescaped($notation) {
+    Assert::equals(
+      new Nodes([new VariableNode('html', false)]),
+      $this->parse($notation)
     );
   }
 

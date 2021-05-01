@@ -135,13 +135,12 @@ class HandlebarsParser extends AbstractMustacheParser {
 
     // > partial
     $this->withHandler('>', true, function($tag, $state, $parse) {
-      $options= $parse->options(trim($tag));
-      array_shift($options);
-      $template= array_shift($options);
-      if ($template instanceof Lookup) {
-        $template= new Constant((string)$template);
-      }
-      $state->target->add(new PartialNode($template, $options, $state->padding));
+      $parsed= $parse->options('_ '.trim(substr($tag, 1)));
+      $state->target->add(new PartialNode(
+        $parsed[1] instanceof Lookup ? new Constant((string)$parsed[1]) : $parsed[1],
+        array_slice($parsed, 2),
+        $state->padding
+      ));
     });
 
     // ! ... for comments
@@ -190,7 +189,7 @@ class HandlebarsParser extends AbstractMustacheParser {
     // ^ is either an else by its own, or a negated block
     $this->withHandler('^', true, function($tag, $state) {
       if ('^' === trim($tag)) {
-        $block= cast($state->parents[sizeof($state->parents) - 1], 'com.handlebarsjs.BlockNode');
+        $block= cast($state->parents[sizeof($state->parents) - 1], BlockNode::class);
         $state->target= $block->inverse();
         return;
       }

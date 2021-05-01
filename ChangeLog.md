@@ -3,6 +3,12 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 5.2.1 / 2021-05-01
+
+* Fixed `{{>partial}}` (*without a space before the partial name*) raising
+  a runtime error
+  (@thekid)
+
 ## 5.2.0 / 2021-02-15
 
 * Merged PR #14: Inline MustacheEngine, further reducing indirections and
