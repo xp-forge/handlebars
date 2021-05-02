@@ -70,10 +70,9 @@ class HandlebarsEngine {
   }
 
   /**
-   * Sets a logger to use. Accepts either a closure, a util.log.LogCategory
-   * instance or NULL (to unset).
+   * Sets a logger to use. Pass NULL to remove logger.
    *
-   * @param  var $logger
+   * @param  ?function(var...): var|util.log.LogCategory $logger
    * @return self this
    * @throws lang.IllegalArgumentException on argument mismatch
    */
@@ -87,11 +86,13 @@ class HandlebarsEngine {
       };
     } else if ($logger instanceof LogCategory) {
       $this->helpers['log']= function($items, $context, $options) use($logger) {
-        if (sizeof($options) > 1) {
-          $logger->log(LogLevel::named(array_shift($options)), $options);
+        if (isset($options['level'])) {
+          $level= LogLevel::named($options['level']);
+          unset($options['level']);
         } else {
-          $logger->log(LogLevel::DEBUG, $options);
+          $level= LogLevel::INFO;
         }
+        $logger->log($level, $options);
         return '';
       };
     } else {

@@ -3,6 +3,12 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 6.0.0 / 2021-05-02
+
+* Changed log helper to use `level="..."` argument to control log level,
+  and its default to use loglevel info, aligning it with HandlebarsJS.
+  See https://handlebarsjs.com/guide/builtin-helpers.html#log
+  (@thekid)
 * Merged PR #17: Add support for `else if` as syntactic sugar for nested
   if / else cascades
   (@thekid)
@@ -13,7 +19,7 @@ HandleBars change log
   quotes as `&#039;`.
   (@thekid)
 
-## 5.3.0 / 2021-05-01
+## 5.3.0 / 2021-05-02
 
 * Added support for `with ... as |alias|`, implementing feature request #15.
   (@thekid)

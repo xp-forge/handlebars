@@ -27,8 +27,8 @@ class LogHelperTest {
     Assert::equals('[info] Look at me!', $messages[0]);
   }
 
-  #[Test]
-  public function log_to_LogAppender_from_util_log() {
+  #[Test, Values(map: ['' => 'INFO', ' level="debug"' => 'DEBUG', ' level="info"' => 'INFO'])]
+  public function log_to_logAppender($level, $output) {
     $appender= (new BufferedAppender())->withLayout(new class() extends Layout {
       public function format(LoggingEvent $event) {
         return sprintf('[%s] %s', LogLevel::nameOf($event->getLevel()), ...$event->getArguments());
@@ -37,21 +37,7 @@ class LogHelperTest {
     $engine= (new HandlebarsEngine())->withLogger(
       (new LogCategory('trace'))->withAppender($appender)
     );
-    $engine->render('{{log "info" "Look at me!"}}', []);
-    Assert::equals('[INFO] Look at me!', $appender->getBuffer());
-  }
-
-  #[Test]
-  public function log_to_LogAppender_from_util_log_with_only_one_argument() {
-    $appender= (new BufferedAppender())->withLayout(new class() extends Layout {
-      public function format(LoggingEvent $event) {
-        return sprintf('[%s] %s', LogLevel::nameOf($event->getLevel()), ...$event->getArguments());
-      }
-    });
-    $engine= (new HandlebarsEngine())->withLogger(
-      (new LogCategory('trace'))->withAppender($appender)
-    );
-    $engine->render('{{log "Look at me!"}}', []);
-    Assert::equals('[DEBUG] Look at me!', $appender->getBuffer());
+    $engine->render('{{log "Look at me!"'.$level.'}}', []);
+    Assert::equals('['.$output.'] Look at me!', $appender->getBuffer());
   }
 }
