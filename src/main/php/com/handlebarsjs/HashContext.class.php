@@ -17,14 +17,14 @@ class HashContext extends DataContext {
    * Constructor
    *
    * @param  com.github.mustache.Context $parent
-   * @param  var $map
+   * @param  [:var]|Generator $iterable
    * @param  ?string $element
    * @param  ?string $index
    */
-  public function __construct(Context $parent, $map, $element= null, $index= null) {
+  public function __construct(Context $parent, $iterable, $element= null, $index= null) {
     parent::__construct(null, $parent);
-    $this->map= $map;
-    $this->last= is_array($map) ? (end($this->map) ? key($this->map) : null) : null; // array_key_last for PHP >= 7.3
+    $this->map= $iterable;
+    $this->last= is_array($iterable) ? (end($this->map) ? key($this->map) : null) : null; // array_key_last for PHP >= 7.3
     $this->element= $element;
     $this->index= $index;
   }
