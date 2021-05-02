@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Made compatible with `xp-forge/mustache` version 7.0, which emits single
+  quotes as `&#039;`.
+  (@thekid)
+
 ## 5.3.0 / 2021-05-01
 
 * Added support for `with ... as |alias|`, implementing feature request #15.
