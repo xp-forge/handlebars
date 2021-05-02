@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 6.0.1 / 2021-05-02
+
+* Fixed nested contexts inside `{{#each}}...{{/each}}` - @thekid
+
 ## 6.0.0 / 2021-05-02
 
 * Changed log helper to use `level="..."` argument to control log level,

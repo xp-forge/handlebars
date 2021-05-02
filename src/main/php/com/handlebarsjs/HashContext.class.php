@@ -30,6 +30,16 @@ class HashContext extends DataContext {
   }
 
   /**
+   * Returns a context inherited from this context
+   *
+   * @param  var $result
+   * @return self
+   */
+  public function asContext($result) {
+    return new DataContext($result, $this);
+  }
+
+  /**
    * Writes output
    *
    * @param  com.handlebarsjs.Nodes $fn

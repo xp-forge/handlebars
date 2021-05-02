@@ -162,6 +162,26 @@ class EachHelperTest extends HelperTest {
   }
 
   #[Test]
+  public function listcontext_nested() {
+    Assert::equals('timm: 6100', $this->evaluate(
+      '{{#each player}}{{name}}: {{#with highscores}}{{newest}}{{else}}No highscore yet{{/with}}{{/each}}',
+      ['player' => [
+        ['name' => 'timm', 'highscores' => ['newest' => 6100]]
+      ]]
+    ));
+  }
+
+  #[Test]
+  public function hashcontext_nested() {
+    Assert::equals('timm: 6100', $this->evaluate(
+      '{{#each player}}{{@key}}: {{#with highscores}}{{newest}}{{else}}No highscore yet{{/with}}{{/each}}',
+      ['player' => [
+        'timm' => ['highscores' => ['newest' => 6100]]
+      ]]
+    ));
+  }
+
+  #[Test]
   public function from_iterator() {
     $f= function() {
       yield 'A';
