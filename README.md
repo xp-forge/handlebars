@@ -65,6 +65,7 @@ All of the above block helpers support the `else` statement.
 ### The "log" helper
 ```handlebars
 {{log '"Hello", Frank\'s mother said.'}}
+{{log 'No publishers for' category level="warn"}}
 ```
 
 To enable logging, pass either a closure or a `util.log.LogCategory` instance to the engine:
@@ -77,7 +78,7 @@ use util\cmd\Console;
 $logger= Logging::named('trace')->toConsole();
 
 // Or a closure:
-$logger= function($arg) { Console::writeLine('[LOG] ', $arg); };
+$logger= function($arg, $level) { Console::writeLine('[', $level, '] ', $arg); };
 
 $engine= (new HandlebarsEngine())->withLogger($logger);
 $engine->render(...);
