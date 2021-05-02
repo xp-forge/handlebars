@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 5.3.0 / 2021-05-01
+
+* Added support for `with ... as |alias|`, implementing feature request #15.
+  (@thekid)
 
 ## 5.2.1 / 2021-05-01
 
