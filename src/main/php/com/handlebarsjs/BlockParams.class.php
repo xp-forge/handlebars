@@ -25,18 +25,6 @@ class BlockParams implements Value {
   }
 
   /**
-   * Invocation overloading
-   *
-   * @param  com.github.mustache.Node $node
-   * @param  com.github.mustache.Context $context
-   * @param  var[] $options
-   * @return var
-   */
-  public function __invoke($node, $context, $options) {
-    return [$this->names[0] => $context]; // FIXME
-  }
-
-  /**
    * Compares
    *
    * @param  var $value
