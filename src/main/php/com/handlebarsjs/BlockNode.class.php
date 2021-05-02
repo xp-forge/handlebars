@@ -1,6 +1,7 @@
 <?php namespace com\handlebarsjs;
 
 use com\github\mustache\Node;
+use util\Objects;
 
 /**
  * A block starts with {{#sec}} (or {{^sec}} for inverted blocks)
@@ -81,8 +82,8 @@ class BlockNode extends Node {
       nameof($this),
       $this->name,
       ($this->options ? ' '.implode(' ', $this->options) : ''),
-      \xp::stringOf($this->fn, '  '),
-      \xp::stringOf($this->inverse, '  ')
+      Objects::stringOf($this->fn, '  '),
+      Objects::stringOf($this->inverse, '  ')
     );
   }
 
@@ -133,7 +134,7 @@ class BlockNode extends Node {
       $this->name === $cmp->name &&
       $this->start === $cmp->start &&
       $this->end === $cmp->end &&
-      \util\Objects::equal($this->options, $cmp->options) &&
+      Objects::equal($this->options, $cmp->options) &&
       $this->fn->equals($cmp->fn) &&
       $this->inverse->equals($cmp->inverse)
     );

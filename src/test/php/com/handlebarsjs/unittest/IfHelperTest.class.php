@@ -25,6 +25,13 @@ class IfHelperTest extends HelperTest {
     ]));
   }
 
+  #[Test, Values(map: ['one' => '1', 'two' => '2', 'three' => '3', 'other' => '3'])]
+  public function chained_elses($key, $expected) {
+    Assert::equals($expected, $this->evaluate('{{#if one}}1{{else if two}}2{{else}}3{{/if}}', [
+      $key => true
+    ]));
+  }
+
   #[Test, Values(['else', '^'])]
   public function else_invoked_for_non_truthy($else) {
     Assert::equals('Default', $this->evaluate('{{#if var}}-{{var}}-{{'.$else.'}}Default{{/if}}', [

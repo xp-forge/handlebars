@@ -27,8 +27,7 @@ class IfBlockHelper extends BlockNode {
    * @param  io.streams.OutputStream $out
    */
   public function write($context, $out) {
-    $f= $this->options[0];
-    $target= $f($this, $context, []);
+    $target= $this->options[0]($this, $context, []);
 
     if ($target instanceof \Generator ? $target->valid() : $context->isTruthy($target)) {
       $this->fn->write($context, $out);

@@ -208,9 +208,23 @@ class HandlebarsParser extends AbstractMustacheParser {
         $state->target->add(new IteratorNode(true));
         return;
       } else if ('else' === $parsed[0] && $state->parents) {
-        $context= $state->parents[sizeof($state->parents) - 1];
+        $context= &$state->parents[sizeof($state->parents) - 1];
         if ($context instanceof BlockNode) {
-          $state->target= $context->inverse();
+
+          // `else if` vs. `else`
+          if (isset($parsed[1]) && 'if' === (string)$parsed[1]) {
+            $context= $context->inverse()->add(new IfBlockHelper(
+              array_slice($parsed, 2),
+              null,
+              null,
+              $state->start,
+              $state->end
+            ));
+            $state->target= $context->fn();
+          } else {
+            $state->target= $context->inverse();
+          }
+
           return;
         }
         // Fall through, "else" has no special meaning here.
