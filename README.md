@@ -78,7 +78,7 @@ use util\cmd\Console;
 $logger= Logging::named('trace')->toConsole();
 
 // Or a closure:
-$logger= function($arg, $level) { Console::writeLine('[', $level, '] ', $arg); };
+$logger= function($args, $level) { Console::writeLine('[', $level, '] ', ...$args); };
 
 $engine= (new HandlebarsEngine())->withLogger($logger);
 $engine->render(...);
