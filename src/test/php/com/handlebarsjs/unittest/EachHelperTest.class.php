@@ -107,6 +107,14 @@ class EachHelperTest extends HelperTest {
     ));
   }
 
+  #[Test]
+  public function with_hash_properties_and_last() {
+    Assert::equals(': green true: $12.40 ', $this->evaluate(
+      '{{#each item}}{{@last}}: {{.}} {{/each}}',
+      $this->item()
+    ));
+  }
+
   #[Test, Values(['else', '^'])]
   public function else_invoked_for_non_truthy($else) {
     Assert::equals('Default', $this->evaluate('{{#each var}}-{{.}}-{{'.$else.'}}Default{{/each}}', [
@@ -178,6 +186,46 @@ class EachHelperTest extends HelperTest {
     Assert::equals('a:A b:B c:C', $this->evaluate(
       '{{#each people}}{{#unless @first}} {{/unless}}{{@key}}:{{.}}{{/each}}',
       ['people' => $f()]
+    ));
+  }
+
+  #[Test]
+  public function hash_with_as_index_element() {
+    Assert::equals('key: value', $this->evaluate(
+      '{{#each items as |item index|}}{{index}}: {{item.name}}{{/each}}',
+      ['items' => ['key' => 'value']]
+    ));
+  }
+
+  #[Test]
+  public function hash_with_as_element() {
+    Assert::equals('key: value', $this->evaluate(
+      '{{#each items as |item|}}{{@key}}: {{item.name}}{{/each}}',
+      ['items' => ['key' => 'value']]
+    ));
+  }
+
+  #[Test]
+  public function generator_with_as() {
+    Assert::equals('key: value', $this->evaluate(
+      '{{#each items as |item index|}}{{index}}: {{item.name}}{{/each}}',
+      ['items' => (function() { yield 'key' => 'value'; })()]
+    ));
+  }
+
+  #[Test]
+  public function array_with_as_index_element() {
+    Assert::equals('0: value', $this->evaluate(
+      '{{#each items as |item index|}}{{index}}: {{item.name}}{{/each}}',
+      ['items' => ['value']]
+    ));
+  }
+
+  #[Test]
+  public function array_with_as_element() {
+    Assert::equals('0: value', $this->evaluate(
+      '{{#each items as |item|}}{{@index}}: {{item.name}}{{/each}}',
+      ['items' => ['value']]
     ));
   }
 }

@@ -7,52 +7,63 @@ use com\github\mustache\{Context, DataContext};
  *
  * @test  xp://com.handlebarsjs.unittest.EachHelperTest
  */
-class HashContext extends Context {
-  protected $key;
-  protected $first;
-  protected $backing;
+class HashContext extends DataContext {
+  private $map, $element, $index;
+  private $first= true;
+  private $last= null;
+  private $key= null;
 
   /**
    * Constructor
    *
-   * @param  string $key
-   * @param  bool $first
-   * @param  parent $backing
+   * @param  com.github.mustache.Context $parent
+   * @param  [:var]|Generator $iterable
+   * @param  ?string $element
+   * @param  ?string $index
    */
-  public function __construct($key, $first, parent $backing) {
-    parent::__construct($backing->variables, $backing->parent);
-    $this->key= $key;
-    $this->first= $first;
-    $this->backing= $backing;
+  public function __construct(Context $parent, $iterable, $element= null, $index= null) {
+    parent::__construct(null, $parent);
+    $this->map= $iterable;
+    $this->last= is_array($iterable) ? (end($this->map) ? key($this->map) : null) : null; // array_key_last for PHP >= 7.3
+    $this->element= $element;
+    $this->index= $index;
   }
 
   /**
-   * Returns a context inherited from this context
+   * Writes output
    *
-   * @param  var $result
-   * @return self
+   * @param  com.handlebarsjs.Nodes $fn
+   * @param  io.streams.OutputStream $out
    */
-  public function asContext($result) {
-    return new DataContext($result, $this);
+  public function write($fn, $out) {
+
+    // We modify this context directly while we're going - this way,
+    // we save creating context instances for each element.
+    foreach ($this->map as $this->key => $this->variables) {
+      $fn->write($this, $out);
+      $this->first= false;
+    }
   }
 
   /**
-   * Helper method to retrieve a pointer inside a given data structure
-   * using a given segment. Returns null if there is no such segment.
-   * Called from within the `lookup()` method for every segment in the
-   * variable name.
+   * Looks up segments inside a given collection
    *
-   * @param  var $ptr
-   * @param  string $segment
+   * @param  var $v
+   * @param  string[] $segments
    * @return var
    */
-  protected function pointer($ptr, $segment) {
-    if ('@first' === $segment) {
-      return $this->first ? 'true' : null;
-    } else if ('@key' === $segment) {
+  protected function lookup0($v, $segments) {
+    $s= $segments[0];
+    if ('@key' === $s || $this->index === $s) {
       return $this->key;
-    } else {
-      return $this->backing->pointer($ptr, $segment);
+    } else if ('@first' === $s) {
+      return $this->first ? 'true' : null;
+    } else if ('@last' === $s && null !== $this->last) {
+      return $this->key === $this->last ? 'true' : null;
+    } else if ($this->element === $s) {
+      return $this->variables;
     }
+
+    return parent::lookup0($v, $segments);
   }
 }
