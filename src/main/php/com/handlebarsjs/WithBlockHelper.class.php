@@ -27,12 +27,13 @@ class WithBlockHelper extends BlockNode {
    * @param  io.streams.OutputStream $out
    */
   public function write($context, $out) {
-    $f= $this->options[0];
-    $target= $f($this, $context, []);
+    $target= $this->options[0]($this, $context, []);
+    $self= $context->asContext(isset($this->options[1]) ? $this->options[1]($this, $target, []) : $target);
+
     if ($context->isTruthy($target)) {
-      $this->fn->write($context->asContext($target), $out);
+      $this->fn->write($self, $out);
     } else {
-      $this->inverse->write($context->asContext($target), $out);
+      $this->inverse->write($self, $out);
     }
   }
 }
