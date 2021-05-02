@@ -17,14 +17,23 @@ class LogHelperTest {
   }
 
   #[Test]
-  public function log_to_closure_with_multiple_arguments() {
+  public function log_to_closure_using_multiple_arguments() {
     $messages= [];
     $engine= (new HandlebarsEngine())->withLogger(function($args) use(&$messages) {
-      $level= array_shift($args);
-      $messages[]= '['.$level.'] '.implode(' ', $args);
+      $messages[]= $args;
     });
-    $engine->render('{{log "info" "Look at me!"}}', []);
-    Assert::equals('[info] Look at me!', $messages[0]);
+    $engine->render('{{log "Look at me" test}}', ['test' => '!']);
+    Assert::equals(['Look at me', '!'], $messages[0]);
+  }
+
+  #[Test, Values(map: ['' => 'INFO', ' level="debug"' => 'DEBUG', ' level="info"' => 'INFO'])]
+  public function log_to_closure_with_level($level, $output) {
+    $messages= [];
+    $engine= (new HandlebarsEngine())->withLogger(function($args, $level) use(&$messages) {
+      $messages[]= '['.strtoupper($level).'] '.implode(' ', $args);
+    });
+    $engine->render('{{log "Look at me!"'.$level.'}}', []);
+    Assert::equals('['.$output.'] Look at me!', $messages[0]);
   }
 
   #[Test, Values(map: ['' => 'INFO', ' level="debug"' => 'DEBUG', ' level="info"' => 'INFO'])]

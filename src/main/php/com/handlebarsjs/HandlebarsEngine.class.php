@@ -72,7 +72,7 @@ class HandlebarsEngine {
   /**
    * Sets a logger to use. Pass NULL to remove logger.
    *
-   * @param  ?function(var...): var|util.log.LogCategory $logger
+   * @param  ?function(var[], ?string): var|util.log.LogCategory $logger
    * @return self this
    * @throws lang.IllegalArgumentException on argument mismatch
    */
@@ -81,7 +81,9 @@ class HandlebarsEngine {
       unset($this->helpers['log']);
     } else if ($logger instanceof \Closure) {
       $this->helpers['log']= function($items, $context, $options) use($logger) {
-        $logger($options);
+        $level= $options['level'] ?? 'info';
+        unset($options['level']);
+        $logger($options, $level);
         return '';
       };
     } else if ($logger instanceof LogCategory) {
