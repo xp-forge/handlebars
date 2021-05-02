@@ -3,6 +3,9 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Merged PR #17: Add support for `else if` as syntactic sugar for nested
+  if / else cascades
+  (@thekid)
 * Merged PR #16: Add support for `each` with block params. This pull request
   also includes a more efficient iteration algorithm as a side-effect.
   (@thekid)
