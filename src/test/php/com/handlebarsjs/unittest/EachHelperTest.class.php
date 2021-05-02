@@ -107,6 +107,14 @@ class EachHelperTest extends HelperTest {
     ));
   }
 
+  #[Test]
+  public function with_hash_properties_and_last() {
+    Assert::equals(': green true: $12.40 ', $this->evaluate(
+      '{{#each item}}{{@last}}: {{.}} {{/each}}',
+      $this->item()
+    ));
+  }
+
   #[Test, Values(['else', '^'])]
   public function else_invoked_for_non_truthy($else) {
     Assert::equals('Default', $this->evaluate('{{#each var}}-{{.}}-{{'.$else.'}}Default{{/each}}', [

@@ -36,7 +36,7 @@ class BlockParams implements Value {
 
   /** @return string */
   public function hashCode() {
-    return Objects::hashOf($this->name);
+    return Objects::hashOf($this->names);
   }
 
   /** @return string */

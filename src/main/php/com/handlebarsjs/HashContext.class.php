@@ -10,6 +10,7 @@ use com\github\mustache\{Context, DataContext};
 class HashContext extends DataContext {
   private $map, $element, $index;
   private $first= true;
+  private $last= null;
   private $key= null;
 
   /**
@@ -23,6 +24,7 @@ class HashContext extends DataContext {
   public function __construct(Context $parent, $map, $element= null, $index= null) {
     parent::__construct(null, $parent);
     $this->map= $map;
+    $this->last= is_array($map) ? (end($this->map) ? key($this->map) : null) : null; // array_key_last for PHP >= 7.3
     $this->element= $element;
     $this->index= $index;
   }
@@ -56,6 +58,8 @@ class HashContext extends DataContext {
       return $this->key;
     } else if ('@first' === $s) {
       return $this->first ? 'true' : null;
+    } else if ('@last' === $s && null !== $this->last) {
+      return $this->key === $this->last ? 'true' : null;
     } else if ($this->element === $s) {
       return $this->variables;
     }
