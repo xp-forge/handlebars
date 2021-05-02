@@ -6,6 +6,7 @@
  * @test xp://com.handlebarsjs.unittest.WithHelperTest
  */
 class WithBlockHelper extends BlockNode {
+  private $alias;
 
   /**
    * Creates a new with block helper
@@ -18,6 +19,7 @@ class WithBlockHelper extends BlockNode {
    */
   public function __construct($options= [], NodeList $fn= null, NodeList $inverse= null, $start= '{{', $end= '}}') {
     parent::__construct('with', $options, $fn, $inverse, $start, $end);
+    $this->alias= isset($options[1]) ? cast($options[1], BlockParams::class)->names[0] : null;
   }
 
   /**
@@ -28,7 +30,7 @@ class WithBlockHelper extends BlockNode {
    */
   public function write($context, $out) {
     $target= $this->options[0]($this, $context, []);
-    $self= $context->asContext(isset($this->options[1]) ? $this->options[1]($this, $target, []) : $target);
+    $self= $context->asContext($this->alias ? [$this->alias => $target] : $target);
 
     if ($context->isTruthy($target)) {
       $this->fn->write($self, $out);

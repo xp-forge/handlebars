@@ -6,6 +6,7 @@
  * @test xp://com.handlebarsjs.unittest.EachHelperTest
  */
 class EachBlockHelper extends BlockNode {
+  private $params;
 
   /**
    * Creates a new with block helper
@@ -18,6 +19,7 @@ class EachBlockHelper extends BlockNode {
    */
   public function __construct($options= [], NodeList $fn= null, NodeList $inverse= null, $start= '{{', $end= '}}') {
     parent::__construct('each', $options, $fn, $inverse, $start, $end);
+    $this->params= isset($options[1]) ? cast($options[1], BlockParams::class)->names : [];
   }
 
   /**
@@ -27,28 +29,14 @@ class EachBlockHelper extends BlockNode {
    * @param  io.streams.OutputStream $out
    */
   public function write($context, $out) {
-    $f= $this->options[0];
-    $target= $f($this, $context, []);
+    $target= $this->options[0]($this, $context, []);
 
     if ($target instanceof \Generator) {
-      $first= true;
-      foreach ($target as $key => $value) {
-        $this->fn->write(new HashContext($key, $first, $context->asContext($value)), $out);
-        $first= false;
-      }
+      (new HashContext($context, $target, ...$this->params))->write($this->fn, $out);
     } else if ($context->isList($target)) {
-      $list= $context->asTraversable($target);
-      $size= sizeof($list);
-      foreach ($list as $index => $element) {
-        $this->fn->write(new ListContext($index, $size, $context->asContext($element)), $out);
-      }
+      (new ListContext($context, $target, ...$this->params))->write($this->fn, $out);
     } else if ($context->isHash($target)) {
-      $hash= $context->asTraversable($target);
-      $first= true;
-      foreach ($hash as $key => $value) {
-        $this->fn->write(new HashContext($key, $first, $context->asContext($value)), $out);
-        $first= false;
-      }
+      (new HashContext($context, $target, ...$this->params))->write($this->fn, $out);
     } else {
       $this->inverse->write($context, $out);
     }

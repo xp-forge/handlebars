@@ -180,4 +180,44 @@ class EachHelperTest extends HelperTest {
       ['people' => $f()]
     ));
   }
+
+  #[Test]
+  public function hash_with_as_index_element() {
+    Assert::equals('key: value', $this->evaluate(
+      '{{#each items as |item index|}}{{index}}: {{item.name}}{{/each}}',
+      ['items' => ['key' => 'value']]
+    ));
+  }
+
+  #[Test]
+  public function hash_with_as_element() {
+    Assert::equals('key: value', $this->evaluate(
+      '{{#each items as |item|}}{{@key}}: {{item.name}}{{/each}}',
+      ['items' => ['key' => 'value']]
+    ));
+  }
+
+  #[Test]
+  public function generator_with_as() {
+    Assert::equals('key: value', $this->evaluate(
+      '{{#each items as |item index|}}{{index}}: {{item.name}}{{/each}}',
+      ['items' => (function() { yield 'key' => 'value'; })()]
+    ));
+  }
+
+  #[Test]
+  public function array_with_as_index_element() {
+    Assert::equals('0: value', $this->evaluate(
+      '{{#each items as |item index|}}{{index}}: {{item.name}}{{/each}}',
+      ['items' => ['value']]
+    ));
+  }
+
+  #[Test]
+  public function array_with_as_element() {
+    Assert::equals('0: value', $this->evaluate(
+      '{{#each items as |item|}}{{@index}}: {{item.name}}{{/each}}',
+      ['items' => ['value']]
+    ));
+  }
 }

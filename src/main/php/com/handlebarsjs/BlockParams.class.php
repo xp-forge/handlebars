@@ -1,15 +1,18 @@
 <?php namespace com\handlebarsjs;
 
-class Alias implements \lang\Value {
-  private $name;
+use lang\Value;
+use util\Objects;
+
+class BlockParams implements Value {
+  public $names;
 
   /**
    * Creates a new constant
    *
-   * @param  var $name
+   * @param  string[] $names
    */
-  public function __construct($name) {
-    $this->name= $name;
+  public function __construct($names) {
+    $this->names= $names;
   }
 
   /**
@@ -18,7 +21,7 @@ class Alias implements \lang\Value {
    * @return string
    */
   public function __toString() {
-    return 'as |'.$this->name.'|';
+    return 'as |'.implode(' ', $this->names).'|';
   }
 
   /**
@@ -30,7 +33,7 @@ class Alias implements \lang\Value {
    * @return var
    */
   public function __invoke($node, $context, $options) {
-    return [$this->name => $context];
+    return [$this->names[0] => $context]; // FIXME
   }
 
   /**
@@ -40,16 +43,16 @@ class Alias implements \lang\Value {
    * @return int
    */
   public function compareTo($value) {
-    return $value instanceof self ? $this->name <=> $value->name : 1;
+    return $value instanceof self ? Objects::compare($this->names, $value->names) : 1;
   }
 
   /** @return string */
   public function hashCode() {
-    return md5($this->name);
+    return Objects::hashOf($this->name);
   }
 
   /** @return string */
   public function toString() {
-    return nameof($this).'('.$this.')';
+    return nameof($this).'('.implode(' ', $this->names).')';
   }
 }
