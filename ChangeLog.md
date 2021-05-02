@@ -3,6 +3,9 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Merged PR #16: Add support for `each` with block params. This pull request
+  also includes a more efficient iteration algorithm as a side-effect.
+  (@thekid)
 * Made compatible with `xp-forge/mustache` version 7.0, which emits single
   quotes as `&#039;`.
   (@thekid)
