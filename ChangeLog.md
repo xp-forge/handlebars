@@ -3,6 +3,7 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+
 ## 5.2.1 / 2021-05-01
 
 * Fixed `{{>partial}}` (*without a space before the partial name*) raising

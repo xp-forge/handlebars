@@ -28,9 +28,9 @@ class WithHelperTest extends HelperTest {
 
   #[Test]
   public function with_as() {
-    Assert::equals("Karlsruhe: 49° 0' 34&quot;, 8° 24' 15&quot;", $this->evaluate(
+    Assert::equals('Karlsruhe: 49,009327, 8,403746', $this->evaluate(
       '{{#with city.location as | loc |}}{{city.name}}: {{loc.north}}, {{loc.east}}{{/with}}',
-      ['city' => ['name' => 'Karlsruhe', 'location' => ['north' => '49° 0\' 34"', 'east' => '8° 24\' 15"']]]
+      ['city' => ['name' => 'Karlsruhe', 'location' => ['north' => '49,009327', 'east' => '8,403746']]]
     ));
   }
 }
