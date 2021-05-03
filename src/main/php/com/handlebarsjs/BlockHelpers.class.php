@@ -20,10 +20,10 @@ class BlockHelpers {
    * Gets a block helper class by a given name
    *
    * @param  string $name
-   * @return lang.XPClass or NULL
+   * @return ?lang.XPClass
    */
   public static function named($name) {
-    return isset(self::$byName[$name]) ? self::$byName[$name] : null;
+    return self::$byName[$name] ?? null;
   }
 
   /**
