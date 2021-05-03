@@ -16,7 +16,7 @@ class Templates extends \com\github\mustache\templates\Templates {
   private $delegate;
 
   /** @return lang.XPClass */
-  private function composite() {
+  private static function composite() {
     if (null === self::$composite) {
       self::$composite= ClassLoader::defineClass('CompositeListing', TemplateListing::class, [], [
         'templates' => null,
@@ -87,19 +87,16 @@ class Templates extends \com\github\mustache\templates\Templates {
    * @return com.github.mustache.templates.Source
    */
   public function source($name) {
-    if (isset($this->templates[$name])) {
-      return $this->templates[$name];
-    } else if ($this->delegate) {
-      return $this->delegate->source($name);
-    } else {
-      return new NotFound('Cannot find template '.$name);
-    }
+    return $this->templates[$name] ?? ($this->delegate
+      ? $this->delegate->source($name)
+      : new NotFound('Cannot find template '.$name)
+    );
   }
 
   /** @return com.github.mustache.TemplateListing */
   public function listing() {
     if ($this->delegate) {
-      return $this->composite()->newInstance($this->templates, $this->delegate->listing());
+      return self::composite()->newInstance($this->templates, $this->delegate->listing());
     } else {
       return new TemplateListing('', function($package) { return array_keys($this->templates); });
     }
