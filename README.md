@@ -14,10 +14,22 @@ The [Handlebars template language](http://handlebarsjs.com/) implemented for the
 use com\handlebarsjs\HandlebarsEngine;
 
 $engine= new HandlebarsEngine();
-$transformed= $engine->render(
-  'Hello {{name}}',
-  ['name' => 'World']
-);
+$transformed= $engine->render('Hello {{name}}', [
+  'name' => 'World'
+]);
+```
+
+Templating
+----------
+Templates can be loaded from the file system. The following loads and transforms the template *src/main/handlebars.handlebars*:
+
+```php
+use com\handlebarsjs\{HandlebarsEngine, FilesFrom};
+
+$engine= (new HandlebarsEngine())->withTemplates(new FilesFrom('src/main/handlebars'));
+$transformed= $engine->transform('hello', [
+  'name' => 'World'
+]);
 ```
 
 Helpers supported
