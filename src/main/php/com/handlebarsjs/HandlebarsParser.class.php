@@ -85,7 +85,7 @@ class HandlebarsParser extends AbstractMustacheParser {
             $value= new BlockParams(explode(' ', trim(substr($tag, $o + 1, $p))));
             $p++;
           } else if (strspn($token, '-.0123456789') === strlen($token)) {
-            $value= new Constant(strstr($token, '.') ? (double)$token : (int)$token);
+            $value= new Constant(strstr($token, '.') ? (float)$token : (int)$token);
           } else {
             $value= new Lookup($token);
           }
