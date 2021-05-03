@@ -6,14 +6,16 @@ use lang\XPClass;
  * Block helpers factory
  */
 class BlockHelpers {
-  protected static $byName= [];
+  private static $byName;
 
   static function __static() {
-    self::$byName['if']= XPClass::forName('com.handlebarsjs.IfBlockHelper');
-    self::$byName['unless']= XPClass::forName('com.handlebarsjs.UnlessBlockHelper');
-    self::$byName['with']= XPClass::forName('com.handlebarsjs.WithBlockHelper');
-    self::$byName['each']= XPClass::forName('com.handlebarsjs.EachBlockHelper');
-    self::$byName['>']= XPClass::forName('com.handlebarsjs.PartialBlockHelper');
+    self::$byName= [
+      'if'     => new XPClass(IfBlockHelper::class),
+      'unless' => new XPClass(UnlessBlockHelper::class),
+      'with'   => new XPClass(WithBlockHelper::class),
+      'each'   => new XPClass(EachBlockHelper::class),
+      '>'      => new XPClass(PartialBlockHelper::class)
+    ];
   }
 
   /**
