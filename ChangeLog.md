@@ -3,10 +3,13 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
-* Added support for accessing outer iteration via e.g. `../@index` or
-  `../../@key`, see pull request #19
+* Added support for repeating parent selector `../` to form lookups such
+  as `../../name`, see pull request #19
   (@thekid)
-* Added support for `@root`, implementing feature request #18 - @thekid
+* Added support for accessing outer iteration via e.g. `../@index` or
+  `../@key`, see pull request #19
+  (@thekid)
+* Added support for `@root`, implemented feature request #18 - @thekid
 
 ## 6.0.1 / 2021-05-02
 
