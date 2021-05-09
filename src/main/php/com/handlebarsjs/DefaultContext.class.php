@@ -31,6 +31,7 @@ class DefaultContext extends DataContext {
    * - person.name
    * - ./name
    * - ../name (and ../@index but not ../@root)
+   * - ../../name
    * - this (but no special meaning for ./this and ../this)
    * - @root
    *
@@ -58,14 +59,18 @@ class DefaultContext extends DataContext {
           $v= $context->path($segments);
         } while (null === $v && $context= $context->parent);
       }
-    } else if (0 === strncmp('../', $name, 3)) {  // Explicitely selected: parent
-      $segments= explode('.', substr($name, 3));
-      $v= $this->parent ? $this->parent->path($segments) : null;
-    } else if (0 === strncmp('./', $name, 2)) {   // Explicitely selected: self
+    } else if (0 === strncmp('./', $name, 2)) {
       $segments= explode('.', substr($name, 2));
       $v= $this->path($segments);
     } else {
-      return null;                                // Illegal name
+      $context= $this;
+      $offset= 0;
+      while (0 === substr_compare($name, '../', $offset, 3)) {
+        $context= $context->parent;
+        $offset+= 3;
+      }
+      $segments= explode('.', substr($name, $offset));
+      $v= $context ? $context->path($segments) : null;
     }
 
     // Check helpers

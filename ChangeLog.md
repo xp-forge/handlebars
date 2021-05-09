@@ -3,6 +3,11 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Added support for accessing outer iteration via e.g. `../@index` or
+  `../../@key`, see pull request #19
+  (@thekid)
+* Added support for `@root`, implementing feature request #18 - @thekid
+
 ## 6.0.1 / 2021-05-02
 
 * Fixed nested contexts inside `{{#each}}...{{/each}}` - @thekid

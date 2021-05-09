@@ -46,10 +46,13 @@ class ExecutionTest {
   #[Test]
   public function dot_references_resolving_in_scopes() {
     Assert::equals(
-      'TestPerson',
-      $this->evaluate('{{#person}}{{../name}}{{./name}}{{/person}}', [
-        'name'   => 'Test',
-        'person' => ['name' => 'Person']
+      'ATestPerson',
+      $this->evaluate('{{#nested}}{{#person}}{{../../name}}{{../name}}{{./name}}{{/person}}{{/nested}}', [
+        'name'   => 'A',
+        'nested' => [
+          'name'   => 'Test',
+          'person' => ['name' => 'Person']
+        ]
       ])
     );
   }
