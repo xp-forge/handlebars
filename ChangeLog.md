@@ -3,6 +3,8 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 6.1.0 / 2021-05-09
+
 * Added support for repeating parent selector `../` to form lookups such
   as `../../name`, see pull request #19
   (@thekid)
