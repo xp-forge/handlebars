@@ -1,7 +1,5 @@
 <?php namespace com\handlebarsjs;
 
-use com\github\mustache\Context;
-
 /**
  * Hash context for the `each` helper.
  *
@@ -16,12 +14,12 @@ class HashContext extends DefaultContext {
   /**
    * Constructor
    *
-   * @param  com.github.mustache.Context $parent
+   * @param  parent $parent
    * @param  [:var]|Generator $iterable
    * @param  ?string $element
    * @param  ?string $index
    */
-  public function __construct(Context $parent, $iterable, $element= null, $index= null) {
+  public function __construct(parent $parent, $iterable, $element= null, $index= null) {
     parent::__construct(null, $parent);
     $this->map= $iterable;
     $this->last= is_array($iterable) ? (end($this->map) ? key($this->map) : null) : null; // array_key_last for PHP >= 7.3
@@ -36,7 +34,7 @@ class HashContext extends DefaultContext {
    * @return self
    */
   public function asContext($result) {
-    return new DefaultContext($result, $this);
+    return new parent($result, $this);
   }
 
   /**

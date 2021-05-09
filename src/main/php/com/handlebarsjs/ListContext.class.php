@@ -1,7 +1,5 @@
 <?php namespace com\handlebarsjs;
 
-use com\github\mustache\Context;
-
 /**
  * List context for the `each` helper.
  *
@@ -14,12 +12,12 @@ class ListContext extends DefaultContext {
   /**
    * Constructor
    *
-   * @param  com.github.mustache.Context $parent
+   * @param  parent $parent
    * @param  var[] $list
    * @param  ?string $element
    * @param  ?string $index
    */
-  public function __construct(Context $parent, $list, $element= null, $index= null) {
+  public function __construct(parent $parent, $list, $element= null, $index= null) {
     parent::__construct(null, $parent);
     $this->list= $list;
     $this->last= sizeof($this->list) - 1;
@@ -34,7 +32,7 @@ class ListContext extends DefaultContext {
    * @return self
    */
   public function asContext($result) {
-    return new DefaultContext($result, $this);
+    return new parent($result, $this);
   }
 
   /**
