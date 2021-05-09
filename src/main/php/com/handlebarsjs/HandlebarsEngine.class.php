@@ -29,14 +29,6 @@ class HandlebarsEngine {
 
   static function __static() {
     self::$builtin= [
-      'this'    => function($node, $context, $options) {
-        $variable= $context->lookup(null);
-        if ($context->isHash($variable) || $context->isList($variable)) {
-          return current($context->asTraversable($variable));
-        } else {
-          return $variable;
-        }
-      },
       'lookup'  => function($node, $context, $options) {
         return $options[0][$options[1]] ?? null;
       },
@@ -174,7 +166,7 @@ class HandlebarsEngine {
    * @return string The rendered output
    */
   public function evaluate(Template $template, $arg) {
-    $c= $arg instanceof Context ? $arg : new DataContext($arg);
+    $c= $arg instanceof Context ? new DefaultContext($arg->variables, $arg->parent) : new DefaultContext($arg);
     return $template->evaluate($c->withEngine($this));
   }
 
@@ -187,7 +179,7 @@ class HandlebarsEngine {
    * @return void
    */
   public function write(Template $template, $arg, $out) {
-    $c= $arg instanceof Context ? $arg : new DataContext($arg);
+    $c= $arg instanceof Context ? new DefaultContext($arg->variables, $arg->parent) : new DefaultContext($arg);
     $template->write($c->withEngine($this), $out);
   }
 

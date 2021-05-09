@@ -136,6 +136,30 @@ class EachHelperTest extends HelperTest {
   }
 
   #[Test]
+  public function nested_each_with_this_atvariable() {
+    Assert::equals('0:a,1:ä,2:á,3:à, 0:b, 0:c,1:ç, ', $this->evaluate(
+      '{{#each .}}{{#each .}}{{@index}}:{{.}},{{/each}} {{/each}}',
+      [
+        'a' => ['a', 'ä', 'á', 'à'],
+        'b' => ['b'],
+        'c' => ['c', 'ç']
+      ]
+    ));
+  }
+
+  #[Test]
+  public function nested_each_with_parent_atvariable() {
+    Assert::equals('a:a,a:ä,a:á,a:à, b:b, c:c,c:ç, ', $this->evaluate(
+      '{{#each .}}{{#each .}}{{../@key}}:{{.}},{{/each}} {{/each}}',
+      [
+        'a' => ['a', 'ä', 'á', 'à'],
+        'b' => ['b'],
+        'c' => ['c', 'ç']
+      ]
+    ));
+  }
+
+  #[Test]
   public function nested_each_with_hashes() {
     Assert::equals('timm :crown: :snowman:', $this->evaluate(
       '{{#each player}}{{name}}{{#each badges}} :{{name}}:{{/each}}{{/each}}',

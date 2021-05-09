@@ -1,13 +1,11 @@
 <?php namespace com\handlebarsjs;
 
-use com\github\mustache\{Context, DataContext};
-
 /**
  * Hash context for the `each` helper.
  *
  * @test  xp://com.handlebarsjs.unittest.EachHelperTest
  */
-class HashContext extends DataContext {
+class HashContext extends DefaultContext {
   private $map, $element, $index;
   private $first= true;
   private $last= null;
@@ -16,12 +14,12 @@ class HashContext extends DataContext {
   /**
    * Constructor
    *
-   * @param  com.github.mustache.Context $parent
+   * @param  parent $parent
    * @param  [:var]|Generator $iterable
    * @param  ?string $element
    * @param  ?string $index
    */
-  public function __construct(Context $parent, $iterable, $element= null, $index= null) {
+  public function __construct(parent $parent, $iterable, $element= null, $index= null) {
     parent::__construct(null, $parent);
     $this->map= $iterable;
     $this->last= is_array($iterable) ? (end($this->map) ? key($this->map) : null) : null; // array_key_last for PHP >= 7.3
@@ -36,7 +34,7 @@ class HashContext extends DataContext {
    * @return self
    */
   public function asContext($result) {
-    return new DataContext($result, $this);
+    return new parent($result, $this);
   }
 
   /**
@@ -55,25 +53,17 @@ class HashContext extends DataContext {
     }
   }
 
-  /**
-   * Looks up segments inside a given collection
-   *
-   * @param  var $v
-   * @param  string[] $segments
-   * @return var
-   */
-  protected function lookup0($v, $segments) {
-    $s= $segments[0];
-    if ('@key' === $s || $this->index === $s) {
-      return $this->key;
-    } else if ('@first' === $s) {
-      return $this->first ? 'true' : null;
-    } else if ('@last' === $s && null !== $this->last) {
-      return $this->key === $this->last ? 'true' : null;
-    } else if ($this->element === $s) {
+  public function path($segments) {
+    if (null === ($start= $segments[0] ?? null) || $this->element === $start) {
       return $this->variables;
+    } else if ('@key' === $start || $this->index === $start) {
+      return $this->key;
+    } else if ('@first' === $start) {
+      return $this->first ? 'true' : null;
+    } else if ('@last' === $start && null !== $this->last) {
+      return $this->key === $this->last ? 'true' : null;
+    } else {
+      return parent::path($segments);
     }
-
-    return parent::lookup0($v, $segments);
   }
 }
