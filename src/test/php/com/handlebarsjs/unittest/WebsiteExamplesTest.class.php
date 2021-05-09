@@ -190,9 +190,9 @@ class WebsiteExamplesTest {
         "  {{/each}}\n".
         "</ul>",
         ['people' => [
-          ['Yehuda Katz'],
-          ['Carl Lerche'],
-          ['Alan Johnson']
+          'Yehuda Katz',
+          'Carl Lerche',
+          'Alan Johnson'
         ]]
       )
     );

@@ -19,9 +19,27 @@ class ExecutionTest {
 
   #[Test]
   public function this_reference_resolves_to_current_scope() {
+    Assert::equals('Test', $this->evaluate('{{this.name}}', ['name' => 'Test']));
+  }
+
+  #[Test]
+  public function this_has_no_special_meaning_in_path() {
+    Assert::equals('Test', $this->evaluate('{{./this}}', ['this' => 'Test']));
+  }
+
+  #[Test]
+  public function root_reference() {
+    Assert::equals('Test', $this->evaluate('{{@root.name.en}}', ['name' => ['en' => 'Test']]));
+  }
+
+  #[Test]
+  public function root_reference_inside_nested() {
     Assert::equals(
-      'Test',
-      $this->evaluate('{{this.name}}', ['name' => 'Test'])
+      'A Test',
+      $this->evaluate('{{#each iteration}}{{#with fixture}}{{article}} {{@root.name.en}}{{/with}}{{/each}}', [
+        'name' => ['en' => 'Test'],
+        'iteration' => [['fixture' => ['article' => 'A']]]
+      ])
     );
   }
 
