@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 6.1.1 / 2021-05-10
+
+* Fixed partials with parameters being used inside `each` - @thekid
+
 ## 6.1.0 / 2021-05-09
 
 * Added support for repeating parent selector `../` to form lookups such

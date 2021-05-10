@@ -33,6 +33,15 @@ class ExecutionTest {
   }
 
   #[Test]
+  public function partial_inside_each() {
+    Assert::equals('Test #1', $this->evaluate(
+      '{{#each it}}{{> test select=.}}{{/each}}',
+      ['it' => [1]],
+      ['test' => 'Test #{{select}}']
+    ));
+  }
+
+  #[Test]
   public function root_reference_inside_nested() {
     Assert::equals(
       'A Test',

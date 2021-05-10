@@ -1,6 +1,6 @@
 <?php namespace com\handlebarsjs;
 
-use com\github\mustache\DataContext;
+use com\github\mustache\{Context, DataContext};
 
 /**
  * Default context for handlebars. Supports `@root` and `this` in addition
@@ -22,6 +22,18 @@ class DefaultContext extends DataContext {
       if ($v !== null) $v= $this->pointer($v, $segment);
     }
     return $v;
+  }
+
+  /**
+   * Returns a context inherited from a given context, or, if omitted,
+   * from this context.
+   *
+   * @param  var $result
+   * @param  self $parent
+   * @return self
+   */
+  public final function newInstance($result, Context $parent= null) {
+    return new self($result, $parent ?: $this);
   }
 
   /**
