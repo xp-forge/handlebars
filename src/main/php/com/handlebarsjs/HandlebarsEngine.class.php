@@ -39,11 +39,14 @@ class HandlebarsEngine {
   }
 
   /** Create new instance and initialize builtin helpers */
-  public function __construct() {
+  public function __construct(HandlebarsParser $parser= null) {
+    $this->parser= $parser ?? new HandlebarsParser();
     $this->templates= new Templates();
-    $this->parser= new HandlebarsParser();
     $this->helpers= self::$builtin;
   }
+
+  /** @return com.handlebarsjs.HandlebarsParser */
+  public function parser() { return $this->parser; }
 
   /** @return com.github.mustache.TemplateLoader */
   public function templates() { return $this->templates; }
