@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 6.2.0 / 2021-05-13
+
+* Merged PR #20: Make it possible to exchange the parser - @thekid
+
 ## 6.1.1 / 2021-05-10
 
 * Fixed partials with parameters being used inside `each` - @thekid
