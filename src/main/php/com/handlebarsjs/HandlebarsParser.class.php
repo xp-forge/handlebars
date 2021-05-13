@@ -236,7 +236,7 @@ class HandlebarsParser extends AbstractMustacheParser {
   /**
    * Parse a template
    *
-   * @param  string $template The template as a string
+   * @param  text.Tokenizer $tokens
    * @param  string $start Initial start tag, defaults to "{{"
    * @param  string $end Initial end tag, defaults to "}}"
    * @param  string $indent What to prefix before each line
