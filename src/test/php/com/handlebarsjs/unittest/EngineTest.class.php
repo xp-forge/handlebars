@@ -1,6 +1,6 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use com\handlebarsjs\HandlebarsEngine;
+use com\handlebarsjs\{HandlebarsEngine, HandlebarsParser};
 use io\streams\MemoryOutputStream;
 use lang\IllegalArgumentException;
 use unittest\{Assert, Expect, Test};
@@ -58,5 +58,13 @@ class EngineTest {
     $engine->write($engine->compile('Hello {{name}}'), ['name' => 'World'], $out);
 
     Assert::equals('Hello World', $out->getBytes());
+  }
+
+  #[Test]
+  public function exchange_parser() {
+    $engine= new HandlebarsEngine(new class() extends HandlebarsParser {
+      public function version() { return '1.0.0'; }
+    });
+    Assert::equals('1.0.0', $engine->parser()->version());
   }
 }
