@@ -3,6 +3,11 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 7.0.0 / 2021-10-21
+
+* Implemented xp-framework/rfc#341, dropping compatibility with XP 9
+  (@thekid)
+
 ## 6.2.0 / 2021-05-13
 
 * Merged PR #20: Make it possible to exchange the parser - @thekid
