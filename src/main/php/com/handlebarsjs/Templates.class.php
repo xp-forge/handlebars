@@ -15,27 +15,6 @@ class Templates extends \com\github\mustache\templates\Templates {
   private $templates= [];
   private $delegate;
 
-  /** @return lang.XPClass */
-  private static function composite() {
-    if (null === self::$composite) {
-      self::$composite= ClassLoader::defineClass('CompositeListing', TemplateListing::class, [], [
-        'templates' => null,
-        'delegate' => null,
-        '__construct' => function($templates, $delegate) {
-          $this->templates= $templates;
-          $this->delegate= $delegate;
-        },
-        'templates' => function() {
-          return array_merge(array_keys($this->templates), $this->delegate->templates());
-        },
-        'packages' => function() {
-          return $this->delegate->packages();
-        }
-      ]);
-    }
-    return self::$composite;
-  }
-
   /**
    * Sets delegate loader
    *
@@ -96,7 +75,7 @@ class Templates extends \com\github\mustache\templates\Templates {
   /** @return com.github.mustache.TemplateListing */
   public function listing() {
     if ($this->delegate) {
-      return self::composite()->newInstance($this->templates, $this->delegate->listing());
+      return new CompositeListing($this->templates, $this->delegate->listing());
     } else {
       return new TemplateListing('', function($package) { return array_keys($this->templates); });
     }
