@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 7.0.1 / 2022-02-27
+
+* Fixed "Creation of dynamic property" warnings in PHP 8.2 - @thekid
+
 ## 7.0.0 / 2021-10-21
 
 * Implemented xp-framework/rfc#341, dropping compatibility with XP 9
