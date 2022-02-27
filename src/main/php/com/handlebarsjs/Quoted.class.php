@@ -1,7 +1,9 @@
 <?php namespace com\handlebarsjs;
 
-class Quoted implements \lang\Value {
-  protected $name;
+use lang\Value;
+
+class Quoted implements Value {
+  protected $chars;
 
   /**
    * Creates a new Quoted instance
