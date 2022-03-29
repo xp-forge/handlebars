@@ -24,9 +24,9 @@ Templating
 Templates can be loaded from the file system. The following loads and transforms the template *src/main/handlebars.handlebars*:
 
 ```php
-use com\handlebarsjs\{HandlebarsEngine, FilesFrom};
+use com\handlebarsjs\{HandlebarsEngine, FilesIn};
 
-$engine= (new HandlebarsEngine())->withTemplates(new FilesFrom('src/main/handlebars'));
+$engine= (new HandlebarsEngine())->withTemplates(new FilesIn('src/main/handlebars'));
 $transformed= $engine->transform('hello', [
   'name' => 'World'
 ]);
