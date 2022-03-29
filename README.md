@@ -96,6 +96,27 @@ $engine= (new HandlebarsEngine())->withLogger($logger);
 $engine->render(...);
 ```
 
+Custom helpers
+--------------
+To add custom helpers, use *withHelpers()* and pass functions. The following yields *Hello WORLD*:
+
+```php
+use com\handlebarsjs\HandlebarsEngine;
+
+$engine= (new HandlebarsEngine())->withHelper(function($node, $context, $options) {
+  return strtoupper($options[0]);
+});
+$transformed= $engine->render('Hello {{upper name}}', [
+  'name' => 'World'
+]);
+```
+
+The parameters passed are the following:
+
+* **node:** The current node, a `com.github.mustache.Node` instance
+* **context:** The current context, a `com.github.mustache.Context` instance
+* **options:** The resolved options passed, in the above case the string "World" (which is what *name* resolves to)
+
 Futher reading
 --------------
 https://handlebars-lang.github.io/spec/
