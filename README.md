@@ -47,6 +47,15 @@ The following helpers are built in:
 {{else}}
   <em>Warning: No licence is available!</em>
 {{/if}}
+
+{{#if content}}
+  Content
+{{else if hub}}
+  Hub
+{{else}}
+  Default
+{{/if}}
+
 ```
 
 ### The "unless" block
