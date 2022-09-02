@@ -28,12 +28,12 @@ class LookupHelperTest extends HelperTest {
 
   #[Test]
   public function parent_dot() {
-    Assert::equals('php=PHP', $this->evaluate(
-      '{{#each extensions}}{{#with (lookup names .)}}{{../.}}={{.}}{{/with}}{{/each}}',
-      [
-        'names'      => ['php' => 'PHP'],
-        'extensions' => ['php']
-      ]
-    ));
+    Assert::equals(
+      'php=PHP',
+      $this->evaluate(
+        '{{#each extensions}}{{#with (lookup names .)}}{{../.}}={{.}}{{/with}}{{/each}}',
+        ['names' => ['php' => 'PHP'], 'extensions' => ['php']]
+      )
+    );
   }
 }
