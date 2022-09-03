@@ -19,6 +19,14 @@ class WithHelperTest extends HelperTest {
     ));
   }
 
+  #[Test]
+  public function can_access_parent_context() {
+    Assert::equals('PHP: 9870000000 results @ Google', $this->evaluate(
+      '{{#with results}}PHP: {{php}} results @ {{../engine}}{{/with}}',
+      ['engine' => 'Google', 'results' => ['php' => 9870000000, 'javascript' => 6380000000]]
+    ));
+  }
+
   #[Test, Values(['else', '^'])]
   public function else_invoked_for_non_truthy($else) {
     Assert::equals('Default', $this->evaluate('{{#with var}}-{{.}}-{{'.$else.'}}Default{{/with}}', [

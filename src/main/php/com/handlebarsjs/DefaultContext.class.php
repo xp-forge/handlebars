@@ -81,8 +81,14 @@ class DefaultContext extends DataContext {
         $context= $context->parent;
         $offset+= 3;
       }
-      $segments= explode('.', substr($name, $offset));
-      $v= $context ? $context->path($segments) : null;
+      $path= substr($name, $offset);
+      if ('.' === $path) {
+        $segments= [];
+        $v= $context ? $context->variables : null;
+      } else {
+        $segments= explode('.', $path);
+        $v= $context ? $context->path(explode('.', $path)) : null;
+      }
     }
 
     // Check helpers

@@ -25,4 +25,15 @@ class LookupHelperTest extends HelperTest {
   public function lookup_non_existant($expr) {
     Assert::equals('', $this->evaluate($expr, []));
   }
+
+  #[Test]
+  public function parent_dot() {
+    Assert::equals(
+      'php=PHP',
+      $this->evaluate(
+        '{{#each extensions}}{{#with (lookup names .)}}{{../.}}={{.}}{{/with}}{{/each}}',
+        ['names' => ['php' => 'PHP'], 'extensions' => ['php']]
+      )
+    );
+  }
 }
