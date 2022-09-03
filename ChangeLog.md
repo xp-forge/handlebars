@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 7.1.0 / 2022-09-03
+
+* Merged PR #21: Add support for "../." - @thekid
+
 ## 7.0.1 / 2022-02-27
 
 * Fixed "Creation of dynamic property" warnings in PHP 8.2 - @thekid
