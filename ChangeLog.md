@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 7.1.1 / 2022-09-11
+
+* Fixed `@first` and `@last` inside nested each loops - @thekid
+
 ## 7.1.0 / 2022-09-03
 
 * Merged PR #21: Add support for "../." - @thekid

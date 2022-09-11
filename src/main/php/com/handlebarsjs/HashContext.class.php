@@ -59,9 +59,9 @@ class HashContext extends DefaultContext {
     } else if ('@key' === $start || $this->index === $start) {
       return $this->key;
     } else if ('@first' === $start) {
-      return $this->first ? 'true' : null;
+      return $this->first ? 'true' : false;
     } else if ('@last' === $start && null !== $this->last) {
-      return $this->key === $this->last ? 'true' : null;
+      return $this->key === $this->last ? 'true' : false;
     } else {
       return parent::path($segments);
     }

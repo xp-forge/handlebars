@@ -56,9 +56,9 @@ class ListContext extends DefaultContext {
     } else if ('@index' === $start || $this->index === $start) {
       return $this->offset;
     } else if ('@first' === $start) {
-      return 0 === $this->offset ? 'true' : null;
+      return 0 === $this->offset ? 'true' : false;
     } else if ('@last' === $start) {
-      return $this->last === $this->offset ? 'true' : null;
+      return $this->last === $this->offset ? 'true' : false;
     } else {
       return parent::path($segments);
     }

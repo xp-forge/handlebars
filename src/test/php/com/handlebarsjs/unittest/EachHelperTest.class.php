@@ -272,4 +272,36 @@ class EachHelperTest extends HelperTest {
       ['items' => ['value']]
     ));
   }
+
+  #[Test]
+  public function first_inside_nested_loop_of_array() {
+    Assert::equals('KA: [Karlsruhe, Karlsruh]', $this->evaluate(
+      '{{#each locations}}{{id}}: [{{#each names}}{{#unless @first}}, {{/unless}}{{.}}{{/each}}]{{/each}}',
+      ['locations' => [['id' => 'KA', 'names' => ['Karlsruhe', 'Karlsruh']]]]
+    ));
+  }
+
+  #[Test]
+  public function last_inside_nested_loop_of_array() {
+    Assert::equals('KA: [Karlsruhe, Karlsruh]', $this->evaluate(
+      '{{#each locations}}{{id}}: [{{#each names}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}]{{/each}}',
+      ['locations' => [['id' => 'KA', 'names' => ['Karlsruhe', 'Karlsruh']]]]
+    ));
+  }
+
+  #[Test]
+  public function first_inside_nested_loop_of_map() {
+    Assert::equals('KA: [Karlsruhe, Karlsruh]', $this->evaluate(
+      '{{#each locations}}{{@key}}: [{{#each names}}{{#unless @first}}, {{/unless}}{{.}}{{/each}}]{{/each}}',
+      ['locations' => ['KA' => ['names' => ['de_DE' => 'Karlsruhe', 'de_BW' => 'Karlsruh']]]]
+    ));
+  }
+
+  #[Test]
+  public function last_inside_nested_loop_of_map() {
+    Assert::equals('KA: [Karlsruhe, Karlsruh]', $this->evaluate(
+      '{{#each locations}}{{@key}}: [{{#each names}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}]{{/each}}',
+      ['locations' => ['KA' => ['names' => ['de_DE' => 'Karlsruhe', 'de_BW' => 'Karlsruh']]]]
+    ));
+  }
 }
