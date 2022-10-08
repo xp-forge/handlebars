@@ -16,8 +16,8 @@ class ExecutionTest {
   protected function evaluate($template, $variables, $templates= ['test' => 'Partial']) {
     return (new HandlebarsEngine())
       ->withTemplates(new InMemory($templates))
-      ->withHelper('date', function($node, $context, $options) { return date('Y-m-d', $options[0] ?? null); })
-      ->withHelper('time', ['short' => ['24' => function($node, $context, $options) { return date('H:i', $options[0] ?? null); }]])
+      ->withHelper('date', function($node, $context, $options) { return date('Y-m-d', $options[0] ?? time()); })
+      ->withHelper('time', ['short' => ['24' => function($node, $context, $options) { return date('H:i', $options[0] ?? time()); }]])
       ->render($template, $variables)
     ;
   }
