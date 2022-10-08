@@ -54,15 +54,14 @@ class DefaultContext extends DataContext {
           $o+= 2;
           $q= '';
 
-          quoted: $s= strcspn($input, '\\'.$c, $o);
-          $q.= substr($input, $o, $s);
-          if ('\\' === $input[$o + $s] ?? null) {
-            $q.= $c;
-            $o+= $s + 2;
+          quoted: $s= strcspn($input, $c, $o);
+          if ('\\' === $input[$o + $s - 1] ?? null) {
+            $q.= substr($input, $o, $s - 1).$c;
+            $o+= $s + 1;
             goto quoted;
           }
 
-          $r[]= $q;
+          $r[]= $q.substr($input, $o, $s);
           $o+= $s + 4;
         } else {
           $s= strcspn($input, ']', $o);
