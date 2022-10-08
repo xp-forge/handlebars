@@ -130,7 +130,7 @@ class DefaultContext extends DataContext {
       }
 
       $path= substr($name, $offset);
-      return '.' === $path ? $context->variables : $context->path(explode('.', $path));
+      return '.' === $path ? $context->variables : $context->path($this->segments($path));
     }
   }
 }

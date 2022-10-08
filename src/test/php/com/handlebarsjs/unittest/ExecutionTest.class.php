@@ -88,6 +88,11 @@ class ExecutionTest {
     Assert::equals('Test', $this->evaluate($expression, ['array' => [['item-class' => ['en' => 'Test']]]]));
   }
 
+  #[Test, Values(['{{../[item.class]}}', '{{../["item.class"]}}', "{{../['item.class']}}"])]
+  public function literal_segments_after_parent_path($expression) {
+    Assert::equals('Test', $this->evaluate('{{#with a}}'.$expression.'{{/with}}', ['item.class' => 'Test', 'a' => true]));
+  }
+
   #[Test]
   public function partial_inside_each() {
     Assert::equals('Test #1', $this->evaluate(
