@@ -78,14 +78,14 @@ class ExecutionTest {
     Assert::equals('Test', $this->evaluate($expression, ['item.class' => 'Test']));
   }
 
-  #[Test, Values(['{{["item[\\"class\\"]"]}}', "{{['item[\"class\"]']}}"])]
+  #[Test, Values(['{{["item[\\"class\\"]"].en}}', "{{['item[\"class\"]'].en}}"])]
   public function literal_path_with_braces_and_quotes($expression) {
-    Assert::equals('Test', $this->evaluate($expression, ['item["class"]' => 'Test']));
+    Assert::equals('Test', $this->evaluate($expression, ['item["class"]' => ['en' => 'Test']]));
   }
 
-  #[Test, Values(['{{array.[0].[item-class]}}', '{{array.[0].["item-class"]}}', "{{array.[0].['item-class']}}"])]
+  #[Test, Values(['{{array.[0].[item-class].en}}', '{{array.[0].["item-class"].en}}', "{{array.[0].['item-class'].en}}"])]
   public function literal_segments($expression) {
-    Assert::equals('Test', $this->evaluate($expression, ['array' => [['item-class' => 'Test']]]));
+    Assert::equals('Test', $this->evaluate($expression, ['array' => [['item-class' => ['en' => 'Test']]]]));
   }
 
   #[Test]

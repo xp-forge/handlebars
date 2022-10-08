@@ -62,7 +62,7 @@ class DefaultContext extends DataContext {
           }
 
           $r[]= $q.substr($input, $o, $s);
-          $o+= $s + 4;
+          $o+= $s + 3;
         } else {
           $s= strcspn($input, ']', $o);
           $r[]= substr($input, $o + 1, $s - 1);
