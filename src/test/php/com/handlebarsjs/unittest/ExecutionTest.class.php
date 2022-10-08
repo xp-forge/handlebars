@@ -14,7 +14,12 @@ class ExecutionTest {
    * @return string
    */
   protected function evaluate($template, $variables, $templates= ['test' => 'Partial']) {
-    return (new HandlebarsEngine())->withTemplates(new InMemory($templates))->render($template, $variables);
+    return (new HandlebarsEngine())
+      ->withTemplates(new InMemory($templates))
+      ->withHelper('date', function($node, $context, $options) { return date('Y-m-d', $options[0] ?? null); })
+      ->withHelper('time', ['short' => ['24' => function($node, $context, $options) { return date('H:i', $options[0] ?? null); }]])
+      ->render($template, $variables)
+    ;
   }
 
   #[Test]
@@ -30,6 +35,32 @@ class ExecutionTest {
   #[Test]
   public function root_reference() {
     Assert::equals('Test', $this->evaluate('{{@root.name.en}}', ['name' => ['en' => 'Test']]));
+  }
+
+  #[Test]
+  public function root_reference_in_nested_context() {
+    Assert::equals(
+      'Test Test',
+      $this->evaluate('{{#with name.en}}{{.}} {{@root.name.en}}{{/with}}', ['name' => ['en' => 'Test']])
+    );
+  }
+
+  #[Test]
+  public function helper_has_priority_over_property() {
+    $context= ['date' => 'yesterday'];
+    Assert::equals(
+      date('Y-m-d').' yesterday yesterday',
+      $this->evaluate('{{date}} {{./date}} {{this.date}}', $context)
+    );
+  }
+
+  #[Test]
+  public function nested_helper_has_priority_over_property() {
+    $context= ['time' => ['short' => ['24' => 'now']]];
+    Assert::equals(
+      date('H:i').' now now',
+      $this->evaluate('{{time.short.24}} {{./time.short.24}} {{this.time.short.24}}', $context)
+    );
   }
 
   #[Test]

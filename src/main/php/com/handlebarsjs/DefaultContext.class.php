@@ -19,7 +19,7 @@ class DefaultContext extends DataContext {
   public function path($segments) {
     $v= $this->variables;
     foreach ($segments as $segment) {
-      if ($v !== null) $v= $this->pointer($v, $segment);
+      if (null === ($v= $this->pointer($v, $segment))) return null;
     }
     return $v;
   }
@@ -47,57 +47,49 @@ class DefaultContext extends DataContext {
    * - this (but no special meaning for ./this and ../this)
    * - @root
    *
+   * @see    https://handlebarsjs.com/guide/expressions.html#disambiguating-helpers-calls-and-property-lookup
    * @param  ?string $name Name including optional segments, separated by dots.
    * @param  bool $helpers Whether to check helpers
    * @return var the variable, or null if nothing is found
    */
   public final function lookup($name, $helpers= true) {
     if (null === $name) {
-      $segments= [];
-      $v= $this->variables;
+      return $this->variables;
     } else if ('.' !== $name[0]) {
       $segments= explode('.', $name);
       if ('this' === $segments[0]) {
-        $v= $this->path(array_slice($segments, 1));
+        return $this->path(array_slice($segments, 1));
       } else if ('@root' === $segments[0]) {
         $context= $this;
         while (null !== $context->parent) {
           $context= $context->parent;
         }
         return $context->path(array_slice($segments, 1));
-      } else {
-        $context= $this;
-        do {
-          $v= $context->path($segments);
-        } while (null === $v && $context= $context->parent);
+      } else if ($helpers) {
+        $v= $this->engine->helpers;
+        foreach ($segments as $segment) {
+          if (null === ($v= $this->helper($v, $segment))) goto property;
+        }
+        return $v;
       }
-    } else if (0 === strncmp('./', $name, 2)) {
-      $segments= explode('.', substr($name, 2));
-      $v= $this->path($segments);
+
+      property: $context= $this;
+      do {
+        $v= $context->path($segments);
+      } while (null === $v && $context= $context->parent);
+      return $v;
+    } else if ('/' === $name[1] ?? null) {
+      return $this->path(explode('.', substr($name, 2)));
     } else {
       $context= $this;
       $offset= 0;
       while (0 === substr_compare($name, '../', $offset, 3)) {
-        $context= $context->parent;
+        if (null === ($context= $context->parent)) return null;
         $offset+= 3;
       }
-      $path= substr($name, $offset);
-      if ('.' === $path) {
-        $segments= [];
-        $v= $context ? $context->variables : null;
-      } else {
-        $segments= explode('.', $path);
-        $v= $context ? $context->path(explode('.', $path)) : null;
-      }
-    }
 
-    // Check helpers
-    if (null === $v && $helpers) {
-      $v= $this->engine->helpers;
-      foreach ($segments as $segment) {
-        if ($v !== null) $v= $this->helper($v, $segment);
-      }
+      $path= substr($name, $offset);
+      return '.' === $path ? $context->variables : $context->path(explode('.', $path));
     }
-    return $v;
   }
 }
