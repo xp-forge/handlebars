@@ -2,7 +2,7 @@
 
 use com\github\mustache\{InMemory, TemplateNotFoundException};
 use com\handlebarsjs\HandlebarsEngine;
-use unittest\{Assert, Expect, Test};
+use unittest\{Assert, Expect, Test, Values};
 
 class ExecutionTest {
 
@@ -61,6 +61,16 @@ class ExecutionTest {
       date('H:i').' now now',
       $this->evaluate('{{time.short.24}} {{./time.short.24}} {{this.time.short.24}}', $context)
     );
+  }
+
+  #[Test, Values(['{{[item-class]}}', '{{["item-class"]}}', "{{['item-class']}}"])]
+  public function literal_path($expression) {
+    Assert::equals('Test', $this->evaluate($expression, ['item-class' => 'Test']));
+  }
+
+  #[Test, Values(['{{array.[0].[item-class]}}', '{{array.[0].["item-class"]}}', "{{array.[0].['item-class']}}"])]
+  public function literal_segments($expression) {
+    Assert::equals('Test', $this->evaluate($expression, ['array' => [['item-class' => 'Test']]]));
   }
 
   #[Test]

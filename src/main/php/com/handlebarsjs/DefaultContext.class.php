@@ -11,14 +11,16 @@ use com\github\mustache\{Context, DataContext};
 class DefaultContext extends DataContext {
 
   /**
-   * Lookups up paths using the given segments
+   * Lookups up paths using the given segments, including literal segments.
    *
+   * @see    https://handlebarsjs.com/guide/expressions.html#literal-segments
    * @param  string[] $segments
    * @return var
    */
   public function path($segments) {
     $v= $this->variables;
     foreach ($segments as $segment) {
+      if ('[' === $segment[0]) $segment= trim($segment, '[]"\'');
       if (null === ($v= $this->pointer($v, $segment))) return null;
     }
     return $v;
