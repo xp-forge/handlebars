@@ -3,6 +3,17 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 8.0.0 / 2022-10-08
+
+* Merged PR #23: Add support for literal segments, e.g. notations
+  like `array.[0].[item-class]`.
+  (@thekid)
+* Merged PR #22: Give helpers precedence over input properties.
+  **Heads up**: This creates a BC break, `{{date}}` will now invoke
+  the *date* helper instead of selecting the date property from the
+  current context!
+  (@thekid)
+
 ## 7.1.1 / 2022-09-11
 
 * Fixed `@first` and `@last` inside nested each loops - @thekid
