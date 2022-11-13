@@ -23,6 +23,21 @@ class ExecutionTest {
   }
 
   #[Test]
+  public function basic_replacement() {
+    Assert::equals('Test', $this->evaluate('{{name}}', ['name' => 'Test']));
+  }
+
+  #[Test]
+  public function dot_lookup() {
+    Assert::equals('Test', $this->evaluate('{{name.en}}', ['name' => ['en' => 'Test']]));
+  }
+
+  #[Test]
+  public function missing() {
+    Assert::equals('', $this->evaluate('{{missing}}', []));
+  }
+
+  #[Test]
   public function html_special_chars_are_escaped() {
     Assert::equals('&quot;&lt;&amp;&gt;&#039;&quot;', $this->evaluate('{{name}}', ['name' => '"<&>\'"']));
   }
