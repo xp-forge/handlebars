@@ -23,6 +23,16 @@ class ExecutionTest {
   }
 
   #[Test]
+  public function html_special_chars_are_escaped() {
+    Assert::equals('&quot;&lt;&amp;&gt;&#039;&quot;', $this->evaluate('{{name}}', ['name' => '"<&>\'"']));
+  }
+
+  #[Test]
+  public function raw_html_special_chars() {
+    Assert::equals('"<&>\'"', $this->evaluate('{{&name}}', ['name' => '"<&>\'"']));
+  }
+
+  #[Test]
   public function this_reference_resolves_to_current_scope() {
     Assert::equals('Test', $this->evaluate('{{this.name}}', ['name' => 'Test']));
   }
