@@ -3,6 +3,8 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Merged PR #25: Migrate to new testing library - @thekid
+
 ## 8.0.0 / 2022-10-08
 
 * Merged PR #23: Add support for literal segments, e.g. notations
