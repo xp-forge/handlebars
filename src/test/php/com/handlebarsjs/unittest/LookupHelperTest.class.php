@@ -1,7 +1,7 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use unittest\Assert;
-use unittest\{Test, Values};
+use test\Assert;
+use test\{Test, Values};
 
 class LookupHelperTest extends HelperTest {
 

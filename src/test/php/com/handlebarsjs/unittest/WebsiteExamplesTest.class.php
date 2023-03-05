@@ -1,7 +1,7 @@
 <?php namespace com\handlebarsjs\unittest;
 
 use com\handlebarsjs\HandlebarsEngine;
-use unittest\{Assert, Test};
+use test\{Assert, Test};
 
 class WebsiteExamplesTest {
 

@@ -1,6 +1,6 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use unittest\{Assert, Test, Values};
+use test\{Assert, Test, Values};
 
 class IfHelperTest extends HelperTest {
 
@@ -25,7 +25,7 @@ class IfHelperTest extends HelperTest {
     ]));
   }
 
-  #[Test, Values(map: ['one' => '1', 'two' => '2', 'three' => '3', 'other' => '3'])]
+  #[Test, Values([['one', '1'], ['two', '2'], ['three', '3'], ['other', '3']])]
   public function chained_elses($key, $expected) {
     Assert::equals($expected, $this->evaluate('{{#if one}}1{{else if two}}2{{else}}3{{/if}}', [
       $key => true

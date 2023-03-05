@@ -1,6 +1,6 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use unittest\{Assert, Test};
+use test\{Assert, Test};
 
 class PartialHelperTest extends HelperTest {
 

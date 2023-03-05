@@ -1,6 +1,6 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use unittest\{Assert, Ignore, Test, Values};
+use test\{Assert, Ignore, Test, Values};
 
 class EachHelperTest extends HelperTest {
 

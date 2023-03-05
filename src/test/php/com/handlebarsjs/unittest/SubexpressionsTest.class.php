@@ -2,7 +2,7 @@
 
 use com\github\mustache\VariableNode;
 use com\handlebarsjs\{Constant, Expression, HandlebarsEngine, Lookup};
-use unittest\{Assert, Test};
+use test\{Assert, Test};
 
 /**
  * Tests subexpressions, which may appear inside node options inside
