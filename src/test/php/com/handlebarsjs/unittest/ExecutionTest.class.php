@@ -2,7 +2,7 @@
 
 use com\github\mustache\{InMemory, TemplateNotFoundException};
 use com\handlebarsjs\HandlebarsEngine;
-use unittest\{Assert, Expect, Test, Values};
+use test\{Assert, Expect, Test, Values};
 
 class ExecutionTest {
 
@@ -194,12 +194,12 @@ class ExecutionTest {
     ));
   }
 
-  #[Test, Expect(['class' => TemplateNotFoundException::class, 'withMessage' => '/Cannot find template undefined/'])]
+  #[Test, Expect(class: TemplateNotFoundException::class, message: '/Cannot find template undefined/')]
   public function undefined_partial() {
     $this->evaluate('{{> undefined}}', []);
   }
 
-  #[Test, Expect(['class' => TemplateNotFoundException::class, 'withMessage' => '/Cannot find template undefined/'])]
+  #[Test, Expect(class: TemplateNotFoundException::class, message: '/Cannot find template undefined/')]
   public function undefined_dynamic_partial() {
     $this->evaluate('{{> (template)}}', ['template' => 'undefined']);
   }

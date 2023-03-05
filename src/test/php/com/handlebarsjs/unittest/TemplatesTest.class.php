@@ -2,7 +2,7 @@
 
 use com\github\mustache\{InMemory, TextNode};
 use com\handlebarsjs\Templates;
-use unittest\{Assert, Test};
+use test\{Assert, Test};
 
 class TemplatesTest {
 

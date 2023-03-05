@@ -3,7 +3,7 @@
 use com\handlebarsjs\{HandlebarsEngine, HandlebarsParser};
 use io\streams\MemoryOutputStream;
 use lang\IllegalArgumentException;
-use unittest\{Assert, Expect, Test};
+use test\{Assert, Expect, Test};
 use util\log\LogCategory;
 
 class EngineTest {

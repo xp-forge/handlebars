@@ -13,8 +13,8 @@ use com\handlebarsjs\{
   PartialNode,
   Quoted
 };
+use test\{Assert, Expect, Test, Values};
 use text\StringTokenizer;
-use unittest\{Assert, Expect, Test, Values};
 
 class ParsingTest {
 
@@ -121,7 +121,7 @@ class ParsingTest {
     Assert::equals($nodes, $this->parse('{{#*inline "myPartial"}}Content{{/inline}}'));
   }
 
-  #[Test, Expect(['class' => TemplateFormatException::class, 'withMessage' => '/Illegal nesting/'])]
+  #[Test, Expect(class: TemplateFormatException::class, message: '/Illegal nesting/')]
   public function incorrect_ending_tag() {
     $this->parse('{{#each users}}...{{/each users}}');
   }
@@ -142,7 +142,7 @@ class ParsingTest {
     );
   }
 
-  #[Test, Expect(['class' => TemplateFormatException::class, 'withMessage' => '/Illegal nesting, no start tag/'])]
+  #[Test, Expect(class: TemplateFormatException::class, message: '/Illegal nesting, no start tag/')]
   public function no_start_tag() {
     $this->parse('{{if test}}X{{/if}}');
   }
