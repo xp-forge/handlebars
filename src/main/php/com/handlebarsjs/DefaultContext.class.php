@@ -37,6 +37,25 @@ class DefaultContext extends DataContext {
   }
 
   /**
+   * Returns a rendering of a given helper closure
+   *
+   * @see    https://github.com/xp-forge/handlebars/issues/26
+   * @param  var $closure
+   * @param  com.github.mustache.Node $node
+   * @param  string[] $options
+   * @param  string $start
+   * @param  string $end
+   * @return string
+   */
+  public function asRendering($closure, $node, $options= [], $start= '{{', $end= '}}') {
+    $pass= [];
+    foreach ($options as $key => $option) {
+      $pass[$key]= $this->isCallable($option) ? $option($node, $this, []) : $option;
+    }
+    return $closure($node, $this, $pass);
+  }
+
+  /**
    * Parse input into segments. Handles literal segments including quoted
    * strings, e.g. `input.["item-class"]`.
    *

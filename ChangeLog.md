@@ -3,6 +3,12 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 8.1.0 / 2023-04-07
+
+* Fixed implementation to not render helper output. This ensures
+  compatibility with the official Handlebars implementation. See
+  issue #26
+  (@thekid)
 * Merged PR #25: Migrate to new testing library - @thekid
 
 ## 8.0.0 / 2022-10-08

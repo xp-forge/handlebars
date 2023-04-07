@@ -18,6 +18,7 @@ class ExecutionTest {
       ->withTemplates(new InMemory($templates))
       ->withHelper('date', function($node, $context, $options) { return date('Y-m-d', $options[0] ?? time()); })
       ->withHelper('time', ['short' => ['24' => function($node, $context, $options) { return date('H:i', $options[0] ?? time()); }]])
+      ->withHelper('code', function($node, $context, $options) { return '<code>'.$options[0].'</code>'; })
       ->render($template, $variables)
     ;
   }
@@ -202,5 +203,15 @@ class ExecutionTest {
   #[Test, Expect(class: TemplateNotFoundException::class, message: '/Cannot find template undefined/')]
   public function undefined_dynamic_partial() {
     $this->evaluate('{{> (template)}}', ['template' => 'undefined']);
+  }
+
+  #[Test]
+  public function handlebars_in_replacement() {
+    Assert::equals('{{name}}', $this->evaluate('{{name}}', ['name' => '{{name}}']));
+  }
+
+  #[Test]
+  public function handlebars_returned_from_helper() {
+    Assert::equals('<code>{{name}}</code>', $this->evaluate('{{& code in}}', ['in' => '{{name}}']));
   }
 }
