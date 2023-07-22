@@ -3,6 +3,12 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 8.1.1 / 2023-07-22
+
+* Fixed *htmlspecialchars(): Passing null to parameter #1 ($string)
+  of type string is deprecated*
+  (@thekid)
+
 ## 8.1.0 / 2023-04-07
 
 * Fixed implementation to not render helper output. This ensures
