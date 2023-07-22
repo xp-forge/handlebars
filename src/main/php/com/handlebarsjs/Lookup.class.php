@@ -1,22 +1,16 @@
 <?php namespace com\handlebarsjs;
 
-class Lookup implements \lang\Value {
+use lang\Value;
+
+class Lookup implements Value {
   protected $name;
 
-  /**
-   * Creates a new lookup instance
-   *
-   * @param  string $name
-   */
+  /** @param string $name */
   public function __construct($name) {
     $this->name= $name;
   }
 
-  /**
-   * (string) cast overloading
-   *
-   * @return string
-   */
+  /** @return string */
   public function __toString() {
     return (string)$this->name;
   }
