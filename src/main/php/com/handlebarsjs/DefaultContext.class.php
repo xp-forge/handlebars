@@ -52,7 +52,7 @@ class DefaultContext extends DataContext {
     foreach ($options as $key => $option) {
       $pass[$key]= $this->isCallable($option) ? $option($node, $this, []) : $option;
     }
-    return $closure($node, $this, $pass);
+    return $closure($node, $this, $pass) ?? '';
   }
 
   /**
