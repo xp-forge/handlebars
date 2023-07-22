@@ -65,6 +65,21 @@ class PartialBlockHelperTest extends HelperTest {
   }
 
   #[Test]
+  public function apply_inline_partial_inside_each() {
+    $templates= $this->templates([
+      'fixture' => '
+        {{#*inline "list-item"}}<li>{{.}}</li>{{/inline}}
+        <ul>{{#each items}}{{> list-item}}{{/each}}</ul>
+      '
+    ]);
+
+    Assert::equals(
+      '<ul><li>One</li><li>Two</li></ul>',
+      trim($this->engine($templates)->transform('fixture', ['items' => ['One', 'Two']]))
+    );
+  }
+
+  #[Test]
   public function layout() {
     $templates= $this->templates([
       'includes/hero' => '<div class="hero"><img src="{{hero-src}}" alt="{{hero-alt}}"/></div>',
