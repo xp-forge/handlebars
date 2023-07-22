@@ -1,6 +1,6 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use com\github\mustache\{TemplateFormatException, TextNode, VariableNode};
+use com\github\mustache\{TemplateFormatException, TextNode, VariableNode, NodeList};
 use com\handlebarsjs\{
   BlockNode,
   Constant,
@@ -13,6 +13,7 @@ use com\handlebarsjs\{
   PartialNode,
   Quoted
 };
+use lang\IllegalArgumentException;
 use test\{Assert, Expect, Test, Values};
 use text\StringTokenizer;
 
@@ -114,11 +115,21 @@ class ParsingTest {
   }
 
   #[Test]
-  public function inline_partial() {
-    $nodes= new Nodes();
-    $nodes->decorate(new Decoration('inline', [new Quoted('myPartial')], new Nodes([new TextNode('Content')])));
+  public function inline_partials() {
+    Assert::equals(
+      ['one' => new NodeList([new TextNode('One')]), 'two' => new NodeList([new TextNode('Two')])],
+      $this->parse('{{#*inline "one"}}One{{/inline}}{{#*inline "two"}}Two{{/inline}}')->partials()
+    );
+  }
 
-    Assert::equals($nodes, $this->parse('{{#*inline "myPartial"}}Content{{/inline}}'));
+  #[Test, Expect(IllegalArgumentException::class)]
+  public function inline_name_cannot_be_missing() {
+    $this->parse('{{#*inline}}...{{/inline}}');
+  }
+
+  #[Test, Expect(IllegalArgumentException::class)]
+  public function inline_name_cannot_be_reference() {
+    $this->parse('{{#*inline one}}...{{/inline}}');
   }
 
   #[Test, Expect(class: TemplateFormatException::class, message: '/Illegal nesting/')]

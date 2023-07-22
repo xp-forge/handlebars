@@ -3,7 +3,7 @@
 use lang\Value;
 
 class Quoted implements Value {
-  protected $chars;
+  public $chars;
 
   /**
    * Creates a new Quoted instance

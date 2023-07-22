@@ -1,48 +1,49 @@
 <?php namespace com\handlebarsjs;
 
-use lang\XPClass;
-
-/**
- * Block helpers factory
- */
+/** Block helpers factory */
 class BlockHelpers {
-  private static $byName;
+  private $impl;
 
-  static function __static() {
-    self::$byName= [
-      'if'     => new XPClass(IfBlockHelper::class),
-      'unless' => new XPClass(UnlessBlockHelper::class),
-      'with'   => new XPClass(WithBlockHelper::class),
-      'each'   => new XPClass(EachBlockHelper::class),
-      '>'      => new XPClass(PartialBlockHelper::class)
-    ];
+  /** @param [:string] $impl */
+  public function __construct($impl) {
+    $this->impl= $impl;
   }
 
   /**
-   * Gets a block helper class by a given name
+   * Register a named implementation
    *
    * @param  string $name
-   * @return ?lang.XPClass
+   * @param  ?string $impl
+   * @return self
    */
-  public static function named($name) {
-    return self::$byName[$name] ?? null;
+  public function register($name, $impl) {
+    if (null === $impl) {
+      unset($this->impl[$name]);
+    } else {
+      $this->impl[$name]= $impl;
+    }
+    return $this;
   }
 
   /**
    * Creates a new with block helper
    *
-   * @param string $name
-   * @param string[] $options
-   * @param com.github.mustache.NodeList $fn
-   * @param com.github.mustache.NodeList $inverse
-   * @param string $start
-   * @param string $end
+   * - Creates instances of named block implementations
+   * - Registers `*inline` partials in top-level nodes
+   * - Uses default block implementation otherwise
+   *
+   * @param  var[] $options
+   * @param  com.github.ParseState $state
+   * @return com.github.mustache.Node
    */
-  public static function newInstance($name, $options, $fn, $inverse, $start, $end) {
-    if (isset(self::$byName[$name])) {
-      return self::$byName[$name]->newInstance($options, $fn, $inverse, $start, $end);
+  public function newInstance($options, $state) {
+    $name= array_shift($options);
+    if ($impl= $this->impl[$name] ?? null) {
+      return $state->target->add(new $impl($options, null, null, $state->start, $state->end));
+    } else if ('*inline' === $name) {
+      return new BlockNode('inline', $options, $state->parents[0]->declare($options[0] ?? null));
     } else {
-      return new BlockNode($name, $options, $fn, $inverse, $start, $end);
+      return $state->target->add(new BlockNode($name, $options, null, null, $state->start, $state->end));
     }
   }
 }

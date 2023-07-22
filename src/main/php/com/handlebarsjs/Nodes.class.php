@@ -1,39 +1,44 @@
 <?php namespace com\handlebarsjs;
 
 use com\github\mustache\NodeList;
+use lang\IllegalArgumentException;
 
 class Nodes extends NodeList {
-  private $decorations= [];
+  private $partials= [];
 
   /**
-   * Add a decoration
+   * Declares a partial and returns the nodes associated with the name.
    *
-   * @param  com.handlebarsjs.Decoration $decoration
-   * @return com.handlebarsjs.Decoration
-   */
-  public function decorate($decoration) {
-    $this->decorations[]= $decoration;
-    return $decoration;
-  }
-
-  /**
-   * Evaluates decorators
-   *
-   * @param  com.github.mustache.Context $context the rendering context
-   * @return void
-   */
-  public function enter($context) {
-    foreach ($this->decorations as $decoration) {
-      $decoration->enter($context);
-    }
-  }
-
-  /**
-   * Returns block without decorators
-   *
+   * @param  string|com.handlebarsjs.Quoted $partial
+   * @param  ?com.github.mustache.NodeList $nodes
    * @return com.github.mustache.NodeList
+   * @throws lang.IllegalArgumentException
    */
-  public function block() { return new NodeList($this->nodes); }
+  public function declare($partial, $nodes= null) {
+    if ($partial instanceof Quoted) {
+      $name= $partial->chars;
+    } else if (is_string($partial)) {
+      $name= $partial;
+    } else {
+      throw new IllegalArgumentException('Partial names must be strings or Quoted instances, have '.typeof($partial));
+    }
+
+    return $this->partials[$name]= $nodes ?? new NodeList();
+  }
+
+  /** @return [:com.github.mustache.NodeList] */
+  public function partials() { return $this->partials; }
+
+  /**
+   * Returns a partial with a given name, or NULL if this partial does
+   * not exist.
+   *
+   * @param  string $partial
+   * @return ?com.github.mustache.NodeList
+   */
+  public function partial($partial) {
+    return $this->partials[$partial] ?? null;
+  }
 
   /**
    * Evaluates this node
@@ -42,9 +47,19 @@ class Nodes extends NodeList {
    * @param  io.streams.OutputStream $out
    */
   public function write($context, $out) {
-    foreach ($this->decorations as $decoration) {
-      $decoration->enter($context);
+    $templates= $context->engine->templates();
+    $previous= [];
+    foreach ($this->partials as $name => $partial) {
+      $previous[$name]= $templates->register($name, $partial);
     }
-    parent::write($context, $out);
+
+    // Restore partials to previous state after processing this template
+    try {
+      parent::write($context, $out);
+    } finally {
+      foreach ($previous as $name => $partial) {
+        $templates->register($name, $partial);
+      }
+    }
   }
 }

@@ -15,11 +15,12 @@ use text\Tokenizer;
 /**
  * Parses handlebars templates
  *
- * @test  xp://com.handlebarsjs.unittest.ParsingTest
- * @test  xp://com.handlebarsjs.unittest.SubexpressionsTest
+ * @test  com.handlebarsjs.unittest.ParsingTest
+ * @test  com.handlebarsjs.unittest.SubexpressionsTest
  * @see   https://github.com/wycats/handlebars.js/blob/master/spec/parser.js
  */
 class HandlebarsParser extends AbstractMustacheParser {
+  public $blocks;
 
   /**
    * Tokenize name and options from a given tag, e.g.:
@@ -103,29 +104,24 @@ class HandlebarsParser extends AbstractMustacheParser {
 
   /**
    * Initialize this parser.
+   *
+   * @return void
    */
   protected function initialize() {
+    $this->blocks= new BlockHelpers([
+      'if'     => IfBlockHelper::class,
+      'unless' => UnlessBlockHelper::class,
+      'with'   => WithBlockHelper::class,
+      'each'   => EachBlockHelper::class,
+      '>'      => PartialBlockHelper::class,
+    ]);
 
     // Sections
     $this->withHandler('#', true, function($tag, $state, $parse) {
-      $parsed= $parse->options(trim(substr($tag, 1)));
-      $name= array_shift($parsed);
       $state->parents[]= $state->target;
-
-      if ('*' === $name[0]) {
-        $block= $state->target->decorate(new Decoration($name, $parsed));
-      } else {
-        $block= $state->target->add(BlockHelpers::newInstance(
-          $name,
-          $parsed,
-          null,
-          null,
-          $state->start,
-          $state->end
-        ));
-      }
-      $state->parents[]= $block;
+      $block= $this->blocks->newInstance($parse->options(trim(substr($tag, 1))), $state);
       $state->target= $block->fn();
+      $state->parents[]= $block;
     });
     $this->withHandler('/', true, function($tag, $state) {
       $name= trim(substr($tag, 1));
