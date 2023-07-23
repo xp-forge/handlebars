@@ -4,7 +4,6 @@ use com\github\mustache\{TemplateFormatException, TextNode, VariableNode, NodeLi
 use com\handlebarsjs\{
   BlockNode,
   Constant,
-  Decoration,
   Expression,
   HandlebarsParser,
   Lookup,
