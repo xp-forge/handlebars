@@ -20,7 +20,7 @@ class BlockNode extends Node {
    * Creates a new section node
    *
    * @param string $name
-   * @param string[] $options
+   * @param var[] $options
    * @param com.github.mustache.NodeList $fn
    * @param com.github.mustache.NodeList $inverse
    * @param string $start
@@ -29,8 +29,8 @@ class BlockNode extends Node {
   public function __construct($name, $options= [], NodeList $fn= null, NodeList $inverse= null, $start= '{{', $end= '}}') {
     $this->name= $name;
     $this->options= $options;
-    $this->fn= $fn ?: new NodeList();
-    $this->inverse= $inverse ?: new NodeList();
+    $this->fn= $fn ?? new NodeList();
+    $this->inverse= $inverse ?? new NodeList();
     $this->start= $start;
     $this->end= $end;
   }
@@ -65,7 +65,7 @@ class BlockNode extends Node {
   /**
    * Returns options passed to this section
    *
-   * @return string[]
+   * @return var[]
    */
   public function options() {
     return $this->options;
