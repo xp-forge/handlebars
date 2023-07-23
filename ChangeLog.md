@@ -3,6 +3,9 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Merged PR #27: Remove decorator support and optimize inline partials
+  (@thekid)
+
 ## 8.1.1 / 2023-07-22
 
 * Fixed *htmlspecialchars(): Passing null to parameter #1 ($string)
