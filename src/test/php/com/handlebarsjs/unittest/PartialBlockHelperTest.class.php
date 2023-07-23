@@ -1,5 +1,6 @@
 <?php namespace com\handlebarsjs\unittest;
 
+use com\github\mustache\templates\NotFound;
 use test\{Assert, Test};
 
 class PartialBlockHelperTest extends HelperTest {
@@ -77,6 +78,16 @@ class PartialBlockHelperTest extends HelperTest {
       '<ul><li>One</li><li>Two</li></ul>',
       trim($this->engine($templates)->transform('fixture', ['items' => ['One', 'Two']]))
     );
+  }
+
+  #[Test]
+  public function inline_template_not_available_after_transformation() {
+    $engine= $this->engine($this->templates([
+      'fixture' => '{{#*inline "test"}}Test{{/inline}}{{> test}}'
+    ]));
+    $engine->transform('fixture', []);
+
+    Assert::instance(NotFound::class, $engine->templates()->source('test'));
   }
 
   #[Test]

@@ -1,6 +1,6 @@
 <?php namespace com\handlebarsjs;
 
-use com\github\mustache\Node;
+use com\github\mustache\{Node, NodeList};
 use util\Objects;
 
 /**
@@ -20,17 +20,17 @@ class BlockNode extends Node {
    * Creates a new section node
    *
    * @param string $name
-   * @param string[] $options
-   * @param com.handlebarsjs.Nodes $fn
-   * @param com.handlebarsjs.Nodes $inverse
+   * @param var[] $options
+   * @param com.github.mustache.NodeList $fn
+   * @param com.github.mustache.NodeList $inverse
    * @param string $start
    * @param string $end
    */
-  public function __construct($name, $options= [], Nodes $fn= null, Nodes $inverse= null, $start= '{{', $end= '}}') {
+  public function __construct($name, $options= [], NodeList $fn= null, NodeList $inverse= null, $start= '{{', $end= '}}') {
     $this->name= $name;
     $this->options= $options;
-    $this->fn= $fn ?: new Nodes();
-    $this->inverse= $inverse ?: new Nodes();
+    $this->fn= $fn ?? new NodeList();
+    $this->inverse= $inverse ?? new NodeList();
     $this->start= $start;
     $this->end= $end;
   }
@@ -47,7 +47,7 @@ class BlockNode extends Node {
   /**
    * Returns fn
    *
-   * @return com.handlebarsjs.Nodes
+   * @return com.github.mustache.NodeList
    */
   public function fn() {
     return $this->fn;
@@ -56,7 +56,7 @@ class BlockNode extends Node {
   /**
    * Returns inverse
    *
-   * @return com.handlebarsjs.Nodes
+   * @return com.github.mustache.NodeList
    */
   public function inverse() {
     return $this->inverse;
@@ -65,7 +65,7 @@ class BlockNode extends Node {
   /**
    * Returns options passed to this section
    *
-   * @return string[]
+   * @return var[]
    */
   public function options() {
     return $this->options;
