@@ -1,6 +1,5 @@
 <?php namespace com\handlebarsjs\unittest;
 
-use com\github\mustache\templates\NotFound;
 use test\{Assert, Test};
 
 class PartialBlockHelperTest extends HelperTest {
@@ -87,7 +86,7 @@ class PartialBlockHelperTest extends HelperTest {
     ]));
     $engine->transform('fixture', []);
 
-    Assert::instance(NotFound::class, $engine->templates()->source('test'));
+    Assert::false($engine->templates()->source('test')->exists());
   }
 
   #[Test]
