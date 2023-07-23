@@ -3,6 +3,8 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 9.0.0 / 2023-07-23
+
 * Merged PR #27: Remove decorator support and optimize inline partials
   (@thekid)
 
