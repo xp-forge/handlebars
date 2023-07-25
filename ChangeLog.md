@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 9.1.0 / 2023-07-25
+
+* Merged PR #27: Allow registering functions in BlockHelper - @thekid
+
 ## 9.0.0 / 2023-07-23
 
 * Merged PR #27: Remove decorator support and optimize inline partials
