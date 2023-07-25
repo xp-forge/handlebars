@@ -2,23 +2,29 @@
 
 /** Block helpers factory */
 class BlockHelpers {
-  private $impl;
+  private $impl= [];
 
-  /** @param [:string] $impl */
-  public function __construct($impl) {
-    $this->impl= $impl;
+  /** @param [:string] $byName */
+  public function __construct($byName) {
+    foreach ($byName as $name => $impl) {
+      $this->register($name, $impl);
+    }
   }
 
   /**
    * Register a named implementation
    *
    * @param  string $name
-   * @param  ?string $impl
+   * @param  ?string|function(var[], com.github.ParseState): com.github.mustache.Node $impl
    * @return self
    */
   public function register($name, $impl) {
     if (null === $impl) {
       unset($this->impl[$name]);
+    } else if (is_string($impl)) {
+      $this->impl[$name]= function($options, $state) use($impl) {
+        return $state->target->add(new $impl($options, null, null, $state->start, $state->end));
+      };
     } else {
       $this->impl[$name]= $impl;
     }
@@ -39,9 +45,7 @@ class BlockHelpers {
   public function newInstance($options, $state) {
     $name= array_shift($options);
     if ($impl= $this->impl[$name] ?? null) {
-      return $state->target->add(new $impl($options, null, null, $state->start, $state->end));
-    } else if ('*inline' === $name) {
-      return new BlockNode('inline', $options, $state->parents[0]->declare($options[0] ?? null));
+      return $impl($options, $state);
     } else {
       return $state->target->add(new BlockNode($name, $options, null, null, $state->start, $state->end));
     }
