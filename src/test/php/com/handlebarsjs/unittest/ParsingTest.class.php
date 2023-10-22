@@ -87,11 +87,11 @@ class ParsingTest {
     );
   }
 
-  #[Test, Values(['tagName="h1"', '[tagName]="h1"'])]
-  public function partial_with_context($context) {
+  #[Test]
+  public function partial_with_context() {
     Assert::equals(
       new Nodes([new PartialNode(new Constant('userMessage'), ['tagName' => new Quoted('h1')])]),
-      $this->parse("{{> userMessage {$context}}}")
+      $this->parse('{{> userMessage tagName="h1"}}')
     );
   }
 
@@ -100,6 +100,30 @@ class ParsingTest {
     Assert::equals(
       new Nodes([new PartialNode(new Expression('partial'), ['tagName' => new Quoted('h1')])]),
       $this->parse('{{> (partial) tagName="h1"}}')
+    );
+  }
+
+  #[Test]
+  public function context_option_with_braces() {
+    Assert::equals(
+      new Nodes([new PartialNode(new Constant('userMessage'), [new Lookup('tag name')])]),
+      $this->parse('{{> userMessage [tag name]}}')
+    );
+  }
+
+  #[Test]
+  public function context_name_with_braces() {
+    Assert::equals(
+      new Nodes([new PartialNode(new Constant('userMessage'), ['tag name' => new Quoted('h1')])]),
+      $this->parse('{{> userMessage [tag name]="h1"}}')
+    );
+  }
+
+  #[Test]
+  public function context_value_with_braces() {
+    Assert::equals(
+      new Nodes([new PartialNode(new Constant('userMessage'), ['tagName' => new Lookup('tag value')])]),
+      $this->parse('{{> userMessage tagName=[tag value]}}')
     );
   }
 

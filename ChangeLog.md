@@ -5,6 +5,7 @@ HandleBars change log
 
 ## 9.2.0 / ????-??-??
 
+* Added support for literals enclosed in `[]` - @thekid
 * Optimized helpers invoked as part of a block - @thekid
 * Fixed *Call to undefined method* errors for unclosed sections - @thekid
 * Merged PR #29: Implement inverse blocks - @thekid

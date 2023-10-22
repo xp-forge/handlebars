@@ -65,32 +65,41 @@ class HandlebarsParser extends AbstractMustacheParser {
         $p= strcspn($tag, "\r\n\t ", $o);
         continue;
       } else {
-        $p= strcspn($tag, ' =', $o);
-        if ($o + $p < $l && '=' === $tag[$o + $p]) {
-          $key= substr($tag, $o, $p);
-          continue;
+
+        // [token] vs. token
+        if ('[' === $tag[$o]) {
+          $p= strcspn($tag, ']', $o);
+          $token= substr($tag, $o + 1, $p - 1);
+          $p++;
         } else {
+          $p= strcspn($tag, $key ? '=' : ' =', $o);
           $token= substr($tag, $o, $p);
-          if ('true' === $token) {
-            $value= new Constant(true);
-          } else if ('false' === $token) {
-            $value= new Constant(false);
-          } else if ('null' === $token) {
-            $value= new Constant(null);
-          } else if ('.' === $token) {
-            $value= new Lookup(null);
-          } else if ('as' === $token) {                     // Block parameters (as |...|)
-            $o= strpos($tag, '|', $o);
-            $p= strcspn($tag, '|', $o + 1);
-            $value= new BlockParams(explode(' ', trim(substr($tag, $o + 1, $p))));
-            $p++;
-          } else if (strspn($token, '-.0123456789') === strlen($token)) {
-            $value= new Constant(strstr($token, '.') ? (float)$token : (int)$token);
-          } else {
-            $value= new Lookup($token);
-          }
+        }
+
+        // key=value vs. value
+        if ($o + $p < $l && '=' === $tag[$o + $p]) {
+          $key= $token;
+          continue;
+        } else if ('true' === $token) {
+          $value= new Constant(true);
+        } else if ('false' === $token) {
+          $value= new Constant(false);
+        } else if ('null' === $token) {
+          $value= new Constant(null);
+        } else if ('.' === $token) {
+          $value= new Lookup(null);
+        } else if ('as' === $token) {                     // Block parameters (as |...|)
+          $o= strpos($tag, '|', $o);
+          $p= strcspn($tag, '|', $o + 1);
+          $value= new BlockParams(explode(' ', trim(substr($tag, $o + 1, $p))));
+          $p++;
+        } else if (strspn($token, '-.0123456789') === strlen($token)) {
+          $value= new Constant(strstr($token, '.') ? (float)$token : (int)$token);
+        } else {
+          $value= new Lookup($token);
         }
       }
+
       if ($key) {
         $parsed[$key]= $value;
         $key= null;
