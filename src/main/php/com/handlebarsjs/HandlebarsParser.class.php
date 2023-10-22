@@ -9,7 +9,6 @@ use com\github\mustache\{
   TemplateFormatException,
   ParseState
 };
-use lang\MethodNotImplementedException;
 use text\Tokenizer;
 
 /**
@@ -191,13 +190,17 @@ class HandlebarsParser extends AbstractMustacheParser {
     });
 
     // ^ is either an else by its own, or a negated block
-    $this->withHandler('^', true, function($tag, $state) {
-      if ('^' === trim($tag)) {
+    $this->withHandler('^', true, function($tag, $state, $parse) {
+      $tag= trim($tag);
+      if ('^' === $tag) {
         $block= cast($state->parents[sizeof($state->parents) - 1], BlockNode::class);
         $state->target= $block->inverse();
-        return;
+      } else {
+        $state->parents[]= $state->target;
+        $block= new InverseOf($this->blocks->newInstance($parse->options(substr($tag, 1)), $state));
+        $state->target= $block->fn();
+        $state->parents[]= $block;
       }
-      throw new MethodNotImplementedException('^blocks not yet implemented');
     });
 
     // Default
