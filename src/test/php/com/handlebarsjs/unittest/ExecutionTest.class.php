@@ -59,6 +59,11 @@ class ExecutionTest {
   }
 
   #[Test]
+  public function iterator_inside_section() {
+    Assert::equals('User @test', $this->evaluate('{{#user}}User @{{.}}{{/user}}', ['user' => 'test']));
+  }
+
+  #[Test]
   public function root_reference() {
     Assert::equals('Test', $this->evaluate('{{@root.name.en}}', ['name' => ['en' => 'Test']]));
   }
