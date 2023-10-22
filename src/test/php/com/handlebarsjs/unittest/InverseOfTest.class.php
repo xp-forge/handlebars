@@ -4,8 +4,16 @@ use test\{Assert, Test, Values};
 
 class InverseOfTest extends HelperTest {
 
-  #[Test, Values([[[], 'no people'], [['A', 'B'], 'AB']])]
+  #[Test, Values([[null, 'Guest'], [['name' => 'Test'], 'User Test']])]
   public function inverse_section($input, $outcome) {
+    Assert::equals($outcome, $this->evaluate(
+      '{{#person}}User {{name}}{{/person}}{{^person}}Guest{{/person}}',
+      ['person' => $input]
+    ));
+  }
+
+  #[Test, Values([[[], 'no people'], [['A', 'B'], 'AB']])]
+  public function inverse_iterator($input, $outcome) {
     Assert::equals($outcome, $this->evaluate(
       '{{#people}}{{this}}{{/people}}{{^people}}no people{{/people}}',
       ['people' => $input]
@@ -13,7 +21,7 @@ class InverseOfTest extends HelperTest {
   }
 
   #[Test, Values([[[], 'no people'], [['A', 'B'], 'AB']])]
-  public function inverse_section_with_else($input, $outcome) {
+  public function inverse_iterator_with_else($input, $outcome) {
     Assert::equals($outcome, $this->evaluate(
       '{{#people}}{{this}}{{else}}no people{{/people}}',
       ['people' => $input]
@@ -21,7 +29,7 @@ class InverseOfTest extends HelperTest {
   }
 
   #[Test, Values([[[], 'no people'], [['A', 'B'], 'AB']])]
-  public function inverse_section_with_short_else($input, $outcome) {
+  public function inverse_iterator_with_short_else($input, $outcome) {
     Assert::equals($outcome, $this->evaluate(
       '{{#people}}{{this}}{{^}}no people{{/people}}',
       ['people' => $input]
