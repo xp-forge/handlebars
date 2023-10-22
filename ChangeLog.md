@@ -3,6 +3,8 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Optimized parsing `{{.}}` by not parsing following text - @thekid
+
 ## 9.1.0 / 2023-07-25
 
 * Merged PR #28: Allow registering functions in BlockHelper - @thekid

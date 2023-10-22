@@ -202,11 +202,14 @@ class HandlebarsParser extends AbstractMustacheParser {
 
     // Default
     $this->withHandler(null, false, function($tag, $state, $parse) {
-      $parsed= $parse->options(trim($tag));
-      if ('.' === $parsed[0]) {
+      $tag= trim($tag);
+      if ('.' === $tag) {
         $state->target->add(new IteratorNode(true));
         return;
-      } else if ('else' === $parsed[0] && $state->parents) {
+      }
+
+      $parsed= $parse->options($tag);
+      if ('else' === $parsed[0] && $state->parents) {
         $context= &$state->parents[sizeof($state->parents) - 1];
         if ($context instanceof BlockNode) {
 
