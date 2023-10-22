@@ -4,10 +4,50 @@ use test\{Assert, Test, Values};
 
 class InverseOfTest extends HelperTest {
 
+  #[Test, Values([[null, 'Guest'], ['Test', 'User Test']])]
+  public function inverse_variable($input, $outcome) {
+    Assert::equals($outcome, $this->evaluate(
+      '{{#person}}User {{.}}{{/person}}{{^person}}Guest{{/person}}',
+      ['person' => $input]
+    ));
+  }
+
+  #[Test, Values([[null, 'Guest'], ['Test', 'User Test']])]
+  public function inverse_variable_with_else($input, $outcome) {
+    Assert::equals($outcome, $this->evaluate(
+      '{{#person}}User {{.}}{{else}}Guest{{/person}}',
+      ['person' => $input]
+    ));
+  }
+
+  #[Test, Values([[null, 'Guest'], ['Test', 'User Test']])]
+  public function inverse_variable_with_short_else($input, $outcome) {
+    Assert::equals($outcome, $this->evaluate(
+      '{{#person}}User {{.}}{{^}}Guest{{/person}}',
+      ['person' => $input]
+    ));
+  }
+
   #[Test, Values([[null, 'Guest'], [['name' => 'Test'], 'User Test']])]
   public function inverse_section($input, $outcome) {
     Assert::equals($outcome, $this->evaluate(
       '{{#person}}User {{name}}{{/person}}{{^person}}Guest{{/person}}',
+      ['person' => $input]
+    ));
+  }
+
+  #[Test, Values([[null, 'Guest'], [['name' => 'Test'], 'User Test']])]
+  public function inverse_section_with_else($input, $outcome) {
+    Assert::equals($outcome, $this->evaluate(
+      '{{#person}}User {{name}}{{else}}Guest{{/person}}',
+      ['person' => $input]
+    ));
+  }
+
+  #[Test, Values([[null, 'Guest'], [['name' => 'Test'], 'User Test']])]
+  public function inverse_section_with_short_else($input, $outcome) {
+    Assert::equals($outcome, $this->evaluate(
+      '{{#person}}User {{name}}{{^}}Guest{{/person}}',
       ['person' => $input]
     ));
   }
