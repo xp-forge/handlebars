@@ -3,6 +3,7 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Added PHP 8.4 to the test matrix - @thekid
 * Optimized parsing `{{.}}` by not parsing following text - @thekid
 
 ## 9.1.0 / 2023-07-25
