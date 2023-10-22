@@ -87,11 +87,11 @@ class ParsingTest {
     );
   }
 
-  #[Test]
-  public function partial_with_context() {
+  #[Test, Values(['tagName="h1"', '[tagName]="h1"'])]
+  public function partial_with_context($context) {
     Assert::equals(
       new Nodes([new PartialNode(new Constant('userMessage'), ['tagName' => new Quoted('h1')])]),
-      $this->parse('{{> userMessage tagName="h1"}}')
+      $this->parse("{{> userMessage {$context}}}")
     );
   }
 
