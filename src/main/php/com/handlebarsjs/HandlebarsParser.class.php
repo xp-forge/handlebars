@@ -72,7 +72,7 @@ class HandlebarsParser extends AbstractMustacheParser {
           $token= substr($tag, $o + 1, $p - 1);
           $p++;
         } else {
-          $p= strcspn($tag, $key ? '=' : ' =', $o);
+          $p= strcspn($tag, $key ? ' ' : ' =', $o);
           $token= substr($tag, $o, $p);
         }
 
