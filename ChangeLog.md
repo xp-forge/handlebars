@@ -3,7 +3,7 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
-## 9.2.0 / ????-??-??
+## 9.2.0 / 2013-10-22
 
 * Added support for literals enclosed in `[]` - @thekid
 * Optimized helpers invoked as part of a block - @thekid
