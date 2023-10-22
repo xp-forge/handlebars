@@ -1,10 +1,10 @@
 <?php namespace com\handlebarsjs;
 
+use lang\Value;
 use util\Objects;
 
-class Expression implements \lang\Value {
-  protected $name;
-  protected $options;
+class Expression implements Value {
+  protected $name, $options;
 
   /**
    * Creates a new lookup instance
