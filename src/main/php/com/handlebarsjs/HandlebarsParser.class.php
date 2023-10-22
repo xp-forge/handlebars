@@ -325,7 +325,7 @@ class HandlebarsParser extends AbstractMustacheParser {
     }
 
     // Check for unclosed sections
-    if (!empty($state->parents)) {
+    if ($state->parents) {
       $block= array_pop($state->parents);
       throw new TemplateFormatException('Unclosed section {{#'.$block->name().'}}');
     }
