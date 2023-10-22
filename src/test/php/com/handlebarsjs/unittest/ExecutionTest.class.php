@@ -16,9 +16,20 @@ class ExecutionTest {
   protected function evaluate($template, $variables, $templates= ['test' => 'Partial']) {
     return (new HandlebarsEngine())
       ->withTemplates(new InMemory($templates))
-      ->withHelper('date', function($node, $context, $options) { return date('Y-m-d', $options[0] ?? time()); })
-      ->withHelper('time', ['short' => ['24' => function($node, $context, $options) { return date('H:i', $options[0] ?? time()); }]])
-      ->withHelper('code', function($node, $context, $options) { return '<code>'.$options[0].'</code>'; })
+      ->withHelper('date', function($node, $context, $options) {
+        return date('Y-m-d', $options[0] ?? time());
+      })
+      ->withHelper('time', ['short' => ['24' => function($node, $context, $options) {
+        return date('H:i', $options[0] ?? time());
+      }]])
+      ->withHelper('code', function($node, $context, $options) {
+        return '<code>'.$options[0].'</code>';
+      })
+      ->withHelper('match', function($node, $context, $options) {
+        if ($context->isTruthy($options[0])) {
+          return $context->engine->render($options['fn'], $context->newInstance($options[0]));
+        }
+      })
       ->render($template, $variables)
     ;
   }
@@ -218,5 +229,10 @@ class ExecutionTest {
   #[Test]
   public function handlebars_returned_from_helper() {
     Assert::equals('<code>{{name}}</code>', $this->evaluate('{{& code in}}', ['in' => '{{name}}']));
+  }
+
+  #[Test]
+  public function helper_used_in_section() {
+    Assert::equals('Test', $this->evaluate('{{#match in}}{{name}}{{/match}}', ['in' => ['name' => 'Test']]));
   }
 }
