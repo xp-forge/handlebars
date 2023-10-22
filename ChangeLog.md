@@ -5,6 +5,7 @@ HandleBars change log
 
 ## 9.2.0 / ????-??-??
 
+* Fixed *Call to undefined method* errors for unclosed sections - @thekid
 * Merged PR #29: Implement inverse blocks - @thekid
 * Added PHP 8.4 to the test matrix - @thekid
 * Optimized parsing `{{.}}` by not parsing following text - @thekid

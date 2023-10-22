@@ -152,9 +152,24 @@ class ParsingTest {
     );
   }
 
-  #[Test, Expect(class: TemplateFormatException::class, message: '/Illegal nesting, no start tag/')]
+  #[Test, Expect(class: TemplateFormatException::class, message: 'Illegal nesting, expected {{/if}}, have {{/unless}}')]
+  public function illegal_nesting() {
+    $this->parse('{{#if test}}X{{/unless}}');
+  }
+
+  #[Test, Expect(class: TemplateFormatException::class, message: 'Illegal nesting, no start tag, but have {{/if}}')]
   public function no_start_tag() {
     $this->parse('{{if test}}X{{/if}}');
+  }
+
+  #[Test, Expect(class: TemplateFormatException::class, message: 'Unclosed section {{#section}}')]
+  public function unclosed_section() {
+    $this->parse('{{#section}}X');
+  }
+
+  #[Test, Expect(class: TemplateFormatException::class, message: 'Unclosed section {{#if}}')]
+  public function unclosed_if() {
+    $this->parse('{{#if test}}X');
   }
 
   #[Test]
