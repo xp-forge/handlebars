@@ -107,10 +107,11 @@ class BlockNode extends Node {
     // * If the value is a hash, use it as context
     // * Otherwise, simply delegate evaluation to node list
     if ($context->isCallable($value)) {
-      $out->write($context->asRendering($value, $target, array_merge(
-        $this->options,
-        ['fn' => $this->fn, 'inverse' => $this->inverse]
-      )));
+      $out->write($context->asRendering(
+        $value,
+        $target,
+        ['fn' => $this->fn, 'inverse' => $this->inverse] + $this->options
+      ));
     } else if ($context->isList($value)) {
       foreach ($context->asTraversable($value) as $element) {
         $target->write($context->asContext($element), $out);
