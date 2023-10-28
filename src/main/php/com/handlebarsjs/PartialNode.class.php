@@ -49,11 +49,7 @@ class PartialNode extends Node {
   protected function optionString() {
     $r= '';
     foreach ($this->options as $key => $option) {
-      if (false !== strpos($option, ' ')) {
-        $r.= ' '.$key.'= "'.$option.'"';
-      } else {
-        $r.= ' '.$key.'= '.$option;
-      }
+      $r.= ' '.$key.'= '.(string)$option;
     }
     return $r;
   }
@@ -64,7 +60,7 @@ class PartialNode extends Node {
    * @return string
    */
   public function toString() {
-    return nameof($this).'(> '.$this->template->toString().$this->optionString().'}}, indent= "'.$this->indent.'")';
+    return nameof($this).'({{> '.$this->template->toString().$this->optionString().'}}, indent= "'.$this->indent.'")';
   }
 
   /**
