@@ -14,13 +14,14 @@ class PartialNodeTest {
 
   #[Test]
   public function string_representation() {
-    $partial= new PartialNode(new Lookup('test'));
-    Assert::equals('com.handlebarsjs.PartialNode{{> com.handlebarsjs.Lookup(test)}}, indent= ""', $partial->toString());
+    Assert::equals(
+      'com.handlebarsjs.PartialNode(> com.handlebarsjs.Lookup(test)}}, indent= "")',
+      (new PartialNode(new Lookup('test')))->toString()
+    );
   }
 
   #[Test]
   public function string_cast() {
-    $partial= new PartialNode(new Lookup('test'));
-    Assert::equals('{{> test}}', (string)$partial);
+    Assert::equals('{{> test}}', (string)new PartialNode(new Lookup('test')));
   }
 }

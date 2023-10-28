@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Fixed `com.handlebarsjs.PartialNode` string representation to include
+  closing braces
+  (@thekid)
+
 ## 9.2.0 / 2013-10-22
 
 * Added support for literals enclosed in `[]` - @thekid
