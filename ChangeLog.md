@@ -3,6 +3,9 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 9.3.0 / 2013-10-29
+
+* Merged PR #30: Add possibility to inherit partials - @thekid
 * Fixed `com.handlebarsjs.PartialNode` string representation to include
   closing braces
   (@thekid)
