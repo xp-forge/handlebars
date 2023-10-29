@@ -13,6 +13,13 @@ class PartialNodeTest {
   }
 
   #[Test]
+  public function options() {
+    $options= ['mount' => new Quoted('/')];
+    $partial= new PartialNode(new Lookup('test'), $options);
+    Assert::equals($options, $partial->options());
+  }
+
+  #[Test]
   public function string_representation() {
     Assert::equals(
       'com.handlebarsjs.PartialNode({{> com.handlebarsjs.Lookup(test)}}, indent= "")',
