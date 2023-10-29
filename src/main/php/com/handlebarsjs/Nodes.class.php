@@ -3,6 +3,7 @@
 use com\github\mustache\NodeList;
 use lang\IllegalArgumentException;
 
+/** @test com.handlebarsjs.unittest.NodesTest */
 class Nodes extends NodeList {
   private $partials= [];
 
@@ -10,8 +11,8 @@ class Nodes extends NodeList {
    * Declares a partial and returns the nodes associated with the name.
    *
    * @param  string|com.handlebarsjs.Quoted $partial
-   * @param  ?com.github.mustache.NodeList $nodes
-   * @return com.github.mustache.NodeList
+   * @param  ?parent|self $nodes
+   * @return self
    * @throws lang.IllegalArgumentException
    */
   public function declare($partial, $nodes= null) {
@@ -23,10 +24,25 @@ class Nodes extends NodeList {
       throw new IllegalArgumentException('Partial names must be strings or Quoted instances, have '.typeof($partial));
     }
 
-    return $this->partials[$name]= $nodes ?? new NodeList();
+    if ($nodes instanceof parent) {
+      return $this->partials[$name]= new self($nodes->nodes);
+    } else {
+      return $this->partials[$name]= $nodes ?? new self();
+    }
   }
 
-  /** @return [:com.github.mustache.NodeList] */
+  /**
+   * Inherits partials from a given parent
+   *
+   * @param  self $parent
+   * @return self
+   */
+  public function inheriting(self $parent) {
+    $this->partials= $parent->partials;
+    return $this;
+  }
+
+  /** @return [:self] */
   public function partials() { return $this->partials; }
 
   /**
@@ -34,7 +50,7 @@ class Nodes extends NodeList {
    * not exist.
    *
    * @param  string $partial
-   * @return ?com.github.mustache.NodeList
+   * @return ?self
    */
   public function partial($partial) {
     return $this->partials[$partial] ?? null;
