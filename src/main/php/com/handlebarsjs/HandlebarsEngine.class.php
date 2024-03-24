@@ -35,8 +35,12 @@ class HandlebarsEngine {
     ];
   }
 
-  /** Create new instance and initialize builtin helpers */
-  public function __construct(HandlebarsParser $parser= null) {
+  /**
+   * Create new instance and initialize builtin helpers
+   *
+   * @param  ?com.handlebarsjs.HandlebarsParser $parser
+   */
+  public function __construct($parser= null) {
     $this->parser= $parser ?? new HandlebarsParser();
     $this->templates= new Templates();
     $this->helpers= self::$builtin;

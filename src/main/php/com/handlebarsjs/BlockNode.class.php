@@ -19,14 +19,14 @@ class BlockNode extends Node {
   /**
    * Creates a new section node
    *
-   * @param string $name
-   * @param var[] $options
-   * @param com.github.mustache.NodeList $fn
-   * @param com.github.mustache.NodeList $inverse
-   * @param string $start
-   * @param string $end
+   * @param  string $name
+   * @param  var[] $options
+   * @param  ?com.github.mustache.NodeList $fn
+   * @param  ?com.github.mustache.NodeList $inverse
+   * @param  string $start
+   * @param  string $end
    */
-  public function __construct($name, $options= [], NodeList $fn= null, NodeList $inverse= null, $start= '{{', $end= '}}') {
+  public function __construct($name, $options= [], $fn= null, $inverse= null, $start= '{{', $end= '}}') {
     $this->name= $name;
     $this->options= $options;
     $this->fn= $fn ?? new NodeList();

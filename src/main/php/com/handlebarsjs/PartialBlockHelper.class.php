@@ -13,13 +13,13 @@ class PartialBlockHelper extends BlockNode {
   /**
    * Creates a new with block helper
    *
-   * @param string[] $options
-   * @param com.github.mustache.NodeList $fn
-   * @param com.github.mustache.NodeList $inverse
-   * @param string $start
-   * @param string $end
+   * @param  string[] $options
+   * @param  ?com.github.mustache.NodeList $fn
+   * @param  ?com.github.mustache.NodeList $inverse
+   * @param  string $start
+   * @param  string $end
    */
-  public function __construct($options= [], NodeList $fn= null, NodeList $inverse= null, $start= '{{', $end= '}}') {
+  public function __construct($options= [], $fn= null, $inverse= null, $start= '{{', $end= '}}') {
     $template= (string)array_shift($options);
     parent::__construct($template, $options, $fn, $inverse, $start, $end);
   }
