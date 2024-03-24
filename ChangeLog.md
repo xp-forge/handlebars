@@ -3,6 +3,10 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 9.4.0 / 2024-03-24
+
+* Made compatible with XP 12 - @thekid
+
 ## 9.3.0 / 2013-10-29
 
 * Merged PR #30: Add possibility to inherit partials - @thekid
