@@ -29,10 +29,10 @@ class DefaultContext extends DataContext {
    * from this context.
    *
    * @param  var $result
-   * @param  self $parent
+   * @param  ?self $parent
    * @return self
    */
-  public final function newInstance($result, Context $parent= null) {
+  public final function newInstance($result, $parent= null) {
     return new self($result, $parent ?: $this);
   }
 
