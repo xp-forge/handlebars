@@ -112,7 +112,7 @@ To add custom helpers, use *withHelpers()* and pass functions. The following yie
 ```php
 use com\handlebarsjs\HandlebarsEngine;
 
-$engine= (new HandlebarsEngine())->withHelper(function($node, $context, $options) {
+$engine= (new HandlebarsEngine())->withHelper('upper', function($node, $context, $options) {
   return strtoupper($options[0]);
 });
 $transformed= $engine->render('Hello {{upper name}}', [
