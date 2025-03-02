@@ -43,7 +43,12 @@ $transformed= $engine->transform('hello', [
 ]);
 ```
 
-If you need more flexibility, you can implement and then pass instances of `com.github.mustache.templates.Templates`.
+If you need more flexibility, you can implement and then pass instances of the following:
+
+* `new com.github.mustache.InMemory([:string] $templates))`
+* `new com.github.mustache.FilesIn(string|io.Folder $arg, string[] $extensions)`
+* `new com.github.mustache.ResourcesIn(string|lang.IClassLoader $arg, string[] $extensions)`
+* (Your own implementation of `com.github.mustache.templates.Templates`)
 
 Helpers supported
 -----------------
