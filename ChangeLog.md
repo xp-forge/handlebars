@@ -3,6 +3,12 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 9.5.0 / 2025-03-02
+
+* Merged PR #31: Make `withTemplates()` accept folder references and in-
+  memory declarations
+  (@thekid)
+
 ## 9.4.0 / 2024-03-24
 
 * Made compatible with XP 12 - @thekid
