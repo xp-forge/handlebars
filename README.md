@@ -24,13 +24,26 @@ Templating
 Templates can be loaded from the file system. The following loads and transforms the template *src/main/handlebars.handlebars*:
 
 ```php
-use com\handlebarsjs\{HandlebarsEngine, FilesIn};
+use com\handlebarsjs\HandlebarsEngine;
 
-$engine= (new HandlebarsEngine())->withTemplates(new FilesIn('src/main/handlebars'));
+$engine= (new HandlebarsEngine())->withTemplates('src/main/handlebars');
 $transformed= $engine->transform('hello', [
   'name' => 'World'
 ]);
 ```
+
+Templates can also be declared inline:
+
+```php
+use com\handlebarsjs\HandlebarsEngine;
+
+$engine= (new HandlebarsEngine())->withTemplates(['test' => 'Hello {{name}}']);
+$transformed= $engine->transform('hello', [
+  'name' => 'World'
+]);
+```
+
+If you need more flexibility, you can implement and then pass instances of `com.github.mustache.templates.Templates`.
 
 Helpers supported
 -----------------
