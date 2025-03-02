@@ -1,6 +1,7 @@
 <?php namespace com\handlebarsjs;
 
-use com\github\mustache\{Context, DataContext, Template};
+use com\github\mustache\{Context, DataContext, Template, FilesIn, InMemory};
+use io\{Folder, Path};
 use lang\IllegalArgumentException;
 use util\log\{LogCategory, LogLevel};
 
@@ -105,11 +106,17 @@ class HandlebarsEngine {
   /**
    * Sets template loader to be used
    *
-   * @param  com.github.mustache.templates.Templates|com.github.mustache.TemplateLoader $l
+   * @param  string|io.Folder|io.Path|[:string]|com.github.mustache.templates.Templates $arg
    * @return self this
    */
-  public function withTemplates($l) {
-    $this->templates->delegate($l);
+  public function withTemplates($arg) {
+    if ($arg instanceof Folder || $arg instanceof Path || is_string($arg)) {
+      $this->templates->delegate(new FilesIn($arg, ['.handlebars']));
+    } else if (is_array($arg)) {
+      $this->templates->delegate(new InMemory($arg));
+    } else {
+      $this->templates->delegate($arg);
+    }
     return $this;
   }
 

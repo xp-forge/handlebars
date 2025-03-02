@@ -1,12 +1,22 @@
 <?php namespace com\handlebarsjs\unittest;
 
+use com\github\mustache\{FilesIn, InMemory};
 use com\handlebarsjs\{HandlebarsEngine, HandlebarsParser};
 use io\streams\MemoryOutputStream;
-use lang\IllegalArgumentException;
-use test\{Assert, Expect, Test};
+use io\{Path, File, Files, Folder};
+use lang\{IllegalArgumentException, Environment};
+use test\{Assert, Expect, Test, Values};
 use util\log\LogCategory;
 
 class EngineTest {
+
+  /** @return iterable */
+  private function files() {
+    yield [function($temp) { return $temp->getURI(); }, 'string'];
+    yield [function($temp) { return new Folder($temp->getURI()); }, 'io.Folder'];
+    yield [function($temp) { return new Path($temp->getURI()); }, 'io.Path'];
+    yield [function($temp) { return new FilesIn($temp, ['.handlebars']); }, 'com.github.mustache.FilesIn'];
+  }
 
   #[Test]
   public function can_create() {
@@ -66,5 +76,39 @@ class EngineTest {
       public function version() { return '1.0.0'; }
     });
     Assert::equals('1.0.0', $engine->parser()->version());
+  }
+
+  #[Test]
+  public function templates_initially_empty() {
+    $engine= new HandlebarsEngine();
+    Assert::equals([], $engine->templates()->listing()->templates());
+  }
+
+  #[Test]
+  public function templates_from_loader() {
+    $engine= (new HandlebarsEngine())->withTemplates(new InMemory(['test' => 'Hello {{name}}']));
+    Assert::equals(['test'], $engine->templates()->listing()->templates());
+  }
+
+  #[Test]
+  public function templates_from_map() {
+    $engine= (new HandlebarsEngine())->withTemplates(['test' => 'Hello {{name}}']);
+    Assert::equals(['test'], $engine->templates()->listing()->templates());
+  }
+
+  #[Test, Values(from: 'files')]
+  public function templates_from_files($arg) {
+    $temp= new Folder(Environment::tempDir(), md5(self::class));
+    $temp->create();
+
+    try {
+      Files::write(new File($temp, 'test.handlebars'), 'Hello {{name}}');
+      Files::write(new File($temp, 'translations.csv'), 'Not included in listing');
+
+      $engine= (new HandlebarsEngine())->withTemplates($arg($temp));
+      Assert::equals(['test'], $engine->templates()->listing()->templates());
+    } finally {
+      $temp->unlink();
+    }
   }
 }
