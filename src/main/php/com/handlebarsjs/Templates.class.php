@@ -1,6 +1,6 @@
 <?php namespace com\handlebarsjs;
 
-use com\github\mustache\templates\{Compiled, NotFound, Source, Tokens};
+use com\github\mustache\templates\{Compiled, NotFound, Source, InString, Templates as Base};
 use com\github\mustache\{Node, Template, TemplateListing};
 use lang\ClassLoader;
 use text\StringTokenizer;
@@ -8,9 +8,9 @@ use text\StringTokenizer;
 /**
  * Template loading implementation
  *
- * @test  xp://com.handlebarsjs.unittest.TemplatesTest
+ * @test  com.handlebarsjs.unittest.TemplatesTest
  */
-class Templates extends \com\github\mustache\templates\Templates {
+class Templates extends Base {
   private static $composite= null;
   private $templates= [];
   private $delegate;
@@ -42,7 +42,7 @@ class Templates extends \com\github\mustache\templates\Templates {
     } else if ($content instanceof Node) {
       $this->templates[$name]= new Compiled(new Template($name, $content));
     } else {
-      $this->templates[$name]= new Tokens($name, new StringTokenizer($content));
+      $this->templates[$name]= new InString($name, (string)$content);
     }
 
     return $previous;
@@ -56,7 +56,7 @@ class Templates extends \com\github\mustache\templates\Templates {
    * @return com.github.mustache.templates.Source
    */
   public function tokens($content, $name= '(string)') {
-    return new Tokens($name, new StringTokenizer((string)$content));
+    return new InString($name, (string)$content);
   }
 
   /**

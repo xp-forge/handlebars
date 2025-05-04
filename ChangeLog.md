@@ -3,6 +3,11 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Refactored template loading to no longer use deprecated functionality
+  from the `xp-forge/mustache` library, making it compatible with its
+  newest major release
+  (@thekid)
+
 ## 9.5.0 / 2025-03-02
 
 * Merged PR #31: Make `withTemplates()` accept folder references and in-
