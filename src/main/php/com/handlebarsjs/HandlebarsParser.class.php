@@ -122,9 +122,7 @@ class HandlebarsParser extends AbstractMustacheParser {
       'with'    => WithBlockHelper::class,
       'each'    => EachBlockHelper::class,
       '>'       => PartialBlockHelper::class,
-      '*inline' => function($options, $state) {
-        return new BlockNode('inline', [], $state->parents[0]->declare($options[0] ?? null));
-      }
+      '*inline' => fn($options, $state) => new BlockNode('inline', [], $state->parents[0]->declare($options[0] ?? null))
     ]);
 
     // Sections

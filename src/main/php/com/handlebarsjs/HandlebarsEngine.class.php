@@ -29,11 +29,7 @@ class HandlebarsEngine {
   public $helpers;
 
   static function __static() {
-    self::$builtin= [
-      'lookup'  => function($node, $context, $options) {
-        return $options[0][$options[1]] ?? null;
-      }
-    ];
+    self::$builtin= ['lookup' => fn($node, $context, $options) => $options[0][$options[1]] ?? null];
   }
 
   /**

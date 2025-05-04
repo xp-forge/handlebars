@@ -77,7 +77,7 @@ class Templates extends Base {
     if ($this->delegate) {
       return new CompositeListing($this->templates, $this->delegate->listing());
     } else {
-      return new TemplateListing('', function($package) { return array_keys($this->templates); });
+      return new TemplateListing('', fn($package) => array_keys($this->templates));
     }
   }
 }
