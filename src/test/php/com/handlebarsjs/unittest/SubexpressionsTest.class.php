@@ -35,10 +35,10 @@ class SubexpressionsTest {
    */
   protected function evaluate($template, $variables) {
     return (new HandlebarsEngine())
-      ->withHelper('pass', function($items, $context, $options) { return $options[0]; })
-      ->withHelper('join', function($items, $context, $options) { return key($options).'='.current($options); })
-      ->withHelper('equal', function($items, $context, $options) { return $options[0] === $options[1]; })
-      ->withHelper('test', function($items, $context, $options) { return 'tested: '.($options[0] ? 'true' : 'false'); })
+      ->withHelper('pass', fn($items, $context, $options) => $options[0])
+      ->withHelper('join', fn($items, $context, $options) => key($options).'='.current($options))
+      ->withHelper('equal', fn($items, $context, $options) => $options[0] === $options[1])
+      ->withHelper('test', fn($items, $context, $options) => 'tested: '.($options[0] ? 'true' : 'false'))
       ->render($template, $variables)
     ;
   }
