@@ -205,9 +205,11 @@ class WebsiteExamplesTest {
       $this->render(
         '{{{link "See more..." story.url}}}',
         ['story' => ['url' => 'http://example.com/']],
-        ['link'  => function($items, $context, $options) {
-          return '<a href="'.$options[1].'">'.$options[0].'</a>';
-        }]
+        ['link'  => fn($items, $context, $options) => sprintf(
+          '<a href="%s">%s</a>',
+          htmlspecialchars($options[1]),
+          htmlspecialchars($options[0])
+        )]
       )
     );
   }
@@ -219,9 +221,12 @@ class WebsiteExamplesTest {
       $this->render(
         '{{{link "See more..." href=story.url class="story"}}}',
         ['story' => ['url' => 'http://example.com/']],
-        ['link'  => function($items, $context, $options) {
-          return '<a href="'.$options['href'].'" class="'.$options['class'].'">'.$options[0].'</a>';
-        }]
+        ['link'  => fn($items, $context, $options) => sprintf(
+          '<a href="%s" class="%s">%s</a>',
+          htmlspecialchars($options['href']),
+          htmlspecialchars($options['class']),
+          htmlspecialchars($options[0])
+        )]
       )
     );
   }
