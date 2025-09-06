@@ -322,10 +322,8 @@ class HandlebarsParser extends AbstractMustacheParser {
         // Handle tag
         if (null === $tag) {
           continue;
-        } else if (isset($this->handlers[$tag[0]])) {
-          $f= $this->handlers[$tag[0]];
         } else {
-          $f= $this->handlers[null];
+          $f= $this->handlers[$tag[0]] ?? $this->handlers[''];
         }
         $offset+= $f($tag, $state, $this);
       } while ($offset < $length);

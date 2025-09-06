@@ -3,6 +3,12 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+## 10.0.1 / 2025-09-06
+
+* Fixed *E_DEPRECATED: Using null as an array offset is deprecated, use
+  an empty string instead* (PHP 8.5+)
+  (@thekid)
+
 ## 10.0.0 / 2025-05-04
 
 * **Heads up:** Dropped support for PHP < 7.4, see xp-framework/rfc#343
