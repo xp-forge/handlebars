@@ -3,7 +3,7 @@
 /**
  * Unless: Evaluate content in same context if value is falsy
  *
- * @test xp://com.handlebarsjs.unittest.UnlessHelperTest
+ * @test  com.handlebarsjs.unittest.UnlessHelperTest
  */
 class UnlessBlockHelper extends BlockNode {
 

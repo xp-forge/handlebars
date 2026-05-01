@@ -3,7 +3,7 @@
 /**
  * List context for the `each` helper.
  *
- * @test  xp://com.handlebarsjs.unittest.EachHelperTest
+ * @test  com.handlebarsjs.unittest.EachHelperTest
  */
 class ListContext extends DefaultContext {
   private $list, $last, $element, $index;

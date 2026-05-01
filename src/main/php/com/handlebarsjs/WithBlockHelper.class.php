@@ -3,7 +3,7 @@
 /**
  * With: Evaluate content in context defined by argument
  *
- * @test xp://com.handlebarsjs.unittest.WithHelperTest
+ * @test  com.handlebarsjs.unittest.WithHelperTest
  */
 class WithBlockHelper extends BlockNode {
   private $alias;

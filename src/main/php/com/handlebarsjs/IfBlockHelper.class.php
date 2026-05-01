@@ -3,7 +3,7 @@
 /**
  * If: Evaluate content in same context if value is truthy
  *
- * @test xp://com.handlebarsjs.unittest.IfHelperTest
+ * @test  com.handlebarsjs.unittest.IfHelperTest
  */
 class IfBlockHelper extends BlockNode {
 

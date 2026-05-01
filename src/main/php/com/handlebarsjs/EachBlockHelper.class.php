@@ -3,7 +3,7 @@
 /**
  * Each: Traverse lists and hashes
  *
- * @test xp://com.handlebarsjs.unittest.EachHelperTest
+ * @test  com.handlebarsjs.unittest.EachHelperTest
  */
 class EachBlockHelper extends BlockNode {
   private $params;

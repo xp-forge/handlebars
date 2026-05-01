@@ -3,7 +3,7 @@
 /**
  * Hash context for the `each` helper.
  *
- * @test  xp://com.handlebarsjs.unittest.EachHelperTest
+ * @test  com.handlebarsjs.unittest.EachHelperTest
  */
 class HashContext extends DefaultContext {
   private $map, $element, $index;

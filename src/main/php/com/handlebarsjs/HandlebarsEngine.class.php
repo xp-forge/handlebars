@@ -15,12 +15,12 @@ use util\log\{LogCategory, LogLevel};
  * a Mustache template, import it into Handlebars, and start taking
  * advantage of the extra Handlebars features.
  *
- * @test  xp://com.handlebarsjs.unittest.EngineTest
- * @test  xp://com.handlebarsjs.unittest.EachHelperTest
- * @test  xp://com.handlebarsjs.unittest.IfHelperTest
- * @test  xp://com.handlebarsjs.unittest.UnlessHelperTest
- * @test  xp://com.handlebarsjs.unittest.WithHelperTest
- * @test  xp://com.handlebarsjs.unittest.WebsiteExamplesTest
+ * @test  com.handlebarsjs.unittest.EngineTest
+ * @test  com.handlebarsjs.unittest.EachHelperTest
+ * @test  com.handlebarsjs.unittest.IfHelperTest
+ * @test  com.handlebarsjs.unittest.UnlessHelperTest
+ * @test  com.handlebarsjs.unittest.WithHelperTest
+ * @test  com.handlebarsjs.unittest.WebsiteExamplesTest
  * @see   http://handlebarsjs.com/
  */
 class HandlebarsEngine {

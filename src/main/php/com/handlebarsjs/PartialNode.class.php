@@ -8,7 +8,7 @@ use util\Objects;
  * Partials
  *
  * @see  http://handlebarsjs.com/partials.html
- * @test xp://com.handlebarsjs.unittest.PartialNodeTest
+ * @test  com.handlebarsjs.unittest.PartialNodeTest
  */
 class PartialNode extends Node {
   protected $template, $options, $indent;

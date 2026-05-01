@@ -6,7 +6,7 @@ use com\github\mustache\{Context, DataContext};
  * Default context for handlebars. Supports `@root` and `this` in addition
  * to `./` and `../` notations from Mustache.
  *
- * @test  xp://com.handlebarsjs.unittest.ExecutionTest
+ * @test  com.handlebarsjs.unittest.ExecutionTest
  */
 class DefaultContext extends DataContext {
 

@@ -6,7 +6,7 @@ use com\github\mustache\NodeList;
  * Partial blocks
  *
  * @see   http://handlebarsjs.com/partials.html
- * @test  xp://com.handlebarsjs.unittest.PartialBlockHelperTest
+ * @test  com.handlebarsjs.unittest.PartialBlockHelperTest
  */
 class PartialBlockHelper extends BlockNode {
 
