@@ -3,6 +3,8 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Added PHP 8.6 to test matrix - @thekid
+
 ## 10.0.1 / 2025-09-06
 
 * Fixed *E_DEPRECATED: Using null as an array offset is deprecated, use
