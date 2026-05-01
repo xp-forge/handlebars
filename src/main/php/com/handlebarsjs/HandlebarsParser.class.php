@@ -128,7 +128,10 @@ class HandlebarsParser extends AbstractMustacheParser {
     // Sections
     $this->withHandler('#', true, function($tag, $state, $parse) {
       $state->parents[]= $state->target;
-      $block= $this->blocks->newInstance($parse->options(trim(substr($tag, 1))), $state);
+      $block= $state->target->add($this->blocks->newInstance(
+        $parse->options(trim(substr($tag, 1))),
+        $state
+      ));
       $state->target= $block->fn();
       $state->parents[]= $block;
     });
@@ -204,7 +207,10 @@ class HandlebarsParser extends AbstractMustacheParser {
         $state->target= $block->inverse();
       } else {
         $state->parents[]= $state->target;
-        $block= new InverseOf($this->blocks->newInstance($parse->options(substr($tag, 1)), $state));
+        $block= new InverseOf($state->target->add($this->blocks->newInstance(
+          $parse->options(substr($tag, 1)),
+          $state
+        )));
         $state->target= $block->fn();
         $state->parents[]= $block;
       }
@@ -223,14 +229,11 @@ class HandlebarsParser extends AbstractMustacheParser {
         $context= &$state->parents[sizeof($state->parents) - 1];
         if ($context instanceof BlockNode) {
 
-          // `else if` vs. `else`
-          if (isset($parsed[1]) && 'if' === (string)$parsed[1]) {
-            $context= $context->inverse()->add(new IfBlockHelper(
-              array_slice($parsed, 2),
-              null,
-              null,
-              $state->start,
-              $state->end
+          // `else [...]` vs. `else`
+          if (isset($parsed[1])) {
+            $context= $context->inverse()->add($this->blocks->newInstance(
+              array_slice($parsed, 1),
+              $state
             ));
             $state->target= $context->fn();
           } else {

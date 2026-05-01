@@ -3,6 +3,7 @@ HandleBars change log
 
 ## ?.?.? / ????-??-??
 
+* Simplify code for parsing `else if` - @thekid
 * Added PHP 8.6 to test matrix - @thekid
 
 ## 10.0.1 / 2025-09-06

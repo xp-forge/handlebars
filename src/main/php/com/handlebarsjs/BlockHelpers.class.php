@@ -23,7 +23,7 @@ class BlockHelpers {
       unset($this->impl[$name]);
     } else if (is_string($impl)) {
       $this->impl[$name]= function($options, $state) use($impl) {
-        return $state->target->add(new $impl($options, null, null, $state->start, $state->end));
+        return new $impl($options, null, null, $state->start, $state->end);
       };
     } else {
       $this->impl[$name]= $impl;
@@ -35,7 +35,6 @@ class BlockHelpers {
    * Creates a new with block helper
    *
    * - Creates instances of named block implementations
-   * - Registers `*inline` partials in top-level nodes
    * - Uses default block implementation otherwise
    *
    * @param  var[] $options
@@ -44,10 +43,10 @@ class BlockHelpers {
    */
   public function newInstance($options, $state) {
     $name= array_shift($options);
-    if ($impl= $this->impl[$name] ?? null) {
+    if ($impl= $this->impl[(string)$name] ?? null) {
       return $impl($options, $state);
     } else {
-      return $state->target->add(new BlockNode($name, $options, null, null, $state->start, $state->end));
+      return new BlockNode($name, $options, null, null, $state->start, $state->end);
     }
   }
 }
